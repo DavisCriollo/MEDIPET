@@ -35,7 +35,7 @@ class _ListaVideosState extends State<ListaVideos> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -137,7 +137,7 @@ class _ListaVideosState extends State<ListaVideos> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Tutoriales',style:  Theme.of(context).textTheme.headline2,
+                                  'Tutoriales',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

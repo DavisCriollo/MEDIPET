@@ -150,8 +150,8 @@ class _CrearPropietarioState extends State<CrearPropietario> {
         child: Scaffold(
           appBar: AppBar(
             title: widget.action == 'CREATE' || widget.action == 'SEARCH'
-                ?  Text('Crear Propietario',style:  Theme.of(context).textTheme.headline2,)
-                :  Text('Editar Propietario',style:  Theme.of(context).textTheme.headline2,),
+                ?  Text('Crear Propietario')
+                :  Text('Editar Propietario'),
             actions: [
               Container(
                 margin: EdgeInsets.only(right: size.iScreen(1.5)),

@@ -17,7 +17,7 @@ class DetallePropietarioPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title:  Text('Detalle del Propietario',style:  Theme.of(context).textTheme.headline2,),
+            title:  Text('Detalle del Propietario'),
           ),
           body: Container(
             // color: Colors.red,

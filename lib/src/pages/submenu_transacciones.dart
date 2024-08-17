@@ -4,6 +4,7 @@ import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/notas_creditos_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
 import 'package:neitorcont/src/controllers/proformas_controller.dart';
+import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/listar_anuladas_paginacion.dart';
 import 'package:neitorcont/src/pages/listar_facturas.dart';
 import 'package:neitorcont/src/pages/listar_facturas_paginacion.dart';
@@ -29,7 +30,7 @@ class SubmenuTransacciones extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title:  Text('TRANSACCIONES',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('TRANSACCIONES'),
         ),
         body: Container(
             width: size.wScreen(100),
@@ -228,6 +229,23 @@ class SubmenuTransacciones extends StatelessWidget {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     const ListarAnuladasPaginacion()));
+                          },
+                        ),
+                          ElementosSubmenu(
+                          enabled: true,
+                          size: size,
+                          image: 'assets/imgs/time.png',
+                          label: 'COMPROBANTE',
+                          color: Colors.purple,
+                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                          onTap: () {
+
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const CrearComprobante(
+                                      tipo: 'CREATE',
+                                    )));
                           },
                         ),
                      

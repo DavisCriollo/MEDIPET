@@ -14,7 +14,7 @@ class DetallePeluqueria extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title:  Text('Detalle del Peluquería',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('Detalle del Peluquería'),
         ),
         body: Container(
           // color: Colors.red,

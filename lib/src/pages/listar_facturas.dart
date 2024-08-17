@@ -28,7 +28,7 @@ class _ListarFacturasState extends State<ListarFacturas> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -127,7 +127,7 @@ class _ListarFacturasState extends State<ListarFacturas> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Facturas',style:  Theme.of(context).textTheme.headline2,
+                                  'Facturas'
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

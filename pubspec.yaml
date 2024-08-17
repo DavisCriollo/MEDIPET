@@ -42,6 +42,7 @@ dependencies:
   email_validator: ^2.0.1
   http: ^0.13.4
   permission_handler: ^8.3.0
+  firebase_core:
   socket_io_client: ^2.0.0-beta.3-nullsafety.0
   flutter_secure_storage: ^5.0.2
   image_picker: ^0.8.5

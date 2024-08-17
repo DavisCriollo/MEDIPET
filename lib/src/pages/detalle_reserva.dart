@@ -19,7 +19,7 @@ class DetalleReserva extends StatelessWidget {
     final Responsive size = Responsive.of(context);
     return Scaffold(
         appBar: AppBar(
-          title:  Text('Detalle de Reserva',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('Detalle de Reserva'),
         ),
         body: Container(
             // color: Colors.red,

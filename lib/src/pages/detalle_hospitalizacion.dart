@@ -28,7 +28,7 @@ class DetalleHospitalizacion extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title:  Text('Detalle del Hospitalización',style:  Theme.of(context).textTheme.headline2,),
+            title:  Text('Detalle del Hospitalización'),
           ),
           body: Container(
             // color: Colors.red,

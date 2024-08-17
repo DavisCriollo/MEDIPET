@@ -59,8 +59,8 @@ class _CrearHistiriaClinicaState extends State<CrearHistiriaClinica> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-              ?  Text('Crear Historia Clínica',style:  Theme.of(context).textTheme.headline2,)
-              :  Text('Editar Historia Clínica',style:  Theme.of(context).textTheme.headline2,),
+              ?  Text('Crear Historia Clínica')
+              :  Text('Editar Historia Clínica'),
           actions: [
             Consumer<SocketService>(builder: (_, valueConexion, __) {
               return valueConexion.serverStatus == ServerStatus.Online

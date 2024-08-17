@@ -50,8 +50,8 @@ class _CrearHospitalizacionState extends State<CrearHospitalizacion> {
       child: Scaffold(
           appBar: AppBar(
             title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-                ?  Text('Crear Hospitalización',style:  Theme.of(context).textTheme.headline2,)
-                :  Text('Editar Hospitalización',style:  Theme.of(context).textTheme.headline2,),
+                ?  Text('Crear Hospitalización')
+                :  Text('Editar Hospitalización'),
             actions: [
               Consumer<SocketService>(builder: (_, valueConexion, __) {
                 return valueConexion.serverStatus == ServerStatus.Online

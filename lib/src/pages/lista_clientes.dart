@@ -28,7 +28,7 @@ class _ListaClientesState extends State<ListaClientes> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 

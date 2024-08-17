@@ -31,7 +31,7 @@ class _ListarNotasCreditoState extends State<ListarNotasCredito> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -130,7 +130,7 @@ class _ListarNotasCreditoState extends State<ListarNotasCredito> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Notas de Crédito',style:  Theme.of(context).textTheme.headline2,
+                                  'Notas de Crédito',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

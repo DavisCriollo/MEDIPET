@@ -72,8 +72,8 @@ class _CrearReservaState extends State<CrearReserva> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-              ?  Text('Crear Reserva',style:  Theme.of(context).textTheme.headline2,)
-              :  Text('Editar Reserva',style:  Theme.of(context).textTheme.headline2,),
+              ?  Text('Crear Reserva')
+              :  Text('Editar Reserva'),
           actions: [
             Container(
               margin: EdgeInsets.only(right: size.iScreen(1.5)),

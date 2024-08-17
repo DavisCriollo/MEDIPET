@@ -186,7 +186,7 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Sin Autorizar / Anuladas',style:  Theme.of(context).textTheme.headline2,
+                                  'Sin Autorizar / Anuladas',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     // color: Colors.white,
@@ -376,7 +376,7 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                           
                                     children: [
                                       SlidableAction(
-                                        backgroundColor: themeColor.getTerciaryTextColor!,
+                                        backgroundColor: Colors.grey,
                                           foregroundColor: Colors.white,
                                         icon: Icons.list_alt_outlined,
                                         label: 'Más acciones',

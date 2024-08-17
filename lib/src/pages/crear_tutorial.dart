@@ -33,8 +33,8 @@ class _CrearTutorialState extends State<CrearTutorial> {
       child: Scaffold(
         appBar: AppBar(
           title: _action == 'CREATE' || _action == 'SEARCH'
-              ?  Text('Crear Tutorial',style:  Theme.of(context).textTheme.headline2,)
-              :  Text('Editar Tutorial',style:  Theme.of(context).textTheme.headline2,),
+              ?  Text('Crear Tutorial')
+              :  Text('Editar Tutorial'),
           actions: [
             Consumer<SocketService>(builder: (_, valueConexion, __) {
               return valueConexion.serverStatus == ServerStatus.Online

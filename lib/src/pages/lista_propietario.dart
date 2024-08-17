@@ -43,7 +43,7 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -154,7 +154,7 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Propietarios',style:  Theme.of(context).textTheme.headline2,
+                                  'Propietarios',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

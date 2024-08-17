@@ -105,7 +105,7 @@ class _CrearMascotaState extends State<CrearMascota> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -147,8 +147,8 @@ class _CrearMascotaState extends State<CrearMascota> {
       child: Scaffold(
           appBar: AppBar(
             title: _action == 'CREATE' || _action == 'SEARCH'
-                ?  Text('Crear Mascota',style:  Theme.of(context).textTheme.headline2,)
-                :  Text('Editar Mascota',style:  Theme.of(context).textTheme.headline2,),
+                ?  Text('Crear Mascota')
+                :  Text('Editar Mascota'),
             actions: [
               Container(
                 margin: EdgeInsets.only(right: size.iScreen(1.5)),

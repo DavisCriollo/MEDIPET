@@ -205,7 +205,7 @@ class _ListaRecetasPaginacionState extends State<ListaRecetasPaginacion> {
                               width: size.wScreen(90.0),
                               child: Text(
                                 'Recetas',
-                                style: Theme.of(context).textTheme.headline2,
+                                // style: Theme.of(context).textTheme.headline2,
                                 // style: GoogleFonts.lexendDeca(
                                 //     fontSize: size.iScreen(2.45),
                                 //     // color: Colors.white,

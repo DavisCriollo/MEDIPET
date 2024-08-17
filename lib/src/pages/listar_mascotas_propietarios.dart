@@ -48,7 +48,7 @@ class _ListaMascotasPropietarioState extends State<ListaMascotasPropietario> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class _ListaMascotasPropietarioState extends State<ListaMascotasPropietario> {
           appBar: AppBar(
             // backgroundColor: primaryColor,
             title: Text(
-              'Mis Mascotas',style:  Theme.of(context).textTheme.headline2,
+              'Mis Mascotas',
               // style: GoogleFonts.lexendDeca(
               //     fontSize: size.iScreen(2.45),
               //     color: Colors.white,

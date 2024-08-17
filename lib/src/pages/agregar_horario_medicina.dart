@@ -84,7 +84,7 @@ class AgregarHorarios extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Horario Medicina',style:  Theme.of(context).textTheme.headline2,),
+        title:  Text('Horario Medicina'),
         actions: [
           Consumer<SocketService>(builder: (_, valueConexion, __) {
             return valueConexion.serverStatus == ServerStatus.Online

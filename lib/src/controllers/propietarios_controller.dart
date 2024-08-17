@@ -938,8 +938,8 @@ String?  _userData;
     // print(_pyloadNuevoPropietario);
     // // // print(
     // //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!
-        .emit('client:actualizarData', _pyloadEditaPropietario);
+    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaPropietario);
+    // serviceSocket.sendMessage('client:actualizarData', _pyloadEditaPropietario);
   }
 
 //=================================================================================================================//

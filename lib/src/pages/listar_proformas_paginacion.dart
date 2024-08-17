@@ -187,7 +187,7 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'PROFORMAS',style:  Theme.of(context).textTheme.headline2,
+                                  'PROFORMAS',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     // color: Colors.white,
@@ -363,7 +363,7 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                           
                                     children: [
                                       SlidableAction(
-                                             backgroundColor: themeColor.getTerciaryTextColor!,
+                                              backgroundColor: Colors.grey,
                                           foregroundColor: Colors.white,
                                         icon: Icons.list_alt_outlined,
                                         label: 'Más acciones',

@@ -27,7 +27,7 @@ class PasswordPage extends StatelessWidget {
           appBar: AppBar(
             // backgroundColor: const Color(0XFF343A40), 
             title:  Text(
-              'Recuperar Contraseña',style:  Theme.of(context).textTheme.headline2,
+              'Recuperar Contraseña',
               // style: TextStyle(color: Colors.white),
             ),
              

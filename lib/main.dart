@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
+import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/historia_clinica.controller.dart';
 import 'package:neitorcont/src/controllers/home_controller.dart';
@@ -18,6 +19,7 @@ import 'package:neitorcont/src/controllers/videos_controller.dart';
 import 'package:neitorcont/src/routes/routes.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 // import 'package:neitor_vet/src/utils/theme.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +43,11 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+
+
          ChangeNotifierProvider(create: (_) => AppTheme()),
+         
          ChangeNotifierProvider(create: (_) => SocketService()),
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => PropietariosController()),
@@ -58,8 +64,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => VideosController()),
         ChangeNotifierProvider(create: (_) => AnuladasController()),
         ChangeNotifierProvider(create: (_) => ReservasController()),
+        ChangeNotifierProvider(create: (_) => ComprobantesController()),
       ],
-      child: Consumer<AppTheme>(
+      // child: Consumer<AppTheme>(
+      child: Consumer<ThemeProvider>(
         builder: (_, theme, __) { 
 
         return MaterialApp(
@@ -95,7 +103,8 @@ class MyApp extends StatelessWidget {
           //   colorScheme: ColorScheme.fromSeed(seedColor: primaryColor,secondary: primaryColor,tertiary: tercearyColor),
          
           //   ),
-          theme: theme.currentTheme,
+          // theme: theme.currentTheme,
+            theme: theme.appTheme.themeData,
           // ThemeData.light().copyWith(
           //   primaryColor: _primaryColor,
             

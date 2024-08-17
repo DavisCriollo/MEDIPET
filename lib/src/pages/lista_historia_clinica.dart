@@ -35,7 +35,7 @@ class _ListaHistoriaClinicaState extends State<ListaHistoriaClinica> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -136,7 +136,7 @@ class _ListaHistoriaClinicaState extends State<ListaHistoriaClinica> {
                               alignment: Alignment.center,
                               width: size.wScreen(90.0),
                               child: Text(
-                                'Historias Clínicas',style:  Theme.of(context).textTheme.headline2,
+                                'Historias Clínicas',
                                 // style: GoogleFonts.lexendDeca(
                                 //     fontSize: size.iScreen(2.45),
                                 //     color: Colors.white,

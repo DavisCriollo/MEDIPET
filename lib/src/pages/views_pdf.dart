@@ -22,7 +22,7 @@ class ViewsPDFs extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title:  Text('Vista PDF',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('Vista PDF'),
           actions: [
             IconButton(
                 onPressed: () {

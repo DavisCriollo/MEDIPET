@@ -40,7 +40,7 @@ class NotificatiosnService {
   static showSnackBarDanger(String message) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
-      backgroundColor: errorColor,
+      backgroundColor: alertColor,
       content: Text(
         message,
         style: const TextStyle(
@@ -54,7 +54,8 @@ class NotificatiosnService {
   static showSnackBarInfo(String message,String result) {
     final snackBar =  SnackBar(
       // backgroundColor: Colors.green.withOpacity(0.9),
-      backgroundColor: (result=='success')?secondaryColor:tercearyColor,
+      // backgroundColor: (result=='success')?secondaryColor:tercearyColor,
+       backgroundColor: (result=='success')?Colors.orange:Colors.red,
       content: Text(
         message,
         style: const TextStyle(

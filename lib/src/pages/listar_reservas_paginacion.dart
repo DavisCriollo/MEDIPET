@@ -207,7 +207,7 @@ class _ListaReservasPaginacionState extends State<ListaReservasPaginacion> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Reservas',style:  Theme.of(context).textTheme.headline2,
+                                  'Reservas',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     // color: Colors.white,

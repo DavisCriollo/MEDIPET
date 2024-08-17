@@ -79,7 +79,7 @@ class AgregarHorariosParametros extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Horario Parámetros',style:  Theme.of(context).textTheme.headline2,),
+        title:  Text('Horario Parámetros'),
         actions: [
           Consumer<SocketService>(builder: (_, valueConexion, __) {
             return valueConexion.serverStatus == ServerStatus.Online

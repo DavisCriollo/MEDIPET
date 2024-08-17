@@ -18,7 +18,7 @@ class DetalleReceta extends StatelessWidget {
     final Responsive size = Responsive.of(context);
     return Scaffold(
         appBar: AppBar(
-          title:  Text('Detalle de Receta',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('Detalle de Receta'),
         ),
         body: Container(
             // color: Colors.red,

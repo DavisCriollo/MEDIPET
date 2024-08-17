@@ -8,6 +8,7 @@ import 'package:neitorcont/src/models/auth_response.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/home_page.dart';
 import 'package:neitorcont/src/pages/login_page.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,7 +24,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   final controllerLogin = LoginController();
   final controllerHome = HomeController();
-  final controllerAppTheme = AppTheme();
+  // final controllerAppTheme = AppTheme();
+    final controllerTheme = ThemeProvider();
     final _api = ApiProvider();
    Session? session ;
 
@@ -61,7 +63,18 @@ class _SplashPageState extends State<SplashPage> {
     if (session != null) {
   
 
-        
+    
+
+   final primaryColorHex = session!.colorPrimario ?? '#2196fd'; // Valor por defecto
+    final accentColorHex = session!.colorSecundario ?? '#FF4081'; // Valor por defecto
+
+    final primaryColor = hexToColor(primaryColorHex);
+    final accentColor = hexToColor(accentColorHex);
+
+    Provider.of<ThemeProvider>(context, listen: false)
+        .setTheme(primaryColorHex, accentColorHex);
+    
+ 
 
 
 
@@ -74,6 +87,8 @@ class _SplashPageState extends State<SplashPage> {
           MaterialPageRoute(builder: (context) => const LoginPage()),
           (Route<dynamic> route) => false);
        }else{
+
+         controllerTheme.setTheme(session!.colorSecundario, session!.colorSecundario);
           Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage(user: session)),
           (Route<dynamic> route) => false);
@@ -90,7 +105,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
   //  Provider.of<AppTheme>(context,listen: false).setResponsive(size);
-  controllerAppTheme.setResponsive(size);
+  // controllerAppTheme.setResponsive(size);
 
 // Future.delayed(Duration(seconds: 1),(){
 //   // final BuildContext _size;
@@ -132,4 +147,13 @@ class _SplashPageState extends State<SplashPage> {
       ),
     );
   }
+
+
+Color hexToColor(String hexString) {
+  final buffer = StringBuffer();
+  if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+  buffer.write(hexString.replaceFirst('#', ''));
+  return Color(int.parse(buffer.toString(), radix: 16));
+}
+
 }

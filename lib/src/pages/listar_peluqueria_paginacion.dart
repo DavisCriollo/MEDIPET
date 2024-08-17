@@ -214,7 +214,7 @@ class _ListaPeluqueriaPagiacionState extends State<ListaPeluqueriaPagiacion> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Peluquería',style:  Theme.of(context).textTheme.headline2,
+                                  'Peluquería',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     // color: Colors.white,

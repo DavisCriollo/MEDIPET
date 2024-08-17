@@ -33,7 +33,7 @@ class SubmenuMascotas extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title:  Text('MASCOTAS',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('MASCOTAS'),
         ),
         body: Container(
             width: size.wScreen(100),

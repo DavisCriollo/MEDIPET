@@ -94,8 +94,8 @@ class _CreaPeluqueriaState extends State<CreaPeluqueria> {
       child: Scaffold(
           appBar: AppBar(
             title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-                ?  Text('Crear Peluquería',style:  Theme.of(context).textTheme.headline2,)
-                :  Text('Editar Peluquería',style:  Theme.of(context).textTheme.headline2,),
+                ?  Text('Crear Peluquería')
+                :  Text('Editar Peluquería'),
             actions: [
               Consumer<SocketService>(builder: (_, valueConexion, __) {
                 return valueConexion.serverStatus == ServerStatus.Online

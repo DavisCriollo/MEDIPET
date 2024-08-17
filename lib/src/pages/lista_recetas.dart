@@ -37,7 +37,7 @@ class _ListaRecetasState extends State<ListaRecetas> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -137,7 +137,7 @@ class _ListaRecetasState extends State<ListaRecetas> {
                               alignment: Alignment.center,
                               width: size.wScreen(90.0),
                               child: Text(
-                                'Recetas',style:  Theme.of(context).textTheme.headline2,
+                                'Recetas',
                                 // style: GoogleFonts.lexendDeca(
                                 //     fontSize: size.iScreen(2.45),
                                 //     color: Colors.white,

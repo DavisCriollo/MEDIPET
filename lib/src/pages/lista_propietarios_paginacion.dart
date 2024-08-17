@@ -17,6 +17,7 @@ import 'package:neitorcont/src/pages/detalle_propietario.dart';
 import 'package:neitorcont/src/pages/listar_mascotas_propietarios.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
@@ -118,7 +119,7 @@ class _ListaPropietariosPaginacionState
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
 
-      final colorTheme=context.read<AppTheme>();
+      final colorTheme=context.read<ThemeProvider>();
 
 
     return GestureDetector(
@@ -134,6 +135,7 @@ class _ListaPropietariosPaginacionState
             //       color: Colors.white,
             //       fontWeight: FontWeight.normal),
             // ),
+            
             title: Consumer<PropietariosController>(
               builder: (_, providerSearchPropietario, __) {
                 return Row(
@@ -218,11 +220,12 @@ class _ListaPropietariosPaginacionState
                                 width: size.wScreen(90.0),
                                 child: Text(
                                   'Propietarios',
-                                  style:  Theme.of(context).textTheme.headline2,
-                                  // GoogleFonts.lexendDeca(
-                                  //     fontSize: size.iScreen(2.45),
-                                  //     // color: Colors.white,
-                                  //     fontWeight: FontWeight.normal),
+                                  style:  
+                                  
+                                  GoogleFonts.lexendDeca(
+                                      fontSize: size.iScreen(2.45),
+                                      // color: Colors.white,
+                                      fontWeight: FontWeight.normal),
                                  
                                 ),
                               ),
@@ -463,7 +466,7 @@ class _ListaPropietariosPaginacionState
 
                                       children: [
                                         SlidableAction(
-                                    backgroundColor: colorTheme.getTerciaryTextColor!,
+                                    backgroundColor: colorTheme.appTheme.primaryColor,
                                           foregroundColor: Colors.white,
                                           icon: Icons.list_alt_outlined,
                                           label: 'Más acciones',
@@ -760,7 +763,7 @@ class _ListaPropietariosPaginacionState
                                                               fontSize: size
                                                                   .hScreen(1.5),
                                                               color:
-                                                                  colorTheme.getPrimaryTextColor,
+                                                                  colorTheme.appTheme.primaryColor,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
@@ -774,7 +777,7 @@ class _ListaPropietariosPaginacionState
                                                               fontSize: size
                                                                   .iScreen(1.8),
                                                               color:
-                                                                  colorTheme.getPrimaryTextColor,
+                                                                  colorTheme.appTheme.primaryColor,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
@@ -801,7 +804,7 @@ class _ListaPropietariosPaginacionState
                                                   style: GoogleFonts.lexendDeca(
                                                       fontSize:
                                                           size.iScreen(1.8),
-                                                      color:  colorTheme.getPrimaryTextColor,
+                                                      color:  colorTheme.appTheme.primaryColor,
                                                       fontWeight:
                                                           FontWeight.normal),
                                                 ),

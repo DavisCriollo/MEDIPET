@@ -9,6 +9,7 @@ import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/listar_reservas_paginacion.dart';
 
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/widgets/elementosHome.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -60,17 +61,21 @@ class _HomePageState extends State<HomePage> {
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Consumer<AppTheme>(
+      child: Consumer<ThemeProvider>(
         builder: (_, valueThem, __) {
           return Scaffold(
-            appBar: valueThem.getIsTheme == false
-                ?null
-                :AppBar(
-                    title:valueThem.getIsTheme ==false
-                    ? const Text('')
-                    :Text(
+            appBar: 
+            // valueThem.getIsTheme == false
+            //     ?null
+            //     :
+                AppBar(
+                    // title:valueThem.getIsTheme ==false
+                    // ? const Text('NeitorVet')
+                    // :
+                     backgroundColor: Theme.of(context).primaryColor,
+                  title:  Text(
                       'NeitorVet',
-                      style: Theme.of(context).textTheme.headline2,
+                     
                     ),
                   ) ,
 

@@ -59,8 +59,8 @@ class _CrearRecetaState extends State<CrearReceta> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-              ?  Text('Crear Receta',style:  Theme.of(context).textTheme.headline2,)
-              :  Text('Editar Receta',style:  Theme.of(context).textTheme.headline2,),
+              ?  Text('Crear Receta')
+              :  Text('Editar Receta'),
           actions: [
             Container(
               margin: EdgeInsets.only(right: size.iScreen(1.5)),

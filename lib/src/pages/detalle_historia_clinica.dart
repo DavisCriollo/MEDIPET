@@ -15,7 +15,7 @@ class DetalleHistoriaClinica extends StatelessWidget {
       final infohistoria = context.read<HistoriaClinicaController>().getInfoHistoriaClinica;
     return Scaffold(
         appBar: AppBar(
-          title:  Text('Detalle de Historia Clínica',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('Detalle de Historia Clínica'),
         ),
       body: Container(
             // color: Colors.red,

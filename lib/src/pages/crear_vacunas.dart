@@ -37,8 +37,8 @@ class _CrearVacunasState extends State<CrearVacunas> {
       child: Scaffold(
         appBar: AppBar(
           title: widget.tipo == 'CREATE' || widget.tipo == 'SEARCH'
-              ?  Text('Crear Vacuna',style:  Theme.of(context).textTheme.headline2,)
-              :  Text('Editar Vacuna',style:  Theme.of(context).textTheme.headline2,),
+              ?  Text('Crear Vacuna')
+              :  Text('Editar Vacuna'),
           actions: [
             Consumer<SocketService>(builder: (_, valueConexion, __) {
               return valueConexion.serverStatus == ServerStatus.Online

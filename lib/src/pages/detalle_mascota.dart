@@ -17,7 +17,7 @@ class DetalleMascotas extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title:  Text('Detalle del Mascota',style:  Theme.of(context).textTheme.headline2,),
+            title:  Text('Detalle del Mascota'),
           ),
           body: Container(
             // color: Colors.red,

@@ -29,7 +29,7 @@ class _ListarProformasState extends State<ListarProformas> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -128,7 +128,7 @@ class _ListarProformasState extends State<ListarProformas> {
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Proformas',style:  Theme.of(context).textTheme.headline2,
+                                  'Proformas',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

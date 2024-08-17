@@ -13,7 +13,7 @@ class SubmenuPersonas extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title:  Text('PERSONAS',style:  Theme.of(context).textTheme.headline2,),
+          title:  Text('PERSONAS'),
         ),
         body: Container(
             width: size.wScreen(100),

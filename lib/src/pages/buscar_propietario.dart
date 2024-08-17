@@ -6,6 +6,7 @@ import 'package:neitorcont/src/pages/crear_propietario.dart';
 import 'package:neitorcont/src/pages/detalle_propietario.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
@@ -65,9 +66,10 @@ class _BuscarPropietarioState extends State<BuscarPropietario> {
 
   @override
   Widget build(BuildContext context) {
- 
+    final colorTheme=context.read<ThemeProvider>();
     final Responsive size = Responsive.of(context);
     return GestureDetector(
+
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           backgroundColor: Colors.grey.shade100,
@@ -133,7 +135,7 @@ class _BuscarPropietarioState extends State<BuscarPropietario> {
                                 width: size.wScreen(90.0),
                                 child: Text(
                                   'Buscar Persona',
-                                  style:  Theme.of(context).textTheme.headline2,
+                                  // style:  colorTheme.appTheme.primaryColor,
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     color: Colors.white,

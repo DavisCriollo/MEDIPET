@@ -37,7 +37,7 @@ class _ListaVacunasState extends State<ListaVacunas> {
 
   @override
   void initState() {
-    initData();
+    // initData();
     super.initState();
   }
 
@@ -137,7 +137,7 @@ class _ListaVacunasState extends State<ListaVacunas> {
                               alignment: Alignment.center,
                               width: size.wScreen(90.0),
                               child: Text(
-                                'Vacunas',style:  Theme.of(context).textTheme.headline2,
+                                'Vacunas',
                                 // style: GoogleFonts.lexendDeca(
                                 //     fontSize: size.iScreen(2.45),
                                 //     color: Colors.white,
