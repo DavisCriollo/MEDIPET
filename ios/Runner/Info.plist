@@ -28,6 +28,13 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+
+
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>Allow the app to use Bluetooth for scanning devices.</string>
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>Allow the app to use Bluetooth for scanning devices.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -17,6 +17,8 @@ import 'package:neitorcont/src/pages/listar_mascotas.dart';
 import 'package:neitorcont/src/pages/listar_videos.dart';
 import 'package:neitorcont/src/pages/login_page.dart';
 import 'package:neitorcont/src/pages/password_page.dart';
+import 'package:neitorcont/src/pages/print.dart';
+import 'package:neitorcont/src/pages/prueba.dart';
 import 'package:neitorcont/src/pages/splash_screen.dart';
 import 'package:neitorcont/src/pages/submenu_mascotas.dart';
 import 'package:neitorcont/src/pages/submenu_transacciones.dart';
@@ -49,6 +51,8 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'listaVideos': (_) =>  const ListaVideos(),
   'crearTutorial': (_) =>  const CrearTutorial(),
   'crearReserva': (_) =>  const CrearReserva(),
+
+  // 'SunmiScreen': (_) =>   InnerPrinterExample(),
  
   
 };
