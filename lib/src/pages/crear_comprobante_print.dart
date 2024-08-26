@@ -22,6 +22,9 @@ class CrearComprobante extends StatefulWidget {
 class _CrearComprobanteState extends State<CrearComprobante> {
   final TextEditingController _rucCliController = TextEditingController();
   final TextEditingController _rucChofController = TextEditingController();
+
+ TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
@@ -67,6 +70,7 @@ class _CrearComprobanteState extends State<CrearComprobante> {
               width: size.wScreen(100),
               height: size.hScreen(100),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
     
             child: Column(
               children: [
@@ -81,7 +85,7 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                             // width: size.wScreen(100.0),
     
                             // color: Colors.blue,
-                            child: Text('TIPO PLACA :',
+                            child: Text('TIPO CODUMENTO :',
                                 style: GoogleFonts.lexendDeca(
                                     // fontSize: size.iScreen(2.0),
                                     fontWeight: FontWeight.normal,
@@ -91,17 +95,17 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                         builder: (_, valueTipo, __) {
                           return Container(
                             // color: Colors.red,
-                            width: size.wScreen(60.0),
+                            width: size.wScreen(50.0),
     
                             // color: Colors.blue,
                             child: Text(
-                                valueTipo.getTipoPlaca.isEmpty
+                                valueTipo.getTipoDocumento.isEmpty
                                     ? ' --- --- --- --- ---'
-                                    : ' ${valueTipo.getTipoPlaca}',
+                                    : ' ${valueTipo.getTipoDocumento}',
                                 style: GoogleFonts.lexendDeca(
                                     fontSize: size.iScreen(2.0),
                                     fontWeight: FontWeight.normal,
-                                    color: valueTipo.getTipoPlaca.isEmpty
+                                    color: valueTipo.getTipoDocumento.isEmpty
                                         ? Colors.grey
                                         : Colors.black)),
                           );
@@ -117,7 +121,7 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                                 //     .buscaAllMascotas('');
     
                                 // // _buscarMascota(context, size);
-                                modalTipoPlaca(context, size,ctrl);
+                                modalTipoDocumento(context, size,ctrl);
     
                                 // //*******************************************/
                               },
@@ -156,37 +160,15 @@ class _CrearComprobanteState extends State<CrearComprobante> {
       child:   Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Container(
-          width: size.iScreen(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                 inputFormatters: [
-                                    UpperCaseText(),
-                                  ],
-                decoration: InputDecoration(
-                  hintText: 'Placa', // Texto de sugerencia dentro del campo
-                  // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                   helperStyle:TextStyle(color: Colors.grey.shade50),
-                ),
-                style: TextStyle(
-          fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
-          // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-        ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: size.iScreen(20),
+        Consumer<ComprobantesController>(builder: (_, tipo, __) {  
+              return   Container(
+          width: size.iScreen(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
+                  hintText: tipo.getTipoDocumento, // Texto de sugerencia dentro del campo
                   // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
                    helperStyle:TextStyle(color: Colors.grey.shade50),
                 ),
@@ -202,7 +184,9 @@ class _CrearComprobanteState extends State<CrearComprobante> {
               ),
             ],
           ),
-        ),
+        );
+        },),
+        
         Container(
           width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
           height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
@@ -231,16 +215,16 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                             // color: Colors.blue,
                             child: Text('JUAN DANIER RODRIGUEZ ROMERO',
                                 style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(2.0),
+                                    fontSize: size.iScreen(2.3),
                                     fontWeight: FontWeight.normal,
                                     // color: Colors.grey
                                     )),
                           ),
     
          //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
                       //*****************************************/
      Container(
                             width: size.wScreen(100.0),
@@ -254,103 +238,103 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                                     )),
                           ),
                           //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
                       //*****************************************/
-    Container(
-      color: Colors.grey.shade200,
-      padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
-      child:   Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          width: size.iScreen(11),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             TextField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Solo números y un punto
-        ],
-        decoration: InputDecoration(
-          hintText: 'Kilometraje', // Texto de sugerencia dentro del campo
-           helperStyle:TextStyle(color: Colors.grey.shade50),
-        ),
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.numberWithOptions(decimal: true), 
-         style: TextStyle(
-          fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
-          // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-        ),// Muestra teclado numérico con punto
-      ),
-              // TextField(
-              //     controller: _rucCiController,
-              //     keyboardType: TextInputType.number, // Solo permite números
-              //     decoration: InputDecoration(
-              //       hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
-              //       // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-              //     ),
-              //     inputFormatters: [
-              //       FilteringTextInputFormatter.digitsOnly, // Solo números
-              //       LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
-              //     ],
-              //     onChanged: (value) {
-              //       if (value.length < 10) {
-              //         // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
-              //       }
-              //     },
-              //   ),
-            ],
-          ),
-        ),
-        Container(
-          width: size.iScreen(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // TextField(
-              //   decoration: InputDecoration(
-              //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
-              //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-              //   ),
-              //    textAlign: TextAlign.center,
-              // ),
-              TextField(
-                  controller: _rucCliController,
-                  keyboardType: TextInputType.number, // Solo permite números
-                  decoration: InputDecoration(
-                    hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
-                    // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                     helperStyle:TextStyle(color: Colors.grey.shade50),
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly, // Solo números
-                    LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
-                  ],
-                   style: TextStyle(
-          fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+    // Container(
+    //   color: Colors.grey.shade200,
+    //   padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
+    //   child:   Row(
+    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //   children: [
+    //     Container(
+    //       width: size.iScreen(11),
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //          TextField(
+    //     inputFormatters: [
+    //       FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Solo números y un punto
+    //     ],
+    //     decoration: InputDecoration(
+    //       hintText: 'Kilometraje', // Texto de sugerencia dentro del campo
+    //        helperStyle:TextStyle(color: Colors.grey.shade50),
+    //     ),
+    //     textAlign: TextAlign.center,
+    //     keyboardType: TextInputType.numberWithOptions(decimal: true), 
+    //      style: TextStyle(
+    //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+    //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+    //     ),// Muestra teclado numérico con punto
+    //   ),
+    //           // TextField(
+    //           //     controller: _rucCiController,
+    //           //     keyboardType: TextInputType.number, // Solo permite números
+    //           //     decoration: InputDecoration(
+    //           //       hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
+    //           //       // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+    //           //     ),
+    //           //     inputFormatters: [
+    //           //       FilteringTextInputFormatter.digitsOnly, // Solo números
+    //           //       LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
+    //           //     ],
+    //           //     onChanged: (value) {
+    //           //       if (value.length < 10) {
+    //           //         // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
+    //           //       }
+    //           //     },
+    //           //   ),
+    //         ],
+    //       ),
+    //     ),
+    //     Container(
+    //       width: size.iScreen(20),
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           // TextField(
+    //           //   decoration: InputDecoration(
+    //           //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
+    //           //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+    //           //   ),
+    //           //    textAlign: TextAlign.center,
+    //           // ),
+    //           TextField(
+    //               controller: _rucCliController,
+    //               keyboardType: TextInputType.number, // Solo permite números
+    //               decoration: InputDecoration(
+    //                 hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
+    //                 // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+    //                  helperStyle:TextStyle(color: Colors.grey.shade50),
+    //               ),
+    //               inputFormatters: [
+    //                 FilteringTextInputFormatter.digitsOnly, // Solo números
+    //                 LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
+    //               ],
+    //                style: TextStyle(
+    //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
           
-          // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-        ),
-                  onChanged: (value) {
-                    if (value.length < 10) {
-                      // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
-                    }
-                  },
-                   textAlign: TextAlign.center,
-                ),
-            ],
-          ),
-        ),
+    //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+    //     ),
+    //               onChanged: (value) {
+    //                 if (value.length < 10) {
+    //                   // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
+    //                 }
+    //               },
+    //                textAlign: TextAlign.center,
+    //             ),
+    //         ],
+    //       ),
+    //     ),
       
-      ],
-      ),
-    ),
+    //   ],
+    //   ),
+    // ),
       //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
                       //*****************************************/
               Container(
           width: size.iScreen(100),
@@ -374,7 +358,7 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                    helperStyle:TextStyle(color: Colors.grey.shade50),
                 ),
                 style: TextStyle(
-          fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+          fontSize: size.iScreen(2.3), // Ajusta el tamaño de la letra
           // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
         ),
                 textAlign: TextAlign.left,
@@ -390,24 +374,63 @@ class _CrearComprobanteState extends State<CrearComprobante> {
 
 
 
-              Container(
-                width: size.wScreen(100),
-                child: 
-               Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            RadioButtonWithLabel(value: 1, label: 'Pasaporte'),
-            RadioButtonWithLabel(value: 2, label: 'Calibración'),
-            RadioButtonWithLabel(value: 3, label: 'Venta Cupo'),
-            RadioButtonWithLabel(value: 4, label: 'Prepago'),
-          ],
-        ),
+        //       Container(
+        //         width: size.wScreen(100),
+        //         child: 
+        //        Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //   children: <Widget>[
+        //     RadioButtonWithLabel(value: 1, label: 'Pasaporte'),
+        //     RadioButtonWithLabel(value: 2, label: 'Calibración'),
+        //     RadioButtonWithLabel(value: 3, label: 'Venta Cupo'),
+        //     RadioButtonWithLabel(value: 4, label: 'Prepago'),
+        //   ],
+        // ),
              
-              ),
+        //       ),
 
-                ContainerRow(),
+                // ContainerRow(),
 
 //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.0),
+                      ),
+                      //*****************************************/
+                      Row(
+                        children: [
+                          SizedBox(
+                            // width: size.wScreen(100.0),
+    
+                            // color: Colors.blue,
+                            child: Text('FORMA DE PAGO: ',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey)),
+                          ),
+                           Text('EFECTIVO',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.3),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green
+                                    )),
+                        ],
+                      ),
+                           //***********************************************/
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
+                      //*****************************************/
+                      // Container(
+                      //   width: size.wScreen(100.0),
+                      //   child: ContainerCombustible()),
+                      //***********************************************/
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
+                      // //*****************************************/
+
+ //***********************************************/
                       SizedBox(
                         height: size.iScreen(1.5),
                       ),
@@ -418,35 +441,86 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                             // width: size.wScreen(100.0),
     
                             // color: Colors.blue,
-                            child: Text('Forma de Pago: ',
+                            child: Text('TARIFAS POR PASADA ',
                                 style: GoogleFonts.lexendDeca(
                                     fontSize: size.iScreen(2.0),
                                     fontWeight: FontWeight.normal,
                                     color: Colors.grey)),
                           ),
-                           Text('EFECTIVO',
-                                style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(2.3),
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red
-                                    )),
+                            Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: GestureDetector(
+                              onTap: () {
+                                // context
+                                //     .read<MascotasController>()
+                                //     .buscaAllMascotas('');
+    
+                                // // _buscarMascota(context, size);
+                                modalTarifas(context, size,ctrl);
+    
+                                // //*******************************************/
+                              },
+                              child:  Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
+                                      
+                                      ),
+                            ),
+                          ),
+                          
+                        //  Spacer(),
+                          
                         ],
                       ),
+  //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.0),
+                      ),
+                      //*****************************************/
+
+                       Consumer<ComprobantesController>(
+                        builder: (_, valueTipo, __) {
+                          return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(100.0),
+    
+                            // color: Colors.blue,
+                            child: Text(
+                                valueTipo.tipoTarifa.isEmpty
+                                    ? ' --- --- --- --- --- --- --- --- --- --- --- '
+                                    : ' ${valueTipo.tipoTarifa['tipo']} - \$${valueTipo.tipoTarifa['valor']}',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.5),
+                                    fontWeight: FontWeight.normal,
+                                    color: valueTipo.tipoTarifa.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          );
+                        },
+                      ),
+
+
                            //***********************************************/
                       SizedBox(
                         height: size.iScreen(1.0),
                       ),
                       //*****************************************/
-                      Container(
-                        width: size.wScreen(100.0),
-                        child: ContainerCombustible()),
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-
-
                                          //*****************************************/
     Container(
       color: Colors.grey.shade200,
@@ -474,46 +548,131 @@ class _CrearComprobanteState extends State<CrearComprobante> {
         // ),
         //         textAlign: TextAlign.center,
         //       ),
-     TextField(
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
-            ],
-            keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
-            decoration: InputDecoration(
-              hintText: 'Valor', // Texto de sugerencia dentro del campo
-              helperStyle: TextStyle(color: Colors.grey.shade50),
-            ),
-            style: TextStyle(
-              fontSize: size.iScreen(2.2), // Ajusta el tamaño de la letra
-            ),
-            textAlign: TextAlign.center,
-          ),
+    //  TextField(
+    //         inputFormatters: [
+    //           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+    //         ],
+    //         keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
+    //         decoration: InputDecoration(
+    //           hintText: 'Valor', // Texto de sugerencia dentro del campo
+    //           helperStyle: TextStyle(color: Colors.grey.shade50),
+    //         ),
+    //         style: TextStyle(
+    //           fontSize: size.iScreen(2.2), // Ajusta el tamaño de la letra
+    //         ),
+    //         textAlign: TextAlign.center,
+    //       ),
+    Consumer<ComprobantesController>(
+                        builder: (_, valueTatifa, __) {
+                          return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(20.0),
+    
+                            // color: Colors.blue,
+                            child: Text(
+                                valueTatifa.tipoTarifa.isEmpty
+                                    ? ' --- ---  '
+                                    : ' \$${valueTatifa.tipoTarifa['valor']}',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(3.0),
+                                    fontWeight: FontWeight.bold,
+                                    color: valueTatifa.tipoTarifa.isEmpty
+                                        ? Colors.grey
+                                        : Colors.red)),
+                          );
+                        },
+                      ),
+
         
             ],
           ),
         ),
-        Container(
+      Consumer<ComprobantesController>(builder: (_, values, __) {  
+          return  values.tipoTarifa.isNotEmpty?
+          Container(
+            
           width: size.iScreen(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                TextField(
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+               
+
+// TextFormField(
+ 
+//   // initialValue:values.getCantidad ,
+//   controller: _controller,
+//   inputFormatters: [
+//     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+//   ],
+//   keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
+//   decoration: InputDecoration(
+//     hintStyle:TextStyle(
+//       fontSize: size.iScreen(2.0)
+//     ),
+//     hintText: 'Cantidad', // Texto de sugerencia dentro del campo
+//     helperStyle: TextStyle(color: Colors.grey.shade50),
+//   ),
+//   style: TextStyle(
+//     fontSize: size.iScreen(3.5), // Ajusta el tamaño de la letra
+//   ),
+//   textAlign: TextAlign.center,
+//    onChanged: (text) {
+//     if (text=='') {
+//       text==0.00;
+//     }
+//     values.setCantidad(double.parse(text));
+//                       },
+// ),
+TextFormField(
+  controller: _controller,
+  inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+  ],
+  keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
+  decoration: InputDecoration(
+    hintStyle: TextStyle(
+      fontSize: size.iScreen(2.0),
+    ),
+    hintText: 'Cantidad', // Texto de sugerencia dentro del campo
+    helperStyle: TextStyle(color: Colors.grey.shade50),
+  ),
+  style: TextStyle(
+    fontSize: size.iScreen(3.5), // Ajusta el tamaño de la letra
+  ),
+  textAlign: TextAlign.center,
+
+  // Validación y conversión
+  onChanged: (text) {
+    double value = 0.0;
+    if (text.isNotEmpty) {
+      try {
+        value = double.parse(text);
+      } catch (e) {
+        // Manejo del error si el parse falla
+        value = 0.0;
+      }
+    }
+    values.setCantidad(value);
+  },
+
+  // Validación adicional al enviar el formulario (opcional)
+  validator: (text) {
+    if (text == null || text.isEmpty) {
+      return 'Por favor, ingrese una cantidad';
+    }
+    final value = double.tryParse(text);
+    if (value == null) {
+      return 'Ingrese un número válido';
+    }
+    return null; // Devuelve null si la validación es exitosa
+  },
+),
             ],
-            keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
-            decoration: InputDecoration(
-              hintText: 'Cantidad Gl/Lt', // Texto de sugerencia dentro del campo
-              helperStyle: TextStyle(color: Colors.grey.shade50),
-            ),
-            style: TextStyle(
-              fontSize: size.iScreen(2.2), // Ajusta el tamaño de la letra
-            ),
-            textAlign: TextAlign.center,
           ),
-            ],
-          ),
-        ),
+        ):Container();
+
+
+      },)
         // Container(
         //   width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
         //   height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
@@ -554,13 +713,15 @@ class _CrearComprobanteState extends State<CrearComprobante> {
                                         fontWeight: FontWeight.normal,
                                         color: Colors.grey)),
                               ),
-                             
-                               Text(' \$ 29.58',
+                             Consumer<ComprobantesController>(builder: (_, valueTotal, __) {  
+                              return Text(' \$ ${valueTotal.getTotal}',
                                     style: GoogleFonts.lexendDeca(
                                         fontSize: size.iScreen(3.5),
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red
-                                        )),
+                                        color: ctrlTheme.appTheme.primaryColor
+                                        ));
+                             },),
+                               
                                         Spacer(),
                                         GestureDetector(
   onTap: () {
@@ -616,24 +777,14 @@ class _CrearComprobanteState extends State<CrearComprobante> {
   }
 
   //**********************************************MODAL TIPO DE PLACA **********************************************************************//
-Future<bool?> modalTipoPlaca(BuildContext context, Responsive size, ComprobantesController ctrl) {
+Future<bool?> modalTipoDocumento(BuildContext context, Responsive size, ComprobantesController ctrl) {
   return showDialog<bool>(
     barrierColor: Colors.black54,
     context: context,
     builder: (context) {
       List<String> _tipos = [
-        "CAMIONETA",
-        "MOTO",
-        "TRAILER",
-        "VOQUETA",
-        "BUS",
-        "TRAILER",
-        "VOQUETA",
-        "BUS",
-        "BUS",
-        "TRAILER",
-        "VOQUETA",
-        "BUS"
+        "CÉDULA/RUC",
+         "PLACA",
       ];
 
       return AlertDialog(
@@ -646,7 +797,7 @@ Future<bool?> modalTipoPlaca(BuildContext context, Responsive size, Comprobantes
               mainAxisSize: MainAxisSize.min,
               children: _tipos.map((e) => GestureDetector(
                 onTap: () {
-                  ctrl.setTipoPlaca(e);
+                  ctrl.setTipoDocumento(e);
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -674,6 +825,56 @@ Future<bool?> modalTipoPlaca(BuildContext context, Responsive size, Comprobantes
   );
 }
 
+
+  //**********************************************MODAL TIPO DE PLACA **********************************************************************//
+Future<bool?> modalTarifas(BuildContext context, Responsive size, ComprobantesController ctrl) {
+  return showDialog<bool>(
+    barrierColor: Colors.black54,
+    context: context,
+    builder: (context) {
+     
+
+      return AlertDialog(
+        title: const Text("SELECCIONE TARIFA"),
+        content: SizedBox(
+          width: size.wScreen(100),
+          height: size.hScreen(20.0), // Ajusta la altura según sea necesario
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children:  ctrl.listTarifas.map((e) => GestureDetector(
+                onTap: () {
+                  _controller.text='1';
+                  ctrl.setTotal();
+                    ctrl.setCantidad(0.0);
+                  ctrl.setTarifa(e);
+                  ctrl.calculateTotal();
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: size.iScreen(0.5)),
+                  padding: EdgeInsets.symmetric(horizontal: size.iScreen(2.0), vertical: size.iScreen(1.0)),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '${e['tipo']} - \$${e['valor']}',
+                      style: GoogleFonts.lexendDeca(
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              )).toList(),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
 
   //********************************************************************************************************************//
   void _onSubmit(BuildContext context, ComprobantesController controller,

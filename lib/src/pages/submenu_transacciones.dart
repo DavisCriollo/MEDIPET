@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
+import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/notas_creditos_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
@@ -231,23 +232,27 @@ class SubmenuTransacciones extends StatelessWidget {
                                     const ListarAnuladasPaginacion()));
                           },
                         ),
-                          ElementosSubmenu(
-                          enabled: true,
-                          size: size,
-                          image: 'assets/imgs/time.png',
-                          label: 'COMPROBANTE',
-                          color: Colors.purple,
-                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
-                          onTap: () {
+                        //   ElementosSubmenu(
+                        //   enabled: true,
+                        //   size: size,
+                        //   image: 'assets/imgs/time.png',
+                        //   label: 'COMPROBANTE',
+                        //   color: Colors.purple,
+                        //   // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                        //   onTap: () {
 
+                        //         final _ctrl =context.read<ComprobantesController>();
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const CrearComprobante(
-                                      tipo: 'CREATE',
-                                    )));
-                          },
-                        ),
+                        //       _ctrl.setTotal();
+                        //       _ctrl.setTarifa({});
+                        //        _ctrl.setTipoDocumento('');
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const CrearComprobante(
+                        //               tipo: 'CREATE',
+                        //             )));
+                        //   },
+                        // ),
                      
                       ]),
                     )

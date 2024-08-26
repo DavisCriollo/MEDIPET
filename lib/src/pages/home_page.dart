@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 
 import 'package:neitorcont/src/controllers/home_controller.dart';
 
 import 'package:neitorcont/src/controllers/propietarios_controller.dart';
 import 'package:neitorcont/src/controllers/reservas_controller.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
+import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/listar_reservas_paginacion.dart';
 
 import 'package:neitorcont/src/services/socket_service.dart';
@@ -157,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                       enabled: true,
                                       size: size,
                                       image: 'assets/imgs/businessman.png',
-                                      label: 'PROPIETARIOS',
+                                      label: 'CLIENTES',
                                       // onTap: () => Navigator.pushNamed(context, 'mascotas'),
                                       onTap: () {
                                         final _controllerPropietario = context
@@ -194,70 +196,88 @@ class _HomePageState extends State<HomePage> {
                                             arguments: widget.user);
                                       },
                                     ),
-                                    ElementosHome(
-                                      enabled: true,
-                                      size: size,
-                                      image: 'assets/imgs/icon-mascota.png',
-                                      label: 'MASCOTAS',
-                                      onTap: () => Navigator.pushNamed(
-                                          context, 'SubmenuMascotas'),
-                                      // onTap: () {
-                                      //   Navigator.of(context).push(MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           const SubmenuMascotas()));
-                                      // },
-                                    ),
-                                    ElementosHome(
-                                      enabled: true,
-                                      size: size,
-                                      image: 'assets/imgs/icon-cita.png',
-                                      label: 'AGENDAR CITAS',
-                                      // onTap: () => Navigator.pushNamed(context, 'citas'),
-                                      onTap: () {
-                                        final _controllerReservas =
-                                            context.read<ReservasController>();
-
-                                        _controllerReservas
-                                            .onSearchTextReservaPaginacion("");
-
-                                        _controllerReservas
-                                            .setBtnSearchReservaPaginacion(
-                                                false);
-                                        _controllerReservas
-                                            .setErrorReservasPaginacion(null);
-
-                                        _controllerReservas
-                                            .setError401ReservasPaginacion(
-                                                false);
-
-                                        _controllerReservas.resetFormReservas();
-                                        _controllerReservas.setPage(0);
-                                        _controllerReservas.setIsNext(false);
-                                        _controllerReservas
-                                            .setInfoBusquedaReservasPaginacion(
-                                                []);
-                                        _controllerReservas
-                                            .buscaAllReservasPaginacion(
-                                                '', false);
-
-                                        // Navigator.pushNamed(
-                                        //     context, 'listaPropietariosPaginacion',
-                                        //     arguments: widget.user);
-
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const ListaReservasPaginacion()));
-                                      },
-                                    ),
                                     // ElementosHome(
-                                    //   enabled: false,
+                                    //   enabled: true,
                                     //   size: size,
-                                    //   image: 'assets/imgs/icon-carrito.png',
-                                    //   label: 'COMPRAS',
-                                    //   // onTap: () => Navigator.pushNamed(context, 'productos'),
-                                    //   onTap: () {},
+                                    //   image: 'assets/imgs/icon-mascota.png',
+                                    //   label: 'MASCOTAS',
+                                    //   onTap: () => Navigator.pushNamed(
+                                    //       context, 'SubmenuMascotas'),
+                                    //   // onTap: () {
+                                    //   //   Navigator.of(context).push(MaterialPageRoute(
+                                    //   //       builder: (context) =>
+                                    //   //           const SubmenuMascotas()));
+                                    //   // },
                                     // ),
+                                    // ElementosHome(
+                                    //   enabled: true,
+                                    //   size: size,
+                                    //   image: 'assets/imgs/icon-cita.png',
+                                    //   label: 'AGENDAR CITAS',
+                                    //   // onTap: () => Navigator.pushNamed(context, 'citas'),
+                                    //   onTap: () {
+                                    //     final _controllerReservas =
+                                    //         context.read<ReservasController>();
+
+                                    //     _controllerReservas
+                                    //         .onSearchTextReservaPaginacion("");
+
+                                    //     _controllerReservas
+                                    //         .setBtnSearchReservaPaginacion(
+                                    //             false);
+                                    //     _controllerReservas
+                                    //         .setErrorReservasPaginacion(null);
+
+                                    //     _controllerReservas
+                                    //         .setError401ReservasPaginacion(
+                                    //             false);
+
+                                    //     _controllerReservas.resetFormReservas();
+                                    //     _controllerReservas.setPage(0);
+                                    //     _controllerReservas.setIsNext(false);
+                                    //     _controllerReservas
+                                    //         .setInfoBusquedaReservasPaginacion(
+                                    //             []);
+                                    //     _controllerReservas
+                                    //         .buscaAllReservasPaginacion(
+                                    //             '', false);
+
+                                    //     // Navigator.pushNamed(
+                                    //     //     context, 'listaPropietariosPaginacion',
+                                    //     //     arguments: widget.user);
+
+                                    //     Navigator.of(context).push(
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //                 const ListaReservasPaginacion()));
+                                    //   },
+                                    // ),
+
+
+
+
+                        //              ElementosSubmenu(
+                        //   enabled: true,
+                        //   size: size,
+                        //   image: 'assets/imgs/time.png',
+                        //   label: 'COMPROBANTE',
+                        //   color: Colors.purple,
+                        //   // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                        //   onTap: () {
+
+                        //         final _ctrl =context.read<ComprobantesController>();
+
+                        //       _ctrl.setTotal();
+                        //       _ctrl.setTarifa({});
+                        //        _ctrl.setTipoDocumento('');
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const CrearComprobante(
+                        //               tipo: 'CREATE',
+                        //             )));
+                        //   },
+                        // ),
+                                   
                                     // ElementosHome(
                                     //   enabled: true,
                                     //   size: size,
@@ -283,6 +303,26 @@ class _HomePageState extends State<HomePage> {
                                       onTap: () => Navigator.pushNamed(
                                           context, 'SubmenuTransacciones'),
                                       // onTap: () {},
+                                    ),
+                                     ElementosHome(
+                                      enabled: true,
+                                      size: size,
+                                      image: 'assets/imgs/time.png',
+                                      label: 'COMPROBANTE',
+                                      // onTap: () => Navigator.pushNamed(context, 'productos'),
+                                      onTap: () {
+                                            final _ctrl =context.read<ComprobantesController>();
+
+                              _ctrl.setTotal();
+                              _ctrl.setTarifa({});
+                               _ctrl.setTipoDocumento('');
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const CrearComprobante(
+                                      tipo: 'CREATE',
+                                    )));
+
+                                      },
                                     ),
                                     // ElementosHome(
                                     //   enabled: true,

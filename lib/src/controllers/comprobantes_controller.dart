@@ -40,13 +40,13 @@ class ComprobantesController extends ChangeNotifier {
   }
 
 
-  String _tipoPlaca = '';
-  String get getTipoPlaca  => _tipoPlaca;
+  String _tipoDocumento = '';
+  String get getTipoDocumento  => _tipoDocumento;
 
-  void setTipoPlaca(String _tipo) {
-   _tipoPlaca =''; 
-   _tipoPlaca = _tipo;
-     print('==_tipoPlaca===> $_tipoPlaca');
+  void setTipoDocumento(String _tipo) {
+   _tipoDocumento =''; 
+   _tipoDocumento = _tipo;
+     print('==_tipoDocumento===> $_tipoDocumento');
     notifyListeners();
   }
 
@@ -283,6 +283,99 @@ class ComprobantesController extends ChangeNotifier {
     notifyListeners();
   }
 
+//==========================TARIFAS===================================//
+final  List<Map<String,dynamic>> _listTarifas=[
+{
+  "tipo":"CAMIONETAS VACIAS O CARGADAS",
+  "valor":"3.00"
+},
+{
+  "tipo":"CAMIONES CARGA COMÚN O VACIO 5 TOMELADAS HACIA ABAJO",
+  "valor":"10.00"
+},
+{
+  "tipo":"CAMIONES FC-GD-FF CARGA COMUN O VACIO",
+  "valor":"12.50"
+},
+
+{
+  "tipo":"CAMIONES GH Y MULA CARGA COMUN O VACIO",
+  "valor":"15.00"
+},
+{
+  "tipo":"BUS",
+  "valor":"2.50"
+},
+{
+  "tipo":"MOTOS",
+  "valor":"0.50"
+},
+{
+  "tipo":"METRO CUBICO DE MADERA",
+  "valor":"3.50"
+},
+
+];
+
+
+
+List<Map<String,dynamic>> get listTarifas=>_listTarifas;
+
+
+Map<String,dynamic> _tipoTarifa={};
+
+Map<String,dynamic> get tipoTarifa=>_tipoTarifa;
+
+void setTarifa(Map<String,dynamic> tarifa){
+_tipoTarifa={};
+_tipoTarifa=tarifa;
+notifyListeners();
+
+
+}
+
+  //================================INPUT   CANTIDAD=============================================//
+  double _cantidad =1.0;
+  double get getCantidad => _cantidad;
+
+  void setCantidad(double value) {
+    _cantidad = value;
+
+print('LA CANTIDAD ES: $_cantidad');
+ calculateTotal();
+
+    notifyListeners();
+  }
+
+
+  //================================INPUT   CANTIDAD=============================================//
+
+ 
+  double _total = 0.00;
+ double get getTotal =>_total;
+
+ void setTotal() {
+    _cantidad =1.0;
+    _total = 0.00;
+    notifyListeners(); // Notifica a los widgets escuchando este provider
+  }
+ 
+
+ 
+
+  // Método privado para calcular el total
+  void calculateTotal() {
+    if (_cantidad==0.0) {
+      _cantidad=1.0;
+    }
+    _total =_tipoTarifa['valor']==null?0: double.parse(_tipoTarifa['valor']) * _cantidad;
+    notifyListeners(); // Notifica a los widgets escuchando este provider
+  }
+
 //=============================================================//
+
+
+
+
 
 }

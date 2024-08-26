@@ -212,7 +212,7 @@ _textClave!.text= '';
                                     // color: Colors.red,
                                     // padding: EdgeInsets.all(5.0),
                                     child: Image.asset(
-                                      'assets/imgs/logo_neitor.png',
+                                      'assets/imgs/logoNeitor.png',
                                       width: size.wScreen(45.0),
                                       fit: BoxFit.contain,
                                     ),
