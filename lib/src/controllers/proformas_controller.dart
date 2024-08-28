@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/api_provider.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
@@ -185,14 +186,71 @@ class ProformasController extends ChangeNotifier {
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   List get getListaProformasPaginacion => _listaProformasPaginacion;
 
+
+
+  double _valorTotalFacturasHoy = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasHoy => _valorTotalFacturasHoy;
+double _valorTotalFacturasAntes = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasAntes => _valorTotalFacturasAntes;
+
+void resetValorTotal(){
+_valorTotalFacturasHoy = 0.00;
+_valorTotalFacturasAntes = 0.00;
+notifyListeners();
+}
+
+
+
+
   void setInfoBusquedaProformasPaginacion(List data) {
+      _listaProformasPaginacion=[];
     _listaProformasPaginacion.addAll(data);
     print('Proformas :${_listaProformasPaginacion.length}');
 
-    // for (var item in _listaProformasPaginacion) {
-    //    print('-->:${item['perId']}');
-    // }
+    
+if (_tabIndex==0) {
+  _valorTotalFacturasHoy = 0.0;
 
+// Iterar sobre cada item en la lista
+for (var item in _listaProformasPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasHoy');
+  
+} else {
+_valorTotalFacturasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaProformasPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+
+
+}
     notifyListeners();
   }
 
@@ -242,7 +300,7 @@ class ProformasController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future buscaAllProformasPaginacion(String? _search, bool _isSearch) async {
+  Future buscaAllProformasPaginacion(String? _search, bool _isSearch,int tipo) async {
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllProformasPaginacion(
@@ -271,7 +329,21 @@ class ProformasController extends ChangeNotifier {
 
         setPage(response['data']['pagination']['next']);
 
-        setInfoBusquedaProformasPaginacion(dataSort);
+        // setInfoBusquedaProformasPaginacion(dataSort);
+
+        if (tipo==0) {
+          //  setInfoBusquedaFacturasPaginacion([]);
+          setFacturas(dataSort);
+          filtrarFacturasDeHoy();
+        } else {
+          //  setInfoBusquedaFacturasPaginacion([]);
+             setFacturas(dataSort);
+          filtrarFacturasAnteriores();
+        }
+
+
+
+
         notifyListeners();
         return response;
       }
@@ -287,7 +359,60 @@ class ProformasController extends ChangeNotifier {
   }
 
 
+List _facturas = [];
+  List _facturasFiltradas = [];
 
+  List get facturasFiltradas => _facturasFiltradas;
+
+  void setFacturas(List facturas) {
+    _facturas = facturas;
+    notifyListeners();
+  }
+
+  void filtrarFacturasDeHoy() {
+    DateTime hoy = DateTime.now();
+    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+    _facturasFiltradas = _facturas.where((factura) {
+      String? fechaFactura = factura['venFecReg'];
+      if (fechaFactura != null) {
+        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+        return fechaFacturaSoloFecha == fechaHoy;
+      }
+      return false;
+    }).toList();
+    setInfoBusquedaProformasPaginacion(_facturasFiltradas);
+    notifyListeners();
+  }
+
+  void filtrarFacturasAnteriores() {
+    DateTime hoy = DateTime.now();
+    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+    _facturasFiltradas = _facturas.where((factura) {
+      String? fechaFactura = factura['venFecReg'];
+      if (fechaFactura != null) {
+        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+        return fechaFacturaSoloFecha != fechaHoy;
+      }
+      return false;
+    }).toList();
+       setInfoBusquedaProformasPaginacion(_facturasFiltradas);
+    notifyListeners();
+  }
+
+//************INDEX TAB*****************//
+int _tabIndex=0;
+
+int get getTabIndex=>_tabIndex;
+
+void setTabIndex( int _index)
+{
+_tabIndex=_index;
+
+notifyListeners();
+
+}
 
 
 

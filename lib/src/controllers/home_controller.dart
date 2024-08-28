@@ -27,7 +27,17 @@ class HomeController extends ChangeNotifier {
   }
 
 
-// //====== VALIDA LA SESION DEL USUARIO ==========//
+// //====== OBTIENE LA SESION DEL USUARIO ==========//
+
+
+  Session? _usuarioInfo;
+  Session? get getUsuarioInfo => _usuarioInfo;
+
+  void setUsuarioInfo(Session? _user) {
+    _usuarioInfo = _user;
+     print('=====_usuarioInfo====++ > ${_usuarioInfo!.empCategoria}');
+    notifyListeners();
+  }
 
 //   Future validaInicioDeSesion(BuildContext context,) async {
 //     final dataUser = await Auth.instance.getSession();

@@ -178,7 +178,7 @@ class PropietariosController extends ChangeNotifier {
     if (_documentos!.length == 10) {
       final _respCedula = await validaCedula(_documentos!);
       // print('CANTIDAD CARACTERES :${_documentos!.length}');
-      // print('CANTIDAD CARACTERES :$_documentos');
+      print('CANTIDAD CARACTERES :$_documentos');
       if (_respCedula) {
         _isCedula = true;
       } else {
@@ -195,7 +195,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setGeneros(String? value) {
     _generos = value;
-    // print('==_generos===> $_generos');
+    print('==_generos===> $_generos');
     notifyListeners();
   }
 
@@ -445,6 +445,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setListaTodosLosPaises(List data) {
     _listaTodosLosPaises = data;
+    print('PAISES: $_listaTodosLosPaises');
     notifyListeners();
   }
 
@@ -480,6 +481,15 @@ class PropietariosController extends ChangeNotifier {
   }
 
 //================================== LISTAR PROVINCIAS  ==============================//
+
+ String _provincia = '';
+  String get getProvincia => _provincia;
+
+  void setProvincia(String data) {
+    _provincia = data;
+    notifyListeners();
+  }
+
   List _listaTodasLasProvincias = [];
   List get getListaTodasLasProvincias => _listaTodasLasProvincias;
 
@@ -526,7 +536,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setListaTodosLosCantones(List data) {
     _listaTodosLosCantones = data;
-    // print('data CANTONES : ${_listaTodosLosCantones}');
+    print('data CANTONES : ${_listaTodosLosCantones}');
     notifyListeners();
   }
 
@@ -563,33 +573,33 @@ class PropietariosController extends ChangeNotifier {
   }
 //================================== SELECCIONA PAIS  ==============================//
 
-  String? _pais;
+  String? _pais='';
   String? get getPais => _pais;
 
   void setPais(String? value) {
     _pais = value;
     _listaTodasLasProvincias = [];
     _listaTodosLosCantones = [];
-    _provincia = null;
-    _canton = null;
+    // _provincia = null;
+    // _canton = null;
 
     notifyListeners();
   }
 //================================== SELECCIONA PAIS  ==============================//
 
-  String? _provincia;
-  String? get getProvincia => _provincia;
+  // String? _provincia;
+  // String? get getProvincia => _provincia;
 
-  void setProvincia(String? value) {
-    _provincia = value;
-    // print('PROVINCIA:$_provincia');
-    _canton = null;
+  // void setProvincia(String? value) {
+  //   _provincia = value;
+  //   // print('PROVINCIA:$_provincia');
+  //   _canton = null;
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 //================================== SELECCIONA PAIS  ==============================//
 
-  String? _canton;
+  String? _canton='';
   String? get getCanton => _canton;
 
   void setCanton(String? value) {
@@ -977,7 +987,7 @@ String?  _userData;
     // print('PROPIETARIOS:${_listaPropietariosPaginacion.length}');
 
     for (var item in _listaPropietariosPaginacion) {
-       print('-->:${item['perId']}');
+      //  print('-->:${item['perId']}');
     }
 
     notifyListeners();
@@ -1036,7 +1046,7 @@ String?  _userData;
       search: _search,
       page: _page,
       cantidad: _cantidad,
-      perfil: "CLIENTES",
+      perfil: 'perFecUpd',//"CLIENTES",
       input: 'perId',
       orden: false,
       token: '${dataUser!.token}',
@@ -1073,6 +1083,68 @@ String?  _userData;
     }
   }
 
+
+//==================== BUSCA CLIENTE PROPIETARIOS====================//
+  Map<String,dynamic> _listaBusquedaCliente = {};
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  Map<String,dynamic> get getListaBusquedaCliente => _listaBusquedaCliente;
+
+  void setBusquedaCliente(Map<String,dynamic> data) {
+    _listaBusquedaCliente = data;
+
+    setNombres(_listaBusquedaCliente['perNombre']);
+    setDireccion(_listaBusquedaCliente['perDireccion']);
+    setLabelTelefono(_listaBusquedaCliente['perTelefono']);
+    setGeneros(_listaBusquedaCliente['perGenero']);
+    //  _listaAddCelulares!.add(_listaBusquedaCliente['perCelular']);
+        for (var item in _listaBusquedaCliente['perCelular']) {
+           _listaAddCelulares!.add(item);
+        }
+
+    // _listaAddCorreos!.add(_listaBusquedaCliente['perEmail']);
+     for (var item in _listaBusquedaCliente['perEmail']) {
+           _listaAddCorreos!.add(item);
+        }
+
+    setPais(_listaBusquedaCliente['perPais']);
+     setProvincia(_listaBusquedaCliente['perProvincia']);
+      setCanton(_listaBusquedaCliente['perCanton']);
+        setObservacion(_listaBusquedaCliente['perObsevacion']);
+    // print('Cliente; BUSCADA:$_listaBusquedaCliente;');
+    notifyListeners();
+  }
+
+  bool? _errorBusquedaCliente; // sera nulo la primera vez
+  bool? get getErrorBusquedaCliente=> _errorBusquedaCliente;
+  set setErrorBusquedaCliente (bool? value) {
+    _errorBusquedaCliente= value;
+    notifyListeners();
+  }
+
+  Future searchCliente() async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.searchCliente(
+      search: _documentos,
+      // estado: 'CLIENTES',
+      token: '${dataUser!.token}',
+    );
+    if (response != null) {
+      _errorBusquedaCliente= true;
+
+     
+      // setInfoBusquedaPropietarios(response['data']);
+      setBusquedaCliente(response);
+      // print('object;${response['data']}');
+      notifyListeners();
+      return response;
+    }
+    if (response == null) {
+      _errorBusquedaPersona = false;
+      notifyListeners();
+      return null;
+    }
+  }
 
 
 

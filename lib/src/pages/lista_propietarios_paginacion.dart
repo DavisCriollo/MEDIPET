@@ -219,7 +219,7 @@ class _ListaPropietariosPaginacionState
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'Propietarios',
+                                  'Clientes',
                                   style:  
                                   
                                   GoogleFonts.lexendDeca(
@@ -581,9 +581,9 @@ class _ListaPropietariosPaginacionState
                                                                     context)
                                                                 .push(MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        const CrearPropietario(
+                                                                         CrearPropietario(
                                                                             action:
-                                                                                'EDIT')))
+                                                                                'EDIT',user: _usuario,)))
                                                                 .then((value) =>
                                                                     onRefresh());
                                                           },
@@ -734,58 +734,61 @@ class _ListaPropietariosPaginacionState
                                                 ),
                                               ],
                                             ),
-                                            trailing: InkWell(
-                                              onTap: () {
-                                                final _mascotas = context
-                                                    .read<MascotasController>();
-                                                _mascotas
-                                                    .buscaAllMascotasPropietario(
-                                                        '',
-                                                        propietario[
-                                                            'perDocNumero']);
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ListaMascotasPropietario(
-                                                              propietario:
-                                                                  propietario,
-                                                            )));
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    child: Text(
-                                                      'Mascotas',
-                                                      style: GoogleFonts
-                                                          .lexendDeca(
-                                                              fontSize: size
-                                                                  .hScreen(1.5),
-                                                              color:
-                                                                  colorTheme.appTheme.primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Text(
-                                                      '${propietario['mascotas']}',
-                                                      style: GoogleFonts
-                                                          .lexendDeca(
-                                                              fontSize: size
-                                                                  .iScreen(1.8),
-                                                              color:
-                                                                  colorTheme.appTheme.primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            // trailing: 
+                                            // InkWell(
+                                            //   onTap: () {
+                                            //     final _mascotas = context
+                                            //         .read<MascotasController>();
+                                            //     _mascotas
+                                            //         .buscaAllMascotasPropietario(
+                                            //             '',
+                                            //             propietario[
+                                            //                 'perDocNumero']);
+                                            //     Navigator.of(context).push(
+                                            //         MaterialPageRoute(
+                                            //             builder: (context) =>
+                                            //                 ListaMascotasPropietario(
+                                            //                   propietario:
+                                            //                       propietario,
+                                            //                 )));
+                                            //   },
+                                            //   child: Column(
+                                            //     mainAxisAlignment:
+                                            //         MainAxisAlignment.center,
+                                            //     children: [
+                                            //       Container(
+                                            //         child: Text(
+                                            //           'Mascotas',
+                                            //           style: GoogleFonts
+                                            //               .lexendDeca(
+                                            //                   fontSize: size
+                                            //                       .hScreen(1.5),
+                                            //                   color:
+                                            //                       colorTheme.appTheme.primaryColor,
+                                            //                   fontWeight:
+                                            //                       FontWeight
+                                            //                           .normal),
+                                            //         ),
+                                            //       ),
+                                            //       Container(
+                                            //         child: Text(
+                                            //           '${propietario['mascotas']}',
+                                            //           style: GoogleFonts
+                                            //               .lexendDeca(
+                                            //                   fontSize: size
+                                            //                       .iScreen(1.8),
+                                            //                   color:
+                                            //                       colorTheme.appTheme.primaryColor,
+                                            //                   fontWeight:
+                                            //                       FontWeight
+                                            //                           .normal),
+                                            //         ),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                      
+                                      
                                           ),
                                         ),
                                       ),
@@ -839,13 +842,25 @@ class _ListaPropietariosPaginacionState
                       // color: Colors.white,
                     ),
                     onPressed: () {
-                      context
-                          .read<PropietariosController>()
-                          .resetFormPropietario();
+                    final ctrlPropi=  context.read<PropietariosController>();
+                         ctrlPropi.resetFormPropietario();
+
+ctrlPropi.setDocumento('');
+ ctrlPropi.setGeneros('');
+  ctrlPropi.setNombres('');
+                     ctrlPropi.setDireccion('');
+                      ctrlPropi.setLabelTelefono('');
+                    ctrlPropi.setObservacion('');
+                     ctrlPropi.setPais('');
+                      ctrlPropi.setProvincia('');
+                       ctrlPropi.setCanton('');
+
+
                       Navigator.of(context)
                           .push(MaterialPageRoute(
                               builder: (context) =>
-                                  const CrearPropietario(action: 'CREATE')))
+                                   CrearPropietario(action: 'CREATE',
+                                  user: _usuario,)))
                           .then((value) {
                        onRefresh();
                       });
@@ -1039,8 +1054,8 @@ class _ListaPropietariosPaginacionState
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
-                                                  const CrearPropietario(
-                                                      action: 'SEARCH')))
+                                                   CrearPropietario(
+                                                      action: 'SEARCH',user: _usuario)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietariosPaginacion(

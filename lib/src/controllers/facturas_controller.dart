@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/api_provider.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
@@ -185,16 +186,101 @@ class FacturasController extends ChangeNotifier {
   // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
   List get getListaFacturasPaginacion => _listaFacturasPaginacion;
 
+
+  double _valorTotalFacturasHoy = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasHoy => _valorTotalFacturasHoy;
+double _valorTotalFacturasAntes = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasAntes => _valorTotalFacturasAntes;
+
+void resetValorTotal(){
+_valorTotalFacturasHoy = 0.00;
+_valorTotalFacturasAntes = 0.00;
+notifyListeners();
+}
+
+
   void setInfoBusquedaFacturasPaginacion(List data) {
+    _listaFacturasPaginacion=[];
     _listaFacturasPaginacion.addAll(data);
     print('Facturas :${_listaFacturasPaginacion.length}');
 
-    // for (var item in _listaFacturasPaginacion) {
-    //    print('-->:${item['perId']}');
-    // }
+// obtenerFacturasDeHoy(_listaFacturasPaginacion);
+// Inicializar la variable de suma
+
+if (_tabIndex==0) {
+  _valorTotalFacturasHoy = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaFacturasPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasHoy');
+  
+} else {
+_valorTotalFacturasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaFacturasPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+
+
+}
+
+
 
     notifyListeners();
   }
+void obtenerFacturasDeHoy(List listaFacturasPaginacion) {
+  // Obtener la fecha de hoy en el formato deseado
+  DateTime hoy = DateTime.now();
+  String fechaHoy = '${hoy.year.toString().padLeft(4, '0')}-${hoy.month.toString().padLeft(2, '0')}-${hoy.day.toString().padLeft(2, '0')}';
+
+  // Filtrar las facturas con la fecha de hoy
+  List facturasHoy = listaFacturasPaginacion.where((factura) {
+    // Asegúrate de que 'venFecReg' no sea nulo y tenga el formato correcto
+    String? fechaFactura = factura['venFecReg'];
+    if (fechaFactura != null) {
+      // Extrae solo la parte de la fecha (asumiendo formato yyyy-MM-dd)
+      String fechaFacturaSoloFecha = fechaFactura.split('T').first; // Elimina la parte de la hora
+      return fechaFacturaSoloFecha == fechaHoy;
+    }
+    return false;
+  }).toList();
+
+  // Imprimir las facturas filtradas
+  for (var factura in facturasHoy) {
+    // print('Factura ID: ${factura['venId']}');
+    print('Fecha: ${factura['venFecReg']}');
+    print('Total: \$${factura['venTotal']}');
+     _listaFacturasPaginacion.addAll(factura);
+     notifyListeners();
+  }
+}
 
   bool? _errorFacturasPaginacion; // sera nulo la primera vez
   bool? get getErrorFacturasPaginacion => _errorFacturasPaginacion;
@@ -242,7 +328,7 @@ class FacturasController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future buscaAllFacturasPaginacion(String? _search, bool _isSearch) async {
+  Future buscaAllFacturasPaginacion(String? _search, bool _isSearch,int tipo) async {
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllFacturasPaginacion(
@@ -270,8 +356,22 @@ class FacturasController extends ChangeNotifier {
         dataSort.sort((a, b) => b['venFecReg']!.compareTo(a['venFecReg']!));
 
         setPage(response['data']['pagination']['next']);
+          
+        // setInfoBusquedaFacturasPaginacion(dataSort);
 
-        setInfoBusquedaFacturasPaginacion(dataSort);
+
+        if (tipo==0) {
+          //  setInfoBusquedaFacturasPaginacion([]);
+          setFacturas(dataSort);
+          filtrarFacturasDeHoy();
+        } else {
+          //  setInfoBusquedaFacturasPaginacion([]);
+             setFacturas(dataSort);
+          filtrarFacturasAnteriores();
+        }
+        // filtrarFacturasDeHoy(dataSort);
+
+
         notifyListeners();
         return response;
       }
@@ -287,13 +387,93 @@ class FacturasController extends ChangeNotifier {
   }
 
 
+// void filtrarFacturasDeHoy(List listaFacturasPaginacion) {
+//   // Obtener la fecha de hoy en el formato deseado
+//   DateTime hoy = DateTime.now();
+//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
+//   // Lista para almacenar facturas con la fecha de hoy
+//   List<Map<String, dynamic>> facturasHoy = [];
 
+//   // Filtrar las facturas con la fecha de hoy
+//   for (var factura in listaFacturasPaginacion) {
+//     String? fechaFactura = factura['venFecReg'];
+//     if (fechaFactura != null) {
+//       // Extrae solo la parte de la fecha (asumiendo formato yyyy-MM-ddTHH:mm:ss)
+//       String fechaFacturaSoloFecha = fechaFactura.split('T').first;
 
+//       if (fechaFacturaSoloFecha == fechaHoy) {
+//         facturasHoy.add(factura);
 
+//       }
 
+//     }
+//      setInfoBusquedaFacturasPaginacion(facturasHoy);
+//   }
 
+//   // Imprimir las facturas filtradas
+//   print('Facturas de Hoy:');
+//   for (var factura in facturasHoy) {
+//     print('Factura ID: ${factura['venId']}');
+//     print('Fecha: ${factura['venFecReg']}');
+//     print('Total: \$${factura['venTotal']}');
+//   }
+// }
 
+List _facturas = [];
+  List _facturasFiltradas = [];
+
+  List get facturasFiltradas => _facturasFiltradas;
+
+  void setFacturas(List facturas) {
+    _facturas = facturas;
+    notifyListeners();
+  }
+
+  void filtrarFacturasDeHoy() {
+    DateTime hoy = DateTime.now();
+    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+    _facturasFiltradas = _facturas.where((factura) {
+      String? fechaFactura = factura['venFecReg'];
+      if (fechaFactura != null) {
+        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+        return fechaFacturaSoloFecha == fechaHoy;
+      }
+      return false;
+    }).toList();
+    setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+    notifyListeners();
+  }
+
+  void filtrarFacturasAnteriores() {
+    DateTime hoy = DateTime.now();
+    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+    _facturasFiltradas = _facturas.where((factura) {
+      String? fechaFactura = factura['venFecReg'];
+      if (fechaFactura != null) {
+        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+        return fechaFacturaSoloFecha != fechaHoy;
+      }
+      return false;
+    }).toList();
+       setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+    notifyListeners();
+  }
+
+//************INDEX TAB*****************//
+int _tabIndex=0;
+
+int get getTabIndex=>_tabIndex;
+
+void setTabIndex( int _index)
+{
+_tabIndex=_index;
+
+notifyListeners();
+
+}
 
 
 

@@ -42,7 +42,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
         if (_next.getpage != null) {
           _next.setPage(_next.getpage);
           //       providerSearchPropietario.setCantidad(25);
-          _next.buscaAllNotasCreditosPaginacion('', false);
+          _next.buscaAllNotasCreditosPaginacion('', false,_next.getTabIndex);
         } else {
           // print("ES NULL POR ESO NO HACER PETICION ");
         }
@@ -73,19 +73,19 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
     final serviceSocket = context.read<SocketService>();
     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
       if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditosPaginacion('',false);
+        loadInfo.buscaAllNotasCreditosPaginacion('',false,loadInfo.getTabIndex);
         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
       }
     });
     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
       if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditosPaginacion('',false);
+        loadInfo.buscaAllNotasCreditosPaginacion('',false,loadInfo.getTabIndex);
         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
       }
     });
     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
       if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditosPaginacion('',false);
+        loadInfo.buscaAllNotasCreditosPaginacion('',false,loadInfo.getTabIndex);
         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
       }
     });
@@ -150,7 +150,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                                               // providerSearchNotasCredito.setIsNext(false);
                                               providerSearchNotasCredito
                                                   .buscaAllNotasCreditosPaginacion(
-                                                      '', true);
+                                                      '', true,providerSearchNotasCredito.getTabIndex);
 
                                            
                                             }
@@ -208,7 +208,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                                         .buscaAllNotasCreditosPaginacion(
                                             // '0803395581');
                                             ' ${providerSearchNotasCredito.nameSearchNotasCreditoPaginacion}',
-                                            true);
+                                            true,providerSearchNotasCredito.getTabIndex);
                                   } else {
                                     print('NO HAACE NADA');
                                   }
@@ -251,7 +251,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                                 providerSearchNotasCredito.setPage(0);
                                 providerSearchNotasCredito.setCantidad(25);
                                 providerSearchNotasCredito
-                                    .buscaAllNotasCreditosPaginacion('', true);
+                                    .buscaAllNotasCreditosPaginacion('', true,providerSearchNotasCredito.getTabIndex);
                                 // } //=====================//
 
                               }
@@ -266,340 +266,919 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
           
           
          
-          body: Container(
-            color: Colors.grey.shade100,
-            width: size.wScreen(100.0),
-            height: size.hScreen(100.0),
-            padding: EdgeInsets.only(
-              top: size.iScreen(0.0),
-              right: size.iScreen(0.0),
-              left: size.iScreen(0.0),
+          body:Container(
+  color: Colors.grey.shade100,
+  width: size.wScreen(100.0),
+  height: size.hScreen(100.0),
+  padding: EdgeInsets.only(
+    top: size.iScreen(0.0),
+    right: size.iScreen(0.0),
+    left: size.iScreen(0.0),
+  ),
+  child: DefaultTabController(
+    length: 2, // Número de tabs
+    child: Column(
+      children: [
+        // TabBar
+        TabBar(
+          tabs: [
+                 Tab(
+              child:
+              Consumer<NotasCreditosController>(builder: (_, valueHoy, __) {  
+                return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  // Espacio entre los textos
+                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                ],
+              );
+              },)
+               
             ),
-            child: Consumer<NotasCreditosController>(
-                        builder: (_, providersNotasCreditos, __) {
-                          if (providersNotasCreditos.getErrorNotasCreditosPaginacion == null &&
-                              providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
-                            return Center(
-                              // child: CircularProgressIndicator(),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Cargando Datos...',
-                                    style: GoogleFonts.lexendDeca(
-                                        fontSize: size.iScreen(1.5),
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  //***********************************************/
-                                  SizedBox(
-                                    height: size.iScreen(1.0),
-                                  ),
-                                  //*****************************************/
-                                  const CircularProgressIndicator(),
-                                ],
-                              ),
-                            );
-                          }
-                           else if (providersNotasCreditos.getErrorNotasCreditosPaginacion ==
-                              false) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
-                          }
-                           else if (providersNotasCreditos
-                                  .getListaNotasCreditosPaginacion.isEmpty &&providersNotasCreditos.getErrorNotasCreditosPaginacion ==
-                              false ) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
-                          }
-                           else if (providersNotasCreditos
-                                  .getListaNotasCreditosPaginacion.isEmpty &&
-                              providersNotasCreditos.getError401NotasCreditosPaginacion == true) {
-                            return const NoData(
-                              label:
-                                  'Su sesión ha expirado, vuelva a iniciar sesión',
-                            );
-                          } else if (providersNotasCreditos
-                                  .getListaNotasCreditosPaginacion.isEmpty &&
-                              providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
+            Tab(
+              child:
+              Consumer<NotasCreditosController>(builder: (_, valueAnteriores, __) {  
+                return   Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
+                   // Espacio entre los textos
+                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                ],
+              );
+              },)
+              
+             
+            ),
+          ],
+           onTap: (index) {
+            final ctrl=context.read<NotasCreditosController>();
+                        print('EL INDICE :$index');
+                       ctrl.setTabIndex(index);
+                        if (  index==0) {
+                          ctrl. setInfoBusquedaNotasCreditosPaginacion([]);
+                          ctrl.resetValorTotal();
+                            ctrl.buscaAllNotasCreditosPaginacion(
+                                '',false,ctrl.getTabIndex);
+
+                        }
+                        if ( index==1) {
+                           ctrl.setInfoBusquedaNotasCreditosPaginacion([]);
+                           ctrl.resetValorTotal();
+                             ctrl.buscaAllNotasCreditosPaginacion(
+                                '',false,ctrl.getTabIndex);
+                        }
+                      },
+          labelColor: Colors.blue,
+          unselectedLabelColor: Colors.grey,
+          indicatorColor: Colors.blue,
+      
+        ),
+        // TabBarView
+        Expanded(
+          child: TabBarView(
+            children: [
+              // Primer tab
+              Consumer<NotasCreditosController>(
+                builder: (_, providersNotasCreditos, __) {
+                  if (providersNotasCreditos.getErrorNotasCreditosPaginacion == null &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Cargando Datos...',
+                            style: GoogleFonts.lexendDeca(
+                              fontSize: size.iScreen(1.5),
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: size.iScreen(1.0)),
+                          const CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
+                  } else if (providersNotasCreditos.getErrorNotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getErrorNotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == true) {
+                    return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () => onRefresh(),
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: providersNotasCreditos.getListaNotasCreditosPaginacion.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index < providersNotasCreditos.getListaNotasCreditosPaginacion.length) {
+                          var _color;
+                          final _notasCredito = providersNotasCreditos.getListaNotasCreditosPaginacion[index];
+
+                          if (_notasCredito['venEstado'] == 'AUTORIZADO') {
+                            _color = Colors.green;
+                          } else if (_notasCredito['venEstado'] == 'SIN AUTORIZAR') {
+                            _color = Colors.orange;
+                          } else if (_notasCredito['venEstado'] == 'ANULADA') {
+                            _color = Colors.red;
                           }
 
-                          return RefreshIndicator(
-                                 onRefresh: () => onRefresh(),
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: providersNotasCreditos.getListaNotasCreditosPaginacion.length +1,
-                              itemBuilder: (BuildContext context, int index) {
-                                if (index <
-                                   providersNotasCreditos.getListaNotasCreditosPaginacion.length) {
-                                var _color;
-                                final _notasCredito =
-                                    providersNotasCreditos.getListaNotasCreditosPaginacion[index];
-                          
-                                if (_notasCredito['venEstado'] == 'AUTORIZADO') {
-                                  _color = Colors.green;
-                                } else if (_notasCredito['venEstado'] ==
-                                    'SIN AUTORIZAR') {
-                                  _color = Colors.orange;
-                                }
-                                if (_notasCredito['venEstado'] == 'ANULADA') {
-                                  _color = Colors.red;
-                                }
-                          
-                                return Slidable(
-                                  startActionPane: ActionPane(
-                                    // A motion is a widget used to control how the pane animates.
-                                    motion: const ScrollMotion(),
-                          
-                                    children: [
-                                      SlidableAction(
-                                            backgroundColor: Colors.grey,
-                                          foregroundColor: Colors.white,
-                                        icon: Icons.list_alt_outlined,
-                                        label: 'Más acciones',
-                                        onPressed: (context) {
-                                          showCupertinoModalPopup(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                CupertinoActionSheet(
-                                                    title: Text(
-                                                      'Acciones',
-                                                      style:
-                                                          GoogleFonts.lexendDeca(
-                                                              fontSize: size
-                                                                  .iScreen(2.0),
-                                                              color: primaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                    ),
-                                                    // message: const Text('Your options are '),
-                                                    actions: <Widget>[
-                                                      CupertinoActionSheetAction(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  EdgeInsets.only(
-                                                                      right: size
-                                                                          .iScreen(
-                                                                              2.0)),
-                                                              child: Text(
-                                                                'Ver PDF',
-                                                                style: GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(
-                                                                            1.8),
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                              ),
-                                                            ),
-                                                            const Icon(
-                                                              FontAwesomeIcons
-                                                                  .filePdf,
-                                                              color: Colors.red,
-                                                            )
-                                                          ],
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                          
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ViewsPDFs(
-                                                                        infoPdf:
-                                                                            // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                            'https://syscontable.neitor.com/reportes/factura.php?codigo=${_notasCredito['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                        labelPdf:
-                                                                            'infoFactura.pdf')),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                    cancelButton:
-                                                        CupertinoActionSheetAction(
-                                                      child: Text('Cancel',
-                                                          style: GoogleFonts
-                                                              .lexendDeca(
-                                                                  fontSize: size
-                                                                      .iScreen(
-                                                                          2.0),
-                                                                  color:
-                                                                      Colors.red,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal)),
-                                                      isDefaultAction: true,
-                                                      onPressed: () {
-                                                        Navigator.pop(
-                                                            context, 'Cancel');
-                                                      },
-                                                    )),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  child: Card(
-                                    elevation: 5,
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: size.iScreen(0.0)),
-                                      color: index % 2 == 0
-                                          ? Colors.grey.shade50
-                                          : Colors.grey.shade200,
-                                      child: ListTile(
-                                        dense: true,
-                                        visualDensity: VisualDensity.comfortable,
-                                    
-                                         leading: CircleAvatar(
-                                            child: Text(
-                                              '${_notasCredito['venNomCliente'].substring(0, 1)}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1,
-                                            ),
-                                            backgroundColor: Colors.grey[300],
+                          return Slidable(
+                            startActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  backgroundColor: Colors.grey,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.list_alt_outlined,
+                                  label: 'Más acciones',
+                                  onPressed: (context) {
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (BuildContext context) => CupertinoActionSheet(
+                                        title: Text(
+                                          'Acciones',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                        title: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: size.wScreen(50.0),
-                                              child: Text(
-                                                '${_notasCredito['venNomCliente']}',
-                                                style: GoogleFonts.lexendDeca(
-                                                    // fontSize: size.iScreen(2.45),
-                                                    // color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${_notasCredito['venEstado']}',
-                                              // 'Estado: ',
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: size.iScreen(1.5),
-                                                  color: _color,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
                                         ),
-                                        subtitle: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                        actions: <Widget>[
+                                          CupertinoActionSheetAction(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Container(
-                                                  // color: Colors.green,
-                                                  width: size.wScreen(50.0),
+                                                  margin: EdgeInsets.only(right: size.iScreen(2.0)),
                                                   child: Text(
-                                                    '${_notasCredito['venNum_notasCredito']}',
+                                                    'Ver PDF',
                                                     style: GoogleFonts.lexendDeca(
-                                                        fontSize:
-                                                            size.iScreen(1.5),
-                                                        color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.normal),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                      fontSize: size.iScreen(1.8),
+                                                      color: Colors.black87,
+                                                      fontWeight: FontWeight.normal,
+                                                    ),
                                                   ),
                                                 ),
-                                                Container(
-                                                  // color: Colors.green,
-                                                  width: size.wScreen(50.0),
-                                                  child: Text(
-                                                    _notasCredito['venFecReg'] != ''
-                                                        ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
-                                                        : '--- --- ---',
-                                                    style: GoogleFonts.lexendDeca(
-                                                        // fontSize: size.iScreen(2.45),
-                                                        color: Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.normal),
-                                                  ),
+                                                const Icon(
+                                                  FontAwesomeIcons.filePdf,
+                                                  color: Colors.red,
                                                 ),
                                               ],
                                             ),
-                                            Container(
-                                              // color: Colors.green,
-                                              // width: size.wScreen(100.0),
-                                              child: Text(
-                                                '\$${_notasCredito['venTotal']}',
-                                                style: GoogleFonts.lexendDeca(
-                                                    fontSize: size.iScreen(2.0),
-                                                    color: Colors.black87,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                                overflow: TextOverflow.ellipsis,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ViewsPDFs(
+                                                    infoPdf: 'https://syscontable.neitor.com/reportes/factura.php?codigo=${_notasCredito['venId']}&empresa=${_usuario!.rucempresa}',
+                                                    labelPdf: 'infoFactura.pdf',
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                        cancelButton: CupertinoActionSheetAction(
+                                          child: Text(
+                                            'Cancel',
+                                            style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                          isDefaultAction: true,
+                                          onPressed: () {
+                                            Navigator.pop(context, 'Cancel');
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            child: Card(
+                              elevation: 5,
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                                color: index % 2 == 0 ? Colors.grey.shade50 : Colors.grey.shade200,
+                                child: ListTile(
+                                  dense: true,
+                                  visualDensity: VisualDensity.comfortable,
+                                  leading: CircleAvatar(
+                                    child: Text(
+                                      '${_notasCredito['venNomCliente'].substring(0, 1)}',
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                    backgroundColor: Colors.grey[300],
+                                  ),
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: size.wScreen(50.0),
+                                        child: Text(
+                                          '${_notasCredito['venNomCliente']}',
+                                          style: GoogleFonts.lexendDeca(fontWeight: FontWeight.normal),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_notasCredito['venEstado']}',
+                                        style: GoogleFonts.lexendDeca(
+                                          fontSize: size.iScreen(1.5),
+                                          color: _color,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: size.wScreen(50.0),
+                                            child: Text(
+                                              '${_notasCredito['venNum_notasCredito']}',
+                                              style: GoogleFonts.lexendDeca(
+                                                fontSize: size.iScreen(1.5),
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: size.wScreen(50.0),
+                                            child: Text(
+                                              _notasCredito['venFecReg'] != ''
+                                                  ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                  : '--- --- ---',
+                                              style: GoogleFonts.lexendDeca(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.normal,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                        // trailing: Icon(Icons.more_vert),
+                                          ),
+                                        ],
                                       ),
-                                    ),
+                                      Container(
+                                        child: Text(
+                                          '\$${_notasCredito['venTotal']}',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );} else{
-                                   return Consumer<NotasCreditosController>(
-                                    builder: (_, valueNext, __) {
-                                      return valueNext.getpage == null
-                                          ? Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: size.iScreen(2.0)),
-                                              child: Center(
-                                                child: Text(
-                                                  'No existen más datos',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize: size.iScreen(1.8),
-                                                      // color: primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              ))
-                                          // : Container();
-                          
-                                          : valueNext.getListaNotasCreditosPaginacion
-                                                      .length >
-                                                  25
-                                              ? Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical:
-                                                          size.iScreen(2.0)),
-                                                  child: const Center(
-                                                      child:
-                                                          CircularProgressIndicator()))
-                                              : Container();
-                                    },
-                                  );
-                                }
-                              },
+                                ),
+                              ),
                             ),
                           );
-                        },
-                      )
-                   ,
-          )),
-    );
+                        } else {
+                          return Consumer<NotasCreditosController>(
+                            builder: (_, valueNext, __) {
+                              return valueNext.getpage == null
+                                  ? Container(
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                                      child: Center(
+                                        child: Text(
+                                          'No existen más datos',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(1.8),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : valueNext.getListaNotasCreditosPaginacion.length > 25
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                                          child: const Center(child: CircularProgressIndicator()),
+                                        )
+                                      : Container();
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+             
+              // Segundo tab
+              Consumer<NotasCreditosController>(
+                builder: (_, providersNotasCreditos, __) {
+                  if (providersNotasCreditos.getErrorNotasCreditosPaginacion == null &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Cargando Datos...',
+                            style: GoogleFonts.lexendDeca(
+                              fontSize: size.iScreen(1.5),
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: size.iScreen(1.0)),
+                          const CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
+                  } else if (providersNotasCreditos.getErrorNotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getErrorNotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == true) {
+                    return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
+                  } else if (providersNotasCreditos.getListaNotasCreditosPaginacion.isEmpty &&
+                      providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+                    return const NoData(label: 'No existen datos para mostrar');
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () => onRefresh(),
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: providersNotasCreditos.getListaNotasCreditosPaginacion.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index < providersNotasCreditos.getListaNotasCreditosPaginacion.length) {
+                          var _color;
+                          final _notasCredito = providersNotasCreditos.getListaNotasCreditosPaginacion[index];
+
+                          if (_notasCredito['venEstado'] == 'AUTORIZADO') {
+                            _color = Colors.green;
+                          } else if (_notasCredito['venEstado'] == 'SIN AUTORIZAR') {
+                            _color = Colors.orange;
+                          } else if (_notasCredito['venEstado'] == 'ANULADA') {
+                            _color = Colors.red;
+                          }
+
+                          return Slidable(
+                            startActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  backgroundColor: Colors.grey,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.list_alt_outlined,
+                                  label: 'Más acciones',
+                                  onPressed: (context) {
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (BuildContext context) => CupertinoActionSheet(
+                                        title: Text(
+                                          'Acciones',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          CupertinoActionSheetAction(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                                                  child: Text(
+                                                    'Ver PDF',
+                                                    style: GoogleFonts.lexendDeca(
+                                                      fontSize: size.iScreen(1.8),
+                                                      color: Colors.black87,
+                                                      fontWeight: FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const Icon(
+                                                  FontAwesomeIcons.filePdf,
+                                                  color: Colors.red,
+                                                ),
+                                              ],
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ViewsPDFs(
+                                                    infoPdf: 'https://syscontable.neitor.com/reportes/factura.php?codigo=${_notasCredito['venId']}&empresa=${_usuario!.rucempresa}',
+                                                    labelPdf: 'infoFactura.pdf',
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                        cancelButton: CupertinoActionSheetAction(
+                                          child: Text(
+                                            'Cancel',
+                                            style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                          isDefaultAction: true,
+                                          onPressed: () {
+                                            Navigator.pop(context, 'Cancel');
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            child: Card(
+                              elevation: 5,
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                                color: index % 2 == 0 ? Colors.grey.shade50 : Colors.grey.shade200,
+                                child: ListTile(
+                                  dense: true,
+                                  visualDensity: VisualDensity.comfortable,
+                                  leading: CircleAvatar(
+                                    child: Text(
+                                      '${_notasCredito['venNomCliente'].substring(0, 1)}',
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                    backgroundColor: Colors.grey[300],
+                                  ),
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: size.wScreen(50.0),
+                                        child: Text(
+                                          '${_notasCredito['venNomCliente']}',
+                                          style: GoogleFonts.lexendDeca(fontWeight: FontWeight.normal),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${_notasCredito['venEstado']}',
+                                        style: GoogleFonts.lexendDeca(
+                                          fontSize: size.iScreen(1.5),
+                                          color: _color,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: size.wScreen(50.0),
+                                            child: Text(
+                                              '${_notasCredito['venNum_notasCredito']}',
+                                              style: GoogleFonts.lexendDeca(
+                                                fontSize: size.iScreen(1.5),
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: size.wScreen(50.0),
+                                            child: Text(
+                                              _notasCredito['venFecReg'] != ''
+                                                  ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                  : '--- --- ---',
+                                              style: GoogleFonts.lexendDeca(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '\$${_notasCredito['venTotal']}',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Consumer<NotasCreditosController>(
+                            builder: (_, valueNext, __) {
+                              return valueNext.getpage == null
+                                  ? Container(
+                                      margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                                      child: Center(
+                                        child: Text(
+                                          'No existen más datos',
+                                          style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(1.8),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : valueNext.getListaNotasCreditosPaginacion.length > 25
+                                      ? Container(
+                                          margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                                          child: const Center(child: CircularProgressIndicator()),
+                                        )
+                                      : Container();
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+             
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
+
+          // Container(
+          //   color: Colors.grey.shade100,
+          //   width: size.wScreen(100.0),
+          //   height: size.hScreen(100.0),
+          //   padding: EdgeInsets.only(
+          //     top: size.iScreen(0.0),
+          //     right: size.iScreen(0.0),
+          //     left: size.iScreen(0.0),
+          //   ),
+          //   child: Consumer<NotasCreditosController>(
+          //               builder: (_, providersNotasCreditos, __) {
+          //                 if (providersNotasCreditos.getErrorNotasCreditosPaginacion == null &&
+          //                     providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+          //                   return Center(
+          //                     // child: CircularProgressIndicator(),
+          //                     child: Column(
+          //                       mainAxisSize: MainAxisSize.min,
+          //                       children: [
+          //                         Text(
+          //                           'Cargando Datos...',
+          //                           style: GoogleFonts.lexendDeca(
+          //                               fontSize: size.iScreen(1.5),
+          //                               color: Colors.black87,
+          //                               fontWeight: FontWeight.bold),
+          //                         ),
+          //                         //***********************************************/
+          //                         SizedBox(
+          //                           height: size.iScreen(1.0),
+          //                         ),
+          //                         //*****************************************/
+          //                         const CircularProgressIndicator(),
+          //                       ],
+          //                     ),
+          //                   );
+          //                 }
+          //                  else if (providersNotasCreditos.getErrorNotasCreditosPaginacion ==
+          //                     false) {
+          //                   return const NoData(
+          //                     label: 'No existen datos para mostar',
+          //                   );
+          //                 }
+          //                  else if (providersNotasCreditos
+          //                         .getListaNotasCreditosPaginacion.isEmpty &&providersNotasCreditos.getErrorNotasCreditosPaginacion ==
+          //                     false ) {
+          //                   return const NoData(
+          //                     label: 'No existen datos para mostar',
+          //                   );
+          //                 }
+          //                  else if (providersNotasCreditos
+          //                         .getListaNotasCreditosPaginacion.isEmpty &&
+          //                     providersNotasCreditos.getError401NotasCreditosPaginacion == true) {
+          //                   return const NoData(
+          //                     label:
+          //                         'Su sesión ha expirado, vuelva a iniciar sesión',
+          //                   );
+          //                 } else if (providersNotasCreditos
+          //                         .getListaNotasCreditosPaginacion.isEmpty &&
+          //                     providersNotasCreditos.getError401NotasCreditosPaginacion == false) {
+          //                   return const NoData(
+          //                     label: 'No existen datos para mostar',
+          //                   );
+          //                 }
+
+          //                 return RefreshIndicator(
+          //                        onRefresh: () => onRefresh(),
+          //                   child: ListView.builder(
+          //                     controller: _scrollController,
+          //                     physics: const BouncingScrollPhysics(),
+          //                     itemCount: providersNotasCreditos.getListaNotasCreditosPaginacion.length +1,
+          //                     itemBuilder: (BuildContext context, int index) {
+          //                       if (index <
+          //                          providersNotasCreditos.getListaNotasCreditosPaginacion.length) {
+          //                       var _color;
+          //                       final _notasCredito =
+          //                           providersNotasCreditos.getListaNotasCreditosPaginacion[index];
+                          
+          //                       if (_notasCredito['venEstado'] == 'AUTORIZADO') {
+          //                         _color = Colors.green;
+          //                       } else if (_notasCredito['venEstado'] ==
+          //                           'SIN AUTORIZAR') {
+          //                         _color = Colors.orange;
+          //                       }
+          //                       if (_notasCredito['venEstado'] == 'ANULADA') {
+          //                         _color = Colors.red;
+          //                       }
+                          
+          //                       return Slidable(
+          //                         startActionPane: ActionPane(
+          //                           // A motion is a widget used to control how the pane animates.
+          //                           motion: const ScrollMotion(),
+                          
+          //                           children: [
+          //                             SlidableAction(
+          //                                   backgroundColor: Colors.grey,
+          //                                 foregroundColor: Colors.white,
+          //                               icon: Icons.list_alt_outlined,
+          //                               label: 'Más acciones',
+          //                               onPressed: (context) {
+          //                                 showCupertinoModalPopup(
+          //                                   context: context,
+          //                                   builder: (BuildContext context) =>
+          //                                       CupertinoActionSheet(
+          //                                           title: Text(
+          //                                             'Acciones',
+          //                                             style:
+          //                                                 GoogleFonts.lexendDeca(
+          //                                                     fontSize: size
+          //                                                         .iScreen(2.0),
+          //                                                     color: primaryColor,
+          //                                                     fontWeight:
+          //                                                         FontWeight
+          //                                                             .normal),
+          //                                           ),
+          //                                           // message: const Text('Your options are '),
+          //                                           actions: <Widget>[
+          //                                             CupertinoActionSheetAction(
+          //                                               child: Row(
+          //                                                 mainAxisAlignment:
+          //                                                     MainAxisAlignment
+          //                                                         .center,
+          //                                                 children: [
+          //                                                   Container(
+          //                                                     margin:
+          //                                                         EdgeInsets.only(
+          //                                                             right: size
+          //                                                                 .iScreen(
+          //                                                                     2.0)),
+          //                                                     child: Text(
+          //                                                       'Ver PDF',
+          //                                                       style: GoogleFonts.lexendDeca(
+          //                                                           fontSize: size
+          //                                                               .iScreen(
+          //                                                                   1.8),
+          //                                                           color: Colors
+          //                                                               .black87,
+          //                                                           fontWeight:
+          //                                                               FontWeight
+          //                                                                   .normal),
+          //                                                     ),
+          //                                                   ),
+          //                                                   const Icon(
+          //                                                     FontAwesomeIcons
+          //                                                         .filePdf,
+          //                                                     color: Colors.red,
+          //                                                   )
+          //                                                 ],
+          //                                               ),
+          //                                               onPressed: () {
+          //                                                 Navigator.pop(context);
+                          
+          //                                                 Navigator.push(
+          //                                                   context,
+          //                                                   MaterialPageRoute(
+          //                                                       builder: (context) =>
+          //                                                           ViewsPDFs(
+          //                                                               infoPdf:
+          //                                                                   // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+          //                                                                   'https://syscontable.neitor.com/reportes/factura.php?codigo=${_notasCredito['venId']}&empresa=${_usuario!.rucempresa}',
+          //                                                               labelPdf:
+          //                                                                   'infoFactura.pdf')),
+          //                                                 );
+          //                                               },
+          //                                             ),
+          //                                           ],
+          //                                           cancelButton:
+          //                                               CupertinoActionSheetAction(
+          //                                             child: Text('Cancel',
+          //                                                 style: GoogleFonts
+          //                                                     .lexendDeca(
+          //                                                         fontSize: size
+          //                                                             .iScreen(
+          //                                                                 2.0),
+          //                                                         color:
+          //                                                             Colors.red,
+          //                                                         fontWeight:
+          //                                                             FontWeight
+          //                                                                 .normal)),
+          //                                             isDefaultAction: true,
+          //                                             onPressed: () {
+          //                                               Navigator.pop(
+          //                                                   context, 'Cancel');
+          //                                             },
+          //                                           )),
+          //                                 );
+          //                               },
+          //                             ),
+          //                           ],
+          //                         ),
+          //                         child: Card(
+          //                           elevation: 5,
+          //                           child: Container(
+          //                             margin: EdgeInsets.only(
+          //                                 bottom: size.iScreen(0.0)),
+          //                             color: index % 2 == 0
+          //                                 ? Colors.grey.shade50
+          //                                 : Colors.grey.shade200,
+          //                             child: ListTile(
+          //                               dense: true,
+          //                               visualDensity: VisualDensity.comfortable,
+                                    
+          //                                leading: CircleAvatar(
+          //                                   child: Text(
+          //                                     '${_notasCredito['venNomCliente'].substring(0, 1)}',
+          //                                     style: Theme.of(context)
+          //                                         .textTheme
+          //                                         .subtitle1,
+          //                                   ),
+          //                                   backgroundColor: Colors.grey[300],
+          //                                 ),
+          //                               title: Row(
+          //                                 mainAxisAlignment:
+          //                                     MainAxisAlignment.spaceBetween,
+          //                                 children: [
+          //                                   SizedBox(
+          //                                     width: size.wScreen(50.0),
+          //                                     child: Text(
+          //                                       '${_notasCredito['venNomCliente']}',
+          //                                       style: GoogleFonts.lexendDeca(
+          //                                           // fontSize: size.iScreen(2.45),
+          //                                           // color: Colors.white,
+          //                                           fontWeight:
+          //                                               FontWeight.normal),
+          //                                       overflow: TextOverflow.ellipsis,
+          //                                     ),
+          //                                   ),
+          //                                   Text(
+          //                                     '${_notasCredito['venEstado']}',
+          //                                     // 'Estado: ',
+          //                                     style: GoogleFonts.lexendDeca(
+          //                                         fontSize: size.iScreen(1.5),
+          //                                         color: _color,
+          //                                         fontWeight: FontWeight.bold),
+          //                                   ),
+          //                                 ],
+          //                               ),
+          //                               subtitle: Row(
+          //                                 mainAxisAlignment:
+          //                                     MainAxisAlignment.spaceBetween,
+          //                                 children: [
+          //                                   Column(
+          //                                     mainAxisAlignment:
+          //                                         MainAxisAlignment.start,
+          //                                     children: [
+          //                                       Container(
+          //                                         // color: Colors.green,
+          //                                         width: size.wScreen(50.0),
+          //                                         child: Text(
+          //                                           '${_notasCredito['venNum_notasCredito']}',
+          //                                           style: GoogleFonts.lexendDeca(
+          //                                               fontSize:
+          //                                                   size.iScreen(1.5),
+          //                                               color: Colors.black54,
+          //                                               fontWeight:
+          //                                                   FontWeight.normal),
+          //                                           overflow:
+          //                                               TextOverflow.ellipsis,
+          //                                         ),
+          //                                       ),
+          //                                       Container(
+          //                                         // color: Colors.green,
+          //                                         width: size.wScreen(50.0),
+          //                                         child: Text(
+          //                                           _notasCredito['venFecReg'] != ''
+          //                                               ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+          //                                               : '--- --- ---',
+          //                                           style: GoogleFonts.lexendDeca(
+          //                                               // fontSize: size.iScreen(2.45),
+          //                                               color: Colors.grey,
+          //                                               fontWeight:
+          //                                                   FontWeight.normal),
+          //                                         ),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                   Container(
+          //                                     // color: Colors.green,
+          //                                     // width: size.wScreen(100.0),
+          //                                     child: Text(
+          //                                       '\$${_notasCredito['venTotal']}',
+          //                                       style: GoogleFonts.lexendDeca(
+          //                                           fontSize: size.iScreen(2.0),
+          //                                           color: Colors.black87,
+          //                                           fontWeight:
+          //                                               FontWeight.normal),
+          //                                       overflow: TextOverflow.ellipsis,
+          //                                     ),
+          //                                   ),
+          //                                 ],
+          //                               ),
+          //                               // trailing: Icon(Icons.more_vert),
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       );} else{
+          //                          return Consumer<NotasCreditosController>(
+          //                           builder: (_, valueNext, __) {
+          //                             return valueNext.getpage == null
+          //                                 ? Container(
+          //                                     margin: EdgeInsets.symmetric(
+          //                                         vertical: size.iScreen(2.0)),
+          //                                     child: Center(
+          //                                       child: Text(
+          //                                         'No existen más datos',
+          //                                         style: GoogleFonts.lexendDeca(
+          //                                             fontSize: size.iScreen(1.8),
+          //                                             // color: primaryColor,
+          //                                             fontWeight:
+          //                                                 FontWeight.normal),
+          //                                       ),
+          //                                     ))
+          //                                 // : Container();
+                          
+          //                                 : valueNext.getListaNotasCreditosPaginacion
+          //                                             .length >
+          //                                         25
+          //                                     ? Container(
+          //                                         margin: EdgeInsets.symmetric(
+          //                                             vertical:
+          //                                                 size.iScreen(2.0)),
+          //                                         child: const Center(
+          //                                             child:
+          //                                                 CircularProgressIndicator()))
+          //                                     : Container();
+          //                           },
+          //                         );
+          //                       }
+          //                     },
+          //                   ),
+          //                 );
+          //               },
+          //             )
+          //          ,
+          // )),
+    
+    
+    
+    ));
   }
 
 
@@ -607,7 +1186,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
     final _controller = Provider.of<NotasCreditosController>(context, listen: false);
     _controller.setPage(0);
     _controller.setCantidad(25);
-    _controller.buscaAllNotasCreditosPaginacion('', true);
+    _controller.buscaAllNotasCreditosPaginacion('', true,_controller.getTabIndex);
   }
 
 

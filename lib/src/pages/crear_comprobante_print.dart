@@ -785,6 +785,7 @@ Future<bool?> modalTipoDocumento(BuildContext context, Responsive size, Comproba
       List<String> _tipos = [
         "CÉDULA/RUC",
          "PLACA",
+         'CONSUMIDOR FINAL'
       ];
 
       return AlertDialog(

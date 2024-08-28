@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neitorcont/src/controllers/propietarios_controller.dart';
+import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_propietario.dart';
 import 'package:neitorcont/src/pages/detalle_propietario.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
@@ -13,7 +14,8 @@ import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
 
 class ListaClientes extends StatefulWidget {
-  const ListaClientes({Key? key}) : super(key: key);
+  final Session? user;
+  const ListaClientes({Key? key, this.user}) : super(key: key);
 
   @override
   State<ListaClientes> createState() => _ListaClientesState();
@@ -399,7 +401,7 @@ class _ListaClientesState extends State<ListaClientes> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
                         builder: (context) =>
-                            CrearPropietario(action: 'CREATE')))
+                            CrearPropietario(action: 'CREATE',user: widget.user,)))
                     .then((value) {
                   setState(() {
                     context

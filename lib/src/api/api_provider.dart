@@ -25,7 +25,7 @@ class ApiProvider {
           body: {"usuario": usuario, "password": password, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
 
-      // print('-OKkkkkkR->$respo');
+      print('-OKkkkkkR->$respo');
 
       if (dataResp.statusCode == 404) {
         // print('-OKkkkkkR->$respo');
@@ -115,7 +115,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      // print('RESPONSE:DSDSD ${dataResp.body}');
+      // print('RESPONSE:paises ${dataResp.body}');
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
         // print('INFORMACION DATA paises  $responseData');
@@ -301,9 +301,10 @@ class ApiProvider {
 
       final url =
           // Uri.parse('$_url/proveedores/filtro/0?search=$search&estado=$estado');
-          Uri.parse('$_url/proveedores/obtenerlistado/0?search=$search&perfil=$perfil&cantidad=$cantidad&page=$page&input=$input&orden=$orden');
+          // Uri.parse('$_url/proveedores/obtenerlistado/0?search=$search&perfil=$perfil&cantidad=$cantidad&page=$page&input=$input&orden=$orden');
+          Uri.parse('$_url/proveedores/byPagination/app?search=$search&cantidad=$cantidad&page=$page&input=$input&orden=$orden');
 
-      final dataResp = await _http.get(
+      final dataResp = await _http.post(
         url,
         headers: {"x-auth-token": '$token'},
       );
@@ -311,7 +312,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      // print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      // print('RESPONSE:CLIENTES ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 // print('RESPONSE: ${dataResp.body}');
 // print('RESPONSE:DSDSD ${dataResp.body}');
@@ -1954,6 +1955,49 @@ class ApiProvider {
 
 
 
+  //=========================BUSCA  cliente =====================================//
+  Future searchCliente({
+    BuildContext? context,
+    String? search,
+    // String? estado,
+    String? token,
+  }) async {
+    try {
+      // final url = Uri.parse('$_url/proveedores/agregarperfil/0?search=$search');
+      final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+// print('RESPONSE: ${dataResp.body}');
+// print('RESPONSE:DSDSD ${dataResp.body}');
+        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
+        final responseData = jsonDecode(dataResp.body);
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        // NotificatiosnService.showSnackBarError("Su Sesión ha Expirado");
+        //  Auth.instance.deleteSesion(context!);
+        // Auth.instance.deleteIdRegistro();
+        // Auth.instance.deleteTurnoSesion();
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
 
 
 

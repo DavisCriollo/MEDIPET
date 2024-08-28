@@ -63,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
     if (session != null) {
   
 
-    
+    controllerHome.setUsuarioInfo(session);
 
    final primaryColorHex = session!.colorPrimario ?? '#2196fd'; // Valor por defecto
     final accentColorHex = session!.colorSecundario ?? '#FF4081'; // Valor por defecto

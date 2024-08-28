@@ -7,11 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:neitorcont/src/controllers/home_controller.dart';
 
 import 'package:neitorcont/src/controllers/propietarios_controller.dart';
+import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/buscar_propietario.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/dialogs.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
@@ -27,7 +30,8 @@ import 'package:provider/provider.dart';
 
 class CrearPropietario extends StatefulWidget {
   final String? action;
-  const CrearPropietario({Key? key, this.action}) : super(key: key);
+  final Session? user;
+  const CrearPropietario({Key? key, this.action,  this.user}) : super(key: key);
 
   @override
   State<CrearPropietario> createState() => _CrearPropietarioState();
@@ -50,7 +54,7 @@ class _CrearPropietarioState extends State<CrearPropietario> {
 //  String initialCountry = 'NG';
 //   PhoneNumber number = PhoneNumber(isoCode: 'NG');
 
-  final _listaDepaises = [];
+  final listaDepaises = [];
   final _listaRecomendaciones = [];
 
   final controllerPropietarios = PropietariosController();
@@ -87,25 +91,29 @@ class _CrearPropietarioState extends State<CrearPropietario> {
 
     final _paises = controllerPropietarios.getListaTodosLosPaises;
     final _recomendacion = controllerPropietarios.getListaRecomendaciones;
-
-    _listaDepaises.addAll(_paises);
+// controllerPropietarios.setListaTodosLosPaises(_paises);
+    listaDepaises.addAll(_paises);
 
     //  widget.action == 'CREATE'?
     _listaRecomendaciones.addAll(_recomendacion);
 
     // print('PAISES: ${_listaDepaises}');
 
-// _textCedula!.text=  '';
-// _textNombre.text= controllerPropietarios.getNombres!.isNotEmpty ?controllerPropietarios.getNombres!:'';
-// _textDireccion.text= '';
-// _textTelefono.text=  '';
-// _textObservacion.text= '';
+_textCedula.text='';
+    _textNombre.text='';
+    _textDireccion.text='';
+    _textTelefono.text='';
+    _textObservacion.text='';
+    _textAddCorreo.text='';
+    _textAddTelefono.text='';
+    controllerTextCountry.text='';
   }
 
   @override
   Widget build(BuildContext context) {
     final controller = context.read<PropietariosController>();
-    //  final colorTheme=context.read<AppTheme>();
+      final ctrlHome = context.read<HomeController>();
+     final colorTheme=context.read<AppTheme>();
     if (controller.getGeneros == 'M') {
       _genero = Genero.masculino;
     } else if (controller.getGeneros == 'F') {
@@ -120,16 +128,11 @@ class _CrearPropietarioState extends State<CrearPropietario> {
 // _textTelefono.text= (widget.action == 'CREATE' ? controller.labelTelefono!=null?controller.labelTelefono:'':'')!;
 // _textObservacion.text= widget.action == 'CREATE' ? controller.getDireccion!:'';
 
-    _textCedula.text =
-        widget.action == 'CREATE' ? "" : controller.getDocumento!;
-    _textNombre.text = widget.action == 'CREATE' ? "" : controller.getNombres!;
-    _textDireccion.text =
-        widget.action == 'CREATE' ? "" : controller.getDireccion!;
-    _textTelefono.text = widget.action == 'CREATE'
-        ? ""
-        : controller.labelTelefono!; //=null?controller.labelTelefono:'';
-    _textObservacion.text =
-        widget.action == 'CREATE' ? "" : controller.getDireccion!;
+    _textCedula.text = controller.getDocumento!;
+    _textNombre.text = controller.getNombres!;
+    _textDireccion.text =controller.getDireccion!;
+    // _textTelefono.text = controller.labelTelefono!; //=null?controller.labelTelefono:'';
+    _textObservacion.text =controller.getObservacion!;
 
     // _textCedula.text = controller.getDocumento!;
     // _textNombre.text = controller.getNombres!;
@@ -141,7 +144,7 @@ class _CrearPropietarioState extends State<CrearPropietario> {
     //         : '')!;
     // _textObservacion.text = controller.getDireccion!;
 
-    print('ACTION: ${widget.action}');
+    // print('ACTION: ${widget.action}');
 
     controller.getGeneros;
     final Responsive size = Responsive.of(context);
@@ -247,6 +250,7 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                           Container(
                                             width: size.wScreen(40.0),
                                             child: TextFormField(
+                                              // controller: _textCedula,
                                               maxLength: 13,
                                               readOnly:
                                                   widget.action == 'CREATE'
@@ -310,38 +314,80 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                           SizedBox(
                                             width: size.iScreen(2.0),
                                           ),
-                                          // ClipRRect(
-                                          //   borderRadius:
-                                          //       BorderRadius.circular(8),
-                                          //   child: GestureDetector(
-                                          //     onTap: () async {
-                                          //       context
-                                          //           .read<
-                                          //               PropietariosController>()
-                                          //           .searchAllPersinas('');
-                                          //       Navigator.of(context).push(
-                                          //           MaterialPageRoute(
-                                          //               builder: (context) =>
-                                          //                   BuscarPropietario()));
-                                          //     },
-                                          //     child: Container(
-                                          //       alignment: Alignment.center,
-                                          //       color: primaryColor,
-                                          //       width: size.iScreen(3.5),
-                                          //       padding: EdgeInsets.only(
-                                          //         top: size.iScreen(0.5),
-                                          //         bottom: size.iScreen(0.5),
-                                          //         left: size.iScreen(0.5),
-                                          //         right: size.iScreen(0.5),
-                                          //       ),
-                                          //       child: Icon(
-                                          //         Icons.search_outlined,
-                                          //         color: Colors.white,
-                                          //         size: size.iScreen(2.0),
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: GestureDetector(
+                                              onTap: controller.getDocumento!.isNotEmpty? () async {
+                                                final ctrlPropi=context.read<PropietariosController>();
+
+           ProgressDialog.show(context);
+            final response = await   ctrlPropi.searchCliente();
+            ProgressDialog.dissmiss(context);
+              
+               if (response != null) {
+                    _textNombre.text=ctrlPropi.getNombres!.toUpperCase();
+                     _textDireccion.text=ctrlPropi.getDireccion!.toUpperCase();
+                      _textTelefono.text=ctrlPropi.labelTelefono!;
+                    _textObservacion.text=ctrlPropi.getObservacion!.toUpperCase();
+
+               }else{
+                 _textCedula.text='';
+                NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
+               }
+                                              
+
+                                                //     .searchAllPersinas('');
+                                                // Navigator.of(context).push(
+                                                //     MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             BuscarPropietario()));
+                                              }:(){
+
+                                     NotificatiosnService.showSnackBarDanger( 'Debe ingresar Documento para buscar');
+
+                                              },
+                                              child: 
+                                              // Container(
+                                              //   alignment: Alignment.center,
+                                              //   color: primaryColor,
+                                              //   width: size.iScreen(3.5),
+                                              //   padding: EdgeInsets.only(
+                                              //     top: size.iScreen(0.5),
+                                              //     bottom: size.iScreen(0.5),
+                                              //     left: size.iScreen(0.5),
+                                              //     right: size.iScreen(0.5),
+                                              //   ),
+                                              //   child: Icon(
+                                              //     Icons.search_outlined,
+                                              //     color: Colors.white,
+                                              //     size: size.iScreen(2.0),
+                                              //   ),
+                                              // ),
+                                               Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.search_outlined,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
+                                      ),
+                                            ),
+                                          ),
+                                            
+                                       
+                                       
                                         ]);
                                       },
                                     ),
@@ -364,73 +410,127 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                       height: size.iScreen(0.5),
                                     ),
                                     //*****************************************/
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceAround,
+                                    //   children: [
+                                    //     Column(
+                                    //       children: [
+                                    //         Container(
+                                    //           child: Text('M',
+                                    //               style: GoogleFonts.lexendDeca(
+                                    //                   // fontSize: size.iScreen(2.0),
+                                    //                   fontWeight:
+                                    //                       FontWeight.normal,
+                                    //                   color: Colors.black)),
+                                    //         ),
+                                    //         Column(
+                                    //           children: <Widget>[
+                                    //             Container(
+                                    //               // width: size.iScreen(7.0),
+                                    //               child: Radio<Genero>(
+                                    //                 visualDensity:
+                                    //                     VisualDensity.compact,
+                                    //                 value: Genero.masculino,
+                                    //                 groupValue: _genero,
+                                    //                 onChanged: (Genero? value) {
+                                    //                   setState(() {
+                                    //                     _genero = value;
+                                    //                     controller
+                                    //                         .setGeneros('M');
+                                    //                     // print('GENERO: $value');
+                                    //                   });
+                                    //                 },
+                                    //               ),
+                                    //             ),
+                                    //           ],
+                                    //         )
+                                    //       ],
+                                    //     ),
+                                    //     Column(
+                                    //       children: [
+                                    //         Container(
+                                    //           // width: size.iScreen(7.0),
+                                    //           child: Text('F',
+                                    //               style: GoogleFonts.lexendDeca(
+                                    //                   // fontSize: size.iScreen(2.0),
+                                    //                   fontWeight:
+                                    //                       FontWeight.normal,
+                                    //                   color: Colors.black)),
+                                    //         ),
+                                    //         Container(
+                                    //           child: Radio<Genero>(
+                                    //             visualDensity:
+                                    //                 VisualDensity.compact,
+                                    //             value: Genero.femenino,
+                                    //             groupValue: _genero,
+                                    //             onChanged: (Genero? value) {
+                                    //               setState(() {
+                                    //                 _genero = value;
+                                    //                 // print('GENERO: $value');
+                                    //                 controller.setGeneros('F');
+                                    //               });
+                                    //             },
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Container(
-                                              child: Text('M',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      // fontSize: size.iScreen(2.0),
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black)),
-                                            ),
-                                            Column(
-                                              children: <Widget>[
-                                                Container(
-                                                  // width: size.iScreen(7.0),
-                                                  child: Radio<Genero>(
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                    value: Genero.masculino,
-                                                    groupValue: _genero,
-                                                    onChanged: (Genero? value) {
-                                                      setState(() {
-                                                        _genero = value;
-                                                        controller
-                                                            .setGeneros('M');
-                                                        // print('GENERO: $value');
-                                                      });
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            Container(
-                                              // width: size.iScreen(7.0),
-                                              child: Text('F',
-                                                  style: GoogleFonts.lexendDeca(
-                                                      // fontSize: size.iScreen(2.0),
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      color: Colors.black)),
-                                            ),
-                                            Container(
-                                              child: Radio<Genero>(
-                                                visualDensity:
-                                                    VisualDensity.compact,
-                                                value: Genero.femenino,
-                                                groupValue: _genero,
-                                                onChanged: (Genero? value) {
-                                                  setState(() {
-                                                    _genero = value;
-                                                    // print('GENERO: $value');
-                                                    controller.setGeneros('F');
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          children: [
+            Text('M',
+                style: GoogleFonts.lexendDeca(
+                    fontWeight: FontWeight.normal, color: Colors.black)),
+            Consumer<PropietariosController>(
+              builder: (context, generoProvider, _) {
+                return Radio<String>(
+                  visualDensity: VisualDensity.compact,
+                  value: 'M',
+                  groupValue: generoProvider.getGeneros,
+                  onChanged: (String? value) {
+                    generoProvider.setGeneros(value!);
+                    // Realiza acciones adicionales si es necesario
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text('F',
+                style: GoogleFonts.lexendDeca(
+                    fontWeight: FontWeight.normal, color: Colors.black)),
+            Consumer<PropietariosController>(
+              builder: (context, generoProvider, _) {
+                return Radio<String>(
+                  visualDensity: VisualDensity.compact,
+                  value: 'F',
+                  groupValue: generoProvider.getGeneros,
+                  onChanged: (String? value) {
+                    generoProvider.setGeneros(value!);
+                    // Realiza acciones adicionales si es necesario
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+    
+    
+                                  
+                                  ],
+                                ),
+                             
+
+                                  
+                                  
+                                  
                                   ],
                                 ),
                               ],
@@ -452,20 +552,25 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                       fontWeight: FontWeight.normal,
                                       color: Colors.grey)),
                             ),
-                            Container(
+
+
+                            Consumer<PropietariosController>(builder: (_, value, __) {  
+
+                                // _textNombre.text=value.getNombres!;
+                              return   Container(
                               // width: size.wScreen(45.0),
                               child: TextFormField(
-                                // controller: _textNombre,
+                                controller: _textNombre,
                                 //  widget.action == 'CREATE'
                                 //                       ? _textNombre
                                 //                       : null,
 
                                 // initialValue:  controller.getNombres,
-                                initialValue:
-                                    // controller.getNombres,
-                                    widget.action == 'CREATE'
-                                        ? ''
-                                        : controller.getNombres,
+                                // initialValue:
+                                //     // controller.getNombres,
+                                //     widget.action == 'CREATE'
+                                //         ? controller.getNombres
+                                //         : controller.getNombres,
                                 decoration: const InputDecoration(),
                                 inputFormatters: [
                                   UpperCaseText(),
@@ -485,13 +590,15 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                   if (text!.trim().isNotEmpty) {
                                     return null;
                                   } else {
-                                    return 'Ingrese Nombres del Propietario';
+                                    return 'Ingrese Nombres del Cliente';
                                   }
                                 },
                               ),
-                            ),
+                            );
 
                          
+                            },),
+                           
                             // //***********************************************/
                             // SizedBox(
                             //   height: size.iScreen(2.0),
@@ -553,10 +660,10 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                             Container(
                               // width: size.wScreen(45.0),
                               child: TextFormField(
-                                initialValue: widget.action == 'CREATE'
-                                    ? ''
-                                    : controller.getDireccion,
-                                // controller: _textDireccion,
+                                // initialValue: widget.action == 'CREATE'
+                                //     ? ''
+                                //     : controller.getDireccion,
+                                controller: _textDireccion,
                                 decoration: const InputDecoration(
                                     // suffixIcon: Icon(Icons.beenhere_outlined)
                                     ),
@@ -598,10 +705,10 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                             Container(
                               // width: size.wScreen(45.0),
                               child: TextFormField(
-                                // controller: _textTelefono,
-                                initialValue: widget.action == 'CREATE'
-                                    ? ''
-                                    : controller.labelTelefono,
+                                controller: _textTelefono,
+                                // initialValue: widget.action == 'CREATE'
+                                //     ? ''
+                                //     : controller.labelTelefono,
                                 decoration: const InputDecoration(
                                     // suffixIcon: Icon(Icons.beenhere_outlined)
                                     ),
@@ -674,26 +781,46 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                     onTap: () {
                                       _agregaCelular(context, controller, size);
                                     },
-                                    child: Consumer<AppTheme>(builder: (_, valueTheme, __) {  
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        color: valueTheme.getPrimaryTextColor,
-                                        width: size.iScreen(3.5),
-                                        padding: EdgeInsets.only(
-                                          top: size.iScreen(0.5),
-                                          bottom: size.iScreen(0.5),
-                                          left: size.iScreen(0.5),
-                                          right: size.iScreen(0.5),
-                                        ),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: valueTheme.getSecondryTextColor,
-                                          size: size.iScreen(2.0),
-                                        ),
-                                      );
-                                    },
+                                    child: 
+                                    // Consumer<AppTheme>(builder: (_, valueTheme, __) {  
+                                    //   return Container(
+                                    //     alignment: Alignment.center,
+                                    //     color: valueTheme.getPrimaryTextColor,
+                                    //     width: size.iScreen(3.5),
+                                    //     padding: EdgeInsets.only(
+                                    //       top: size.iScreen(0.5),
+                                    //       bottom: size.iScreen(0.5),
+                                    //       left: size.iScreen(0.5),
+                                    //       right: size.iScreen(0.5),
+                                    //     ),
+                                    //     child: Icon(
+                                    //       Icons.add,
+                                    //       color: valueTheme.getSecondryTextColor,
+                                    //       size: size.iScreen(2.0),
+                                    //     ),
+                                    //   );
+                                    // },
                                     
-                                    ),
+                                    // ),
+                                       Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
+                                      ),
                                   ),
                                 ),
                               ],
@@ -811,40 +938,45 @@ class _CrearPropietarioState extends State<CrearPropietario> {
 //*******************************************/
                                     },
                                     child: 
-                                    Consumer<AppTheme>(builder: (_, valueTheme, __) {  
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        color: valueTheme.getPrimaryTextColor,
-                                        width: size.iScreen(3.5),
-                                        padding: EdgeInsets.only(
-                                          top: size.iScreen(0.5),
-                                          bottom: size.iScreen(0.5),
-                                          left: size.iScreen(0.5),
-                                          right: size.iScreen(0.5),
-                                        ),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: valueTheme.getSecondryTextColor,
-                                          size: size.iScreen(2.0),
-                                        ),
-                                      );
-                                    },
-                                    // Container(
-                                    //   alignment: Alignment.center,
-                                    //   color:  valueCantCorreos.getPrimaryTextColor,
-                                    //   width: size.iScreen(3.5),
-                                    //   padding: EdgeInsets.only(
-                                    //     top: size.iScreen(0.5),
-                                    //     bottom: size.iScreen(0.5),
-                                    //     left: size.iScreen(0.5),
-                                    //     right: size.iScreen(0.5),
-                                    //   ),
-                                    //   child: Icon(
-                                    //     Icons.add,
-                                    //     color:  valueCantCorreos.getSecundaryTextColor,
-                                    //     size: size.iScreen(2.0),
-                                    //   ),
-                                    ),
+                                    // Consumer<AppTheme>(builder: (_, valueTheme, __) {  
+                                    //   return Container(
+                                    //     alignment: Alignment.center,
+                                    //     color: valueTheme.getPrimaryTextColor,
+                                    //     width: size.iScreen(3.5),
+                                    //     padding: EdgeInsets.only(
+                                    //       top: size.iScreen(0.5),
+                                    //       bottom: size.iScreen(0.5),
+                                    //       left: size.iScreen(0.5),
+                                    //       right: size.iScreen(0.5),
+                                    //     ),
+                                    //     child: Icon(
+                                    //       Icons.add,
+                                    //       color: valueTheme.getSecondryTextColor,
+                                    //       size: size.iScreen(2.0),
+                                    //     ),
+                                    //   );
+                                    // },
+                           
+                                    // ),
+                                     Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
+                                      ),
                                   ),
                                 ),
                               ],
@@ -854,7 +986,8 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                               height: size.iScreen(1.0),
                             ),
                             //*****************************************/
-                            Container(
+                           widget.user!.empCategoria!='CONTABLE'
+                            ?Container(
                               width: size.wScreen(100.0),
 
                               // color: Colors.blue,
@@ -915,7 +1048,7 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                   )
                                 ],
                               ),
-                            ),
+                            ):Container(),
                             //***********************************************/
                             SizedBox(
                               height: size.iScreen(0.0),
@@ -1021,234 +1154,469 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                                       color: Colors.grey)),
                             ),
                             //***********************************************/
-                            Container(
-                              width: size.wScreen(100.0),
+                            // Container(
+                            //   width: size.wScreen(100.0),
 
-                              // color: Colors.blue,
-                              child: Row(
-                                children: [
-                                  Text('Pais:',
-                                      style: GoogleFonts.lexendDeca(
-                                          // fontSize: size.iScreen(2.0),
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.grey)),
-                                  Expanded(
-                                    child: Container(
-                                      width: size.wScreen(100.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.iScreen(2.0),
-                                          vertical: size.iScreen(0)),
-                                      alignment: Alignment.center,
-                                      child: Consumer<PropietariosController>(
-                                        builder: (_, valuePais, __) {
-                                          return DropdownButton<String>(
-                                            value: valuePais.getPais,
-                                            isExpanded: true,
-                                            hint: widget.action == 'CREATE'
-                                                ? const Text('Seleccione Pais')
-                                                : valuePais.getPais != null
-                                                    ? Text(
-                                                        '${valuePais.getPais}')
-                                                    : const Text(
-                                                        'Seleccione Pais'), //valuePais.getPais,
-                                            // const Text('Seleccione Pais'),
-                                            items: _listaDepaises.map((e) {
-                                              return DropdownMenuItem<String>(
-                                                onTap: () {
-                                                  print(
-                                                      'object: ${e['paisId']}');
-                                                  valuePais.buscaProvincias(
-                                                      e['paisId']);
-                                                },
-                                                value: e['paisNombre'],
-                                                child: Text(
-                                                  e['paisNombre'],
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize:
-                                                          size.iScreen(1.7),
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            onChanged: (text) {
-                                              valuePais.setPais(text);
-                                            },
-                                          );
-                                        },
+                            //   // color: Colors.blue,
+                            //   child: Row(
+                            //     children: [
+                            //       Text('Pais:',
+                            //           style: GoogleFonts.lexendDeca(
+                            //               // fontSize: size.iScreen(2.0),
+                            //               fontWeight: FontWeight.normal,
+                            //               color: Colors.grey)),
+                            //       Expanded(
+                            //         child: Container(
+                            //           width: size.wScreen(100.0),
+                            //           padding: EdgeInsets.symmetric(
+                            //               horizontal: size.iScreen(2.0),
+                            //               vertical: size.iScreen(0)),
+                            //           alignment: Alignment.center,
+                            //           child: Consumer<PropietariosController>(
+                            //             builder: (_, valuePais, __) {
+                            //               return DropdownButton<String>(
+                            //                 value: valuePais.getPais,
+                            //                 isExpanded: true,
+                            //                 hint: widget.action == 'CREATE'
+                            //                     ? const Text('Seleccione Pais')
+                            //                     : valuePais.getPais != null
+                            //                         ? Text(
+                            //                             '${valuePais.getPais}')
+                            //                         : const Text(
+                            //                             'Seleccione Pais'), //valuePais.getPais,
+                            //                 // const Text('Seleccione Pais'),
+                            //                 items: listaDepaises.map((e) {
+                            //                   return DropdownMenuItem<String>(
+                            //                     onTap: () {
+                            //                       print(
+                            //                           'object: ${e['paisId']}');
+                            //                       valuePais.buscaProvincias(
+                            //                           e['paisId']);
+                            //                     },
+                            //                     value: e['paisNombre'],
+                            //                     child: Text(
+                            //                       e['paisNombre'],
+                            //                       style: GoogleFonts.lexendDeca(
+                            //                           fontSize:
+                            //                               size.iScreen(1.7),
+                            //                           color: Colors.black87,
+                            //                           fontWeight:
+                            //                               FontWeight.normal),
+                            //                     ),
+                            //                   );
+                            //                 }).toList(),
+                            //                 onChanged: (text) {
+                            //                   valuePais.setPais(text);
+                            //                 },
+                            //               );
+                            //             },
+                            //           ),
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
+                            // // //***********************************************/
+                                 //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.5),
+                      ),
+                      //*****************************************/
+                      Row(
+                        children: [
+                          SizedBox(
+                            // width: size.wScreen(100.0),
+    
+                            // color: Colors.blue,
+                            child: Text('Pais : ',
+                                style: GoogleFonts.lexendDeca(
+                                    // fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey)),
+                          ),
+                           Consumer<PropietariosController>(
+                        builder: (_, valuePais, __) {
+                          return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(50.0),
+    
+                            // color: Colors.blue,
+                            child: Text(
+                                valuePais.getPais!.isEmpty
+                                    ? ' --- --- --- --- ---'
+                                    : '  ${valuePais.getPais} ',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: valuePais.getPais!.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          );
+                        },
+                      ),
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: GestureDetector(
+                              onTap: () {
+                                // context
+                                //     .read<MascotasController>()
+                                //     .buscaAllMascotas('');
+    
+                                // // _buscarMascota(context, size);
+                                //  await controllerPropietarios.buscaPaises();
+                                _modalSeleccionaPaises(context, size);
+    
+                                // //*******************************************/
+                              },
+                              child:  Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
                             ),
-                            //***********************************************/
-                            //***********************************************/
-                            Container(
-                              width: size.wScreen(100.0),
-
-                              // color: Colors.blue,
-                              child: Row(
-                                children: [
-                                  Text('Provincia:',
-                                      style: GoogleFonts.lexendDeca(
-                                          // fontSize: size.iScreen(2.0),
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.grey)),
-                                  // const DropMenuTipoCliente(
-                                  //   data: [
-                                  //     'FRECUENTE',
-                                  //     'TEMPORAL',
-                                  //     'OCASIONAL',
-                                  //     'ESPECIAL',
-                                  //   ],
-                                  //   hinText: 'Seleccione Provinciaa',
-                                  // ),
-                                  Expanded(
-                                    child: Container(
-                                      width: size.wScreen(100.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.iScreen(2.0),
-                                          vertical: size.iScreen(0)),
-                                      alignment: Alignment.center,
-                                      child: Consumer<PropietariosController>(
-                                        builder: (_, valueProvincia, __) {
-                                          return DropdownButton<String>(
-                                            value: valueProvincia
-                                                        .getProvincia !=
-                                                    null
-                                                ? valueProvincia.getProvincia
-                                                : null,
-                                            isExpanded: true,
-                                            hint: widget.action == 'CREATE'
-                                                ? const Text(
-                                                    'Seleccione Provincia')
-                                                : valueProvincia.getProvincia !=
-                                                        null
-                                                    ? Text(
-                                                        '${valueProvincia.getProvincia}')
-                                                    : const Text(
-                                                        'Seleccione Provincia'),
-
-                                            //  const Text(
-                                            //     'Seleccione Provincia'),
-                                            items:
-                                                // _listaDepaises.map((e) {
-                                                valueProvincia
-                                                    .getListaTodasLasProvincias
-                                                    .map((e) {
-                                              return DropdownMenuItem<String>(
-                                                onTap: () {
-                                                  print(
-                                                      'object: ${e['provId']}');
-                                                  valueProvincia.buscaCantones(
-                                                      e['provId']);
-                                                },
-                                                value: e['provNombre'],
-                                                child: Text(
-                                                  e['provNombre'],
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize:
-                                                          size.iScreen(1.7),
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            onChanged: (text) {
-                                              valueProvincia.setProvincia(text);
-                                            },
-                                          );
-                                        },
+                          ),
+                        ],
+                      ),
+                       //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.5),
+                      ),
+                      //*****************************************/
+                      //       //***********************************************/
+                      // SizedBox(
+                      //   height: size.iScreen(1.5),
+                      // ),
+                      // //*****************************************/
+                      Row(
+                        children: [
+                          SizedBox(
+                            // width: size.wScreen(100.0),
+    
+                            // color: Colors.blue,
+                            child: Text('Provincia : ',
+                                style: GoogleFonts.lexendDeca(
+                                    // fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey)),
+                          ),
+                           Consumer<PropietariosController>(
+                        builder: (_, valueTipo, __) {
+                          return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(50.0),
+    
+                            // color: Colors.blue,
+                            child: Text(
+                                valueTipo.getProvincia.isEmpty
+                                    ? ' --- --- --- --- ---'
+                                    : '  ${valueTipo.getProvincia} ',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: valueTipo.getProvincia.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          );
+                        },
+                      ),
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: GestureDetector(
+                              onTap: () {
+                                // context
+                                //     .read<MascotasController>()
+                                //     .buscaAllMascotas('');
+    
+                                // // _buscarMascota(context, size);
+                                _modalSeleccionaProvincia(context, size);
+    
+                                // //*******************************************/
+                              },
+                              child:  Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                           Icons.keyboard_arrow_down_outlined,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
                             ),
-                            //***********************************************/
-                            //***********************************************/
-                            Container(
-                              width: size.wScreen(100.0),
-
-                              // color: Colors.blue,
-                              child: Row(
-                                children: [
-                                  Text('Cantón:',
-                                      style: GoogleFonts.lexendDeca(
-                                          // fontSize: size.iScreen(2.0),
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.grey)),
-                                  // const DropMenuTipoCliente(
-                                  //   data: [
-                                  //     'FRECUENTE',
-                                  //     'TEMPORAL',
-                                  //     'OCASIONAL',
-                                  //     'ESPECIAL',
-                                  //   ],
-                                  //   hinText: 'Seleccione Cantón',
-                                  // ),
-                                  Expanded(
-                                    child: Container(
-                                      width: size.wScreen(100.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.iScreen(2.0),
-                                          vertical: size.iScreen(0)),
-                                      alignment: Alignment.center,
-                                      child: Consumer<PropietariosController>(
-                                        builder: (_, valueCanton, __) {
-                                          return DropdownButton<String>(
-                                            value: valueCanton.getCanton != null
-                                                ? valueCanton.getCanton
-                                                : null,
-                                            isExpanded: true,
-                                            // hint:
-                                            hint: widget.action == 'CREATE'
-                                                ? const Text(
-                                                    'Seleccione Cantón')
-                                                : valueCanton.getCanton != null
-                                                    ? Text(
-                                                        '${valueCanton.getCanton}')
-                                                    : const Text(
-                                                        'Seleccione Cantón'),
-                                            // const Text('Seleccione Cantón'),
-                                            items:
-                                                // _listaDepaises.map((e) {
-                                                valueCanton
-                                                    .getListaTodosLosCantones
-                                                    .map((e) {
-                                              return DropdownMenuItem<String>(
-                                                onTap: () {
-                                                  print(
-                                                      'object: ${e['canId']}');
-                                                  // valueCanton
-                                                  // .buscaCantons(e['paisId']);
-                                                },
-                                                value: e['canNombre'],
-                                                child: Text(
-                                                  e['canNombre'],
-                                                  style: GoogleFonts.lexendDeca(
-                                                      fontSize:
-                                                          size.iScreen(1.7),
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.normal),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            onChanged: (text) {
-                                              valueCanton.setCanton(text);
-                                            },
-                                          );
-                                        },
+                          ),
+                        ],
+                      ),
+                       //***********************************************/
+                      SizedBox(
+                        height: size.iScreen(1.5),
+                      ),
+                      //*****************************************/
+                      Row(
+                        children: [
+                          SizedBox(
+                            // width: size.wScreen(100.0),
+    
+                            // color: Colors.blue,
+                            child: Text('Cantón : ',
+                                style: GoogleFonts.lexendDeca(
+                                    // fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey)),
+                          ),
+                           Consumer<PropietariosController>(
+                        builder: (_, valueTipo, __) {
+                          return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(50.0),
+    
+                            // color: Colors.blue,
+                            child: Text(
+                                valueTipo.getCanton!.isEmpty
+                                    ? ' --- --- --- --- ---'
+                                    : '  ${valueTipo.getCanton} ',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: valueTipo.getProvincia.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          );
+                        },
+                      ),
+                          Spacer(),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: GestureDetector(
+                              onTap: () {
+                                // context
+                                //     .read<MascotasController>()
+                                //     .buscaAllMascotas('');
+    
+                                // // _buscarMascota(context, size);
+                                _modalSeleccionaCantones(context, size);
+    
+                                // //*******************************************/
+                              },
+                              child:  Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
                                       ),
-                                    ),
-                                  )
-                                ],
-                              ),
                             ),
+                          ),
+                        ],
+                      ),
+                      
+                      //    Spacer(),
+                      //      //***********************************************/
+                      // SizedBox(
+                      //   height: size.iScreen(1.0),
+                      // ),
+                      // //*****************************************/
+                      //       //***********************************************/
+                      //       Container(
+                      //         width: size.wScreen(100.0),
+
+                      //         // color: Colors.blue,
+                      //         child: Row(
+                      //           children: [
+                      //             Text('Provincia:',
+                      //                 style: GoogleFonts.lexendDeca(
+                      //                     // fontSize: size.iScreen(2.0),
+                      //                     fontWeight: FontWeight.normal,
+                      //                     color: Colors.grey)),
+                      //             // const DropMenuTipoCliente(
+                      //             //   data: [
+                      //             //     'FRECUENTE',
+                      //             //     'TEMPORAL',
+                      //             //     'OCASIONAL',
+                      //             //     'ESPECIAL',
+                      //             //   ],
+                      //             //   hinText: 'Seleccione Provinciaa',
+                      //             // ),
+                      //             Expanded(
+                      //               child: Container(
+                      //                 width: size.wScreen(100.0),
+                      //                 padding: EdgeInsets.symmetric(
+                      //                     horizontal: size.iScreen(2.0),
+                      //                     vertical: size.iScreen(0)),
+                      //                 alignment: Alignment.center,
+                      //                 child: Consumer<PropietariosController>(
+                      //                   builder: (_, valueProvincia, __) {
+                      //                     return DropdownButton<String>(
+                      //                       value: valueProvincia
+                      //                                   .getProvincia !=
+                      //                               null
+                      //                           ? valueProvincia.getProvincia
+                      //                           : null,
+                      //                       isExpanded: true,
+                      //                       hint: widget.action == 'CREATE'
+                      //                           ? const Text(
+                      //                               'Seleccione Provincia')
+                      //                           : valueProvincia.getProvincia !=
+                      //                                   null
+                      //                               ? Text(
+                      //                                   '${valueProvincia.getProvincia}')
+                      //                               : const Text(
+                      //                                   'Seleccione Provincia'),
+
+                      //                       //  const Text(
+                      //                       //     'Seleccione Provincia'),
+                      //                       items:
+                      //                           // _listaDepaises.map((e) {
+                      //                           valueProvincia
+                      //                               .getListaTodasLasProvincias
+                      //                               .map((e) {
+                      //                         return DropdownMenuItem<String>(
+                      //                           onTap: () {
+                      //                             print(
+                      //                                 'object: ${e['provId']}');
+                      //                             valueProvincia.buscaCantones(
+                      //                                 e['provId']);
+                      //                           },
+                      //                           value: e['provNombre'],
+                      //                           child: Text(
+                      //                             e['provNombre'],
+                      //                             style: GoogleFonts.lexendDeca(
+                      //                                 fontSize:
+                      //                                     size.iScreen(1.7),
+                      //                                 color: Colors.black87,
+                      //                                 fontWeight:
+                      //                                     FontWeight.normal),
+                      //                           ),
+                      //                         );
+                      //                       }).toList(),
+                      //                       onChanged: (text) {
+                      //                         valueProvincia.setProvincia(text);
+                      //                       },
+                      //                     );
+                      //                   },
+                      //                 ),
+                      //               ),
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                            //***********************************************/
+                            //***********************************************/
+                            // Container(
+                            //   width: size.wScreen(100.0),
+
+                            //   // color: Colors.blue,
+                            //   child: Row(
+                            //     children: [
+                            //       Text('Cantón:',
+                            //           style: GoogleFonts.lexendDeca(
+                            //               // fontSize: size.iScreen(2.0),
+                            //               fontWeight: FontWeight.normal,
+                            //               color: Colors.grey)),
+                            //       // const DropMenuTipoCliente(
+                            //       //   data: [
+                            //       //     'FRECUENTE',
+                            //       //     'TEMPORAL',
+                            //       //     'OCASIONAL',
+                            //       //     'ESPECIAL',
+                            //       //   ],
+                            //       //   hinText: 'Seleccione Cantón',
+                            //       // ),
+                            //       Expanded(
+                            //         child: Container(
+                            //           width: size.wScreen(100.0),
+                            //           padding: EdgeInsets.symmetric(
+                            //               horizontal: size.iScreen(2.0),
+                            //               vertical: size.iScreen(0)),
+                            //           alignment: Alignment.center,
+                            //           child: Consumer<PropietariosController>(
+                            //             builder: (_, valueCanton, __) {
+                            //               return DropdownButton<String>(
+                            //                 value: valueCanton.getCanton != null
+                            //                     ? valueCanton.getCanton
+                            //                     : null,
+                            //                 isExpanded: true,
+                            //                 // hint:
+                            //                 hint: widget.action == 'CREATE'
+                            //                     ? const Text(
+                            //                         'Seleccione Cantón')
+                            //                     : valueCanton.getCanton != null
+                            //                         ? Text(
+                            //                             '${valueCanton.getCanton}')
+                            //                         : const Text(
+                            //                             'Seleccione Cantón'),
+                            //                 // const Text('Seleccione Cantón'),
+                            //                 items:
+                            //                     // _listaDepaises.map((e) {
+                            //                     valueCanton
+                            //                         .getListaTodosLosCantones
+                            //                         .map((e) {
+                            //                   return DropdownMenuItem<String>(
+                            //                     onTap: () {
+                            //                       print(
+                            //                           'object: ${e['canId']}');
+                            //                       // valueCanton
+                            //                       // .buscaCantons(e['paisId']);
+                            //                     },
+                            //                     value: e['canNombre'],
+                            //                     child: Text(
+                            //                       e['canNombre'],
+                            //                       style: GoogleFonts.lexendDeca(
+                            //                           fontSize:
+                            //                               size.iScreen(1.7),
+                            //                           color: Colors.black87,
+                            //                           fontWeight:
+                            //                               FontWeight.normal),
+                            //                     ),
+                            //                   );
+                            //                 }).toList(),
+                            //                 onChanged: (text) {
+                            //                   valueCanton.setCanton(text);
+                            //                 },
+                            //               );
+                            //             },
+                            //           ),
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             //***********************************************/
                             SizedBox(
                               height: size.iScreen(2.0),
@@ -1268,10 +1636,10 @@ class _CrearPropietarioState extends State<CrearPropietario> {
                             Container(
                               // width: size.wScreen(45.0),
                               child: TextFormField(
-                                initialValue: widget.action == 'CREATE'
-                                    ? ''
-                                    : controller.getObservacion,
-                                // controller: _textObservacion,
+                                // initialValue: widget.action == 'CREATE'
+                                //     ? ''
+                                //     : controller.getObservacion,
+                                controller: _textObservacion,
                                 decoration: const InputDecoration(
                                     // suffixIcon: Icon(Icons.beenhere_outlined)
                                     ),
@@ -1557,9 +1925,12 @@ class _CrearPropietarioState extends State<CrearPropietario> {
         NotificatiosnService.showSnackBarDanger(
             'Debe seleccionar Tipo de Documento');
       }
-       else if (controller.getRecomendacion == null) {
-        NotificatiosnService.showSnackBarDanger(
+       else if ( widget.user!.empCategoria!='CONTABLE') {
+            if (  controller.getRecomendacion == null) {
+               NotificatiosnService.showSnackBarDanger(
             'Debe seleccionar Recomendación');
+            }
+       
       }
        else if (controller.getIsCedula == false) {
         NotificatiosnService.showSnackBarDanger('Debe validar Celulare');
@@ -1581,4 +1952,463 @@ class _CrearPropietarioState extends State<CrearPropietario> {
       }
     }
   }
+
+
+
+
+
+//*************MODAL PAISES*************//
+
+  void _modalSeleccionaPaises(BuildContext context, Responsive size) {
+   
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return 
+          Consumer<PropietariosController>(builder: (_, ctrl, __) {  
+              return   GestureDetector(
+            // onTap: () => FocusScope.of(context).unfocus(),
+            child: AlertDialog(
+              insetPadding: EdgeInsets.symmetric(
+                  horizontal: size.wScreen(5.0), vertical: size.wScreen(3.0)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('SELECCIONAR PAIS',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.0),
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.white,
+                          )),
+                      IconButton(
+                          splashRadius: size.iScreen(3.0),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: size.iScreen(3.5),
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                    width: size.wScreen(100),
+                    height: size.hScreen(26),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: listaDepaises.length,
+                      itemBuilder: (BuildContext context, int index) {
+
+                        final pais=listaDepaises[index];
+                        return GestureDetector(
+                          onTap: () {
+                        
+                           ctrl.setPais(pais['paisNombre']);
+                            ctrl.buscaProvincias( pais['paisId']);
+                            ctrl.setProvincia('');
+                            ctrl.setCanton('');
+                           
+                            //  ctrl.buscaProvincias( pais['provId']);
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            color: Colors.grey[100],
+                            margin: EdgeInsets.symmetric(
+                                vertical: size.iScreen(0.3)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(1.0),
+                                vertical: size.iScreen(1.0)),
+                            child:  Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(50.0),
+                                      child: Text(
+                                        '${pais['paisNombre']}',
+                                        // 'ASDAS',
+                                        style: GoogleFonts.lexendDeca(
+                                          fontSize: size.iScreen(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                            // Column(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Ubicación: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //           // color: Colors.red,
+                            //           width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['ubicacion']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Puesto: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                                      
+                            //            width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['puesto']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                              
+                            //   ],
+                            // ),
+                         
+                         
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+       
+
+
+          },);
+          
+         
+       
+       
+        });
+  }
+
+
+//*************MODAL PROVINCIA*************//
+
+  void _modalSeleccionaProvincia(BuildContext context, Responsive size) {
+    // final _data = [
+    //   'RENUNCIA',
+    //   'RENUNCIA ART 190 CT',
+    // ];
+    final ctrl=context.read<PropietariosController>();
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: AlertDialog(
+              insetPadding: EdgeInsets.symmetric(
+                  horizontal: size.wScreen(5.0), vertical: size.wScreen(3.0)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('SELECCIONAR PROVINCIA',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.0),
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.white,
+                          )),
+                      IconButton(
+                          splashRadius: size.iScreen(3.0),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: size.iScreen(3.5),
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                    width: size.wScreen(100),
+                    height: size.hScreen(26),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: ctrl.getListaTodasLasProvincias.length,
+                      itemBuilder: (BuildContext context, int index) {
+
+                        final provincia=ctrl.getListaTodasLasProvincias[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // _controller.setNombreUbicacion(_data[index]['ubicacion']);
+                            // _controller.setNombrePuesto(_data[index]['puesto']);
+                            ctrl.setProvincia(provincia['provNombre']);
+                             ctrl.buscaCantones( provincia['provId']);
+                              ctrl.setCanton('');
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            color: Colors.grey[100],
+                            margin: EdgeInsets.symmetric(
+                                vertical: size.iScreen(0.3)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(1.0),
+                                vertical: size.iScreen(1.0)),
+                            child:  Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(50.0),
+                                      child: Text(
+                                        '${provincia['provNombre']} ',
+                                        style: GoogleFonts.lexendDeca(
+                                          fontSize: size.iScreen(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                            // Column(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Ubicación: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //           // color: Colors.red,
+                            //           width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['ubicacion']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Puesto: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                                      
+                            //            width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['puesto']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                              
+                            //   ],
+                            // ),
+                         
+                         
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+
+//*************MODAL CANTONES*************//
+
+  void _modalSeleccionaCantones(BuildContext context, Responsive size) {
+  
+    final ctrl=context.read<PropietariosController>();
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: AlertDialog(
+              insetPadding: EdgeInsets.symmetric(
+                  horizontal: size.wScreen(5.0), vertical: size.wScreen(3.0)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('SELECCIONAR CANTÓN',
+                          style: GoogleFonts.lexendDeca(
+                            fontSize: size.iScreen(2.0),
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.white,
+                          )),
+                      IconButton(
+                          splashRadius: size.iScreen(3.0),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: size.iScreen(3.5),
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                    width: size.wScreen(100),
+                    height: size.hScreen(26),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: ctrl.getListaTodosLosCantones.length,
+                      itemBuilder: (BuildContext context, int index) {
+
+                        final canton=ctrl.getListaTodosLosCantones[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // _controller.setNombreUbicacion(_data[index]['ubicacion']);
+                            // _controller.setNombrePuesto(_data[index]['puesto']);
+                            ctrl.setCanton(canton['canNombre']);
+                             
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            color: Colors.grey[100],
+                            margin: EdgeInsets.symmetric(
+                                vertical: size.iScreen(0.3)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: size.iScreen(1.0),
+                                vertical: size.iScreen(1.0)),
+                            child:  Container(
+                                      // color: Colors.red,
+                                      width: size.wScreen(50.0),
+                                      child: Text(
+                                        '${canton['canNombre']} ',
+                                        style: GoogleFonts.lexendDeca(
+                                          fontSize: size.iScreen(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                            // Column(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: [
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Ubicación: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //           // color: Colors.red,
+                            //           width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['ubicacion']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           'Puesto: ',
+                            //           style: GoogleFonts.lexendDeca(
+                            //             fontSize: size.iScreen(1.8),
+                            //             fontWeight: FontWeight.normal,
+                            //             color: Colors.black54,
+                            //           ),
+                            //         ),
+                            //         Container(
+                                      
+                            //            width: size.wScreen(50.0),
+                            //           child: Text(
+                            //             '${_data[index]['puesto']} ',
+                            //             style: GoogleFonts.lexendDeca(
+                            //               fontSize: size.iScreen(1.8),
+                            //               fontWeight: FontWeight.bold,
+                            //               color: Colors.black54,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                              
+                            //   ],
+                            // ),
+                         
+                         
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+
+
+
+
+
+
 }

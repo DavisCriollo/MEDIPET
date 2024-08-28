@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:neitorcont/src/controllers/propietarios_controller.dart';
+import 'package:neitorcont/src/models/sesison_model.dart';
+import 'package:neitorcont/src/pages/lista_clientes.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/widgets/elementos_submenu.dart';
 import 'package:provider/provider.dart';
 
 class SubmenuPersonas extends StatelessWidget {
-  const SubmenuPersonas({Key? key}) : super(key: key);
+  final Session? user;
+  const SubmenuPersonas({Key? key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,13 @@ class SubmenuPersonas extends StatelessWidget {
                         .read<PropietariosController>()
                         .searchAllPersinas('');
 
+                      Navigator.of(
+                                                                    context)
+                                                                .push(MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                         ListaClientes(
+                                                                           user: user,)));
+                                                               
                     Navigator.pushNamed(context, 'ListaClientes');
 
 

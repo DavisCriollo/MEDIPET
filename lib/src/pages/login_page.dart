@@ -227,7 +227,7 @@ _textClave!.text= '';
                                 SizedBox(
                                   width: size.wScreen(100.0),
                                   // color: Colors.blue,
-                                  child: Text('Veretinaria',
+                                  child: Text('Empresa',
                                       style: GoogleFonts.lexendDeca(
                                         // fontSize: size.iScreen(2.0),
                                         fontWeight: FontWeight.normal,

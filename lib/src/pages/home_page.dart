@@ -304,26 +304,26 @@ class _HomePageState extends State<HomePage> {
                                           context, 'SubmenuTransacciones'),
                                       // onTap: () {},
                                     ),
-                                     ElementosHome(
-                                      enabled: true,
-                                      size: size,
-                                      image: 'assets/imgs/time.png',
-                                      label: 'COMPROBANTE',
-                                      // onTap: () => Navigator.pushNamed(context, 'productos'),
-                                      onTap: () {
-                                            final _ctrl =context.read<ComprobantesController>();
+                            //          ElementosHome(
+                            //           enabled: true,
+                            //           size: size,
+                            //           image: 'assets/imgs/time.png',
+                            //           label: 'COMPROBANTE',
+                            //           // onTap: () => Navigator.pushNamed(context, 'productos'),
+                            //           onTap: () {
+                            //                 final _ctrl =context.read<ComprobantesController>();
 
-                              _ctrl.setTotal();
-                              _ctrl.setTarifa({});
-                               _ctrl.setTipoDocumento('');
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const CrearComprobante(
-                                      tipo: 'CREATE',
-                                    )));
+                            //   _ctrl.setTotal();
+                            //   _ctrl.setTarifa({});
+                            //    _ctrl.setTipoDocumento('');
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         const CrearComprobante(
+                            //           tipo: 'CREATE',
+                            //         )));
 
-                                      },
-                                    ),
+                            //           },
+                            //         ),
                                     // ElementosHome(
                                     //   enabled: true,
                                     //   size: size,

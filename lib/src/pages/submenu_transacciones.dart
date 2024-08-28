@@ -77,7 +77,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerFacturas
                                 .setInfoBusquedaFacturasPaginacion([]);
                             _controllerFacturas.buscaAllFacturasPaginacion(
-                                '', true);
+                                '',false,_controllerFacturas.getTabIndex);
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
@@ -112,7 +112,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerPreFacturas
                                 .setInfoBusquedaPreFacturasPaginacion([]);
                             _controllerPreFacturas
-                                .buscaAllPreFacturasPaginacion('', true);
+                                .buscaAllPreFacturasPaginacion('', true,_controllerPreFacturas.getTabIndex);
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
@@ -147,7 +147,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerProformas
                                 .setInfoBusquedaProformasPaginacion([]);
                             _controllerProformas.buscaAllProformasPaginacion(
-                                '', true);
+                                '', true,_controllerProformas.getTabIndex);
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
@@ -184,7 +184,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerNotasCredito
                                 .setInfoBusquedaNotasCreditosPaginacion([]);
                             _controllerNotasCredito.buscaAllNotasCreditosPaginacion(
-                                '', true);
+                                '', true,_controllerNotasCredito.getTabIndex);
 
 
 
@@ -224,7 +224,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerAnuladas
                                 .setInfoBusquedaAnuladasPaginacion([]);
                             _controllerAnuladas.buscaAllAnuladasPaginacion(
-                                '', true);
+                                '', true,_controllerAnuladas.getTabIndex);
 
 
                             Navigator.of(context).push(MaterialPageRoute(
