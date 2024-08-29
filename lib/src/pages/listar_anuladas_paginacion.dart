@@ -331,8 +331,30 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                         if (  index==0) {
                           ctrl. setInfoBusquedaAnuladasPaginacion([]);
                           ctrl.resetValorTotal();
-                            ctrl.buscaAllAnuladasPaginacion(
-                                '',false,ctrl.getTabIndex);
+                            // ctrl.buscaAllAnuladasPaginacion(
+                            //     '',false,ctrl.getTabIndex);
+                             final _controllerAnuladas =
+                                context.read<AnuladasController>();
+
+                            _controllerAnuladas
+                                .onSearchTextAnuladaPaginacion("");
+
+                            _controllerAnuladas
+                                .setBtnSearchAnuladaPaginacion(false);
+                            _controllerAnuladas
+                                .setErrorAnuladasPaginacion(null);
+
+                            _controllerAnuladas
+                                .setError401AnuladasPaginacion(false);
+
+                            _controllerAnuladas.resetFormAnuladas();
+                            _controllerAnuladas.setPage(0);
+                            _controllerAnuladas.setIsNext(false);
+                            _controllerAnuladas
+                                .setInfoBusquedaAnuladasPaginacion([]);
+                            _controllerAnuladas.buscaAllAnuladasPaginacion(
+                                '', true,_controllerAnuladas.getTabIndex);
+
 
                         }
                         if ( index==1) {

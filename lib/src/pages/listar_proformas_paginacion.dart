@@ -660,8 +660,32 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                         if (  index==0) {
                           ctrl. setInfoBusquedaProformasPaginacion([]);
                           ctrl.resetValorTotal();
-                            ctrl.buscaAllProformasPaginacion(
-                                '',false,ctrl.getTabIndex);
+                            // ctrl.buscaAllProformasPaginacion(
+                            //     '',false,ctrl.getTabIndex);
+
+                          final _controllerProformas =
+                                context.read<ProformasController>();
+
+                            _controllerProformas
+                                .onSearchTextProformasPaginacion("");
+
+                            _controllerProformas
+                                .setBtnSearchProformasPaginacion(false);
+                            _controllerProformas
+                                .setErrorProformasPaginacion(null);
+
+                            _controllerProformas
+                                .setError401ProformasPaginacion(false);
+
+                            _controllerProformas.resetFormProformas();
+                            _controllerProformas.setPage(0);
+                            _controllerProformas.setIsNext(false);
+                            _controllerProformas
+                                .setInfoBusquedaProformasPaginacion([]);
+                            _controllerProformas.buscaAllProformasPaginacion(
+                                '', true,_controllerProformas.getTabIndex);
+
+
 
                         }
                         if ( index==1) {
@@ -1179,8 +1203,21 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                         final _ctrl =context.read<ComprobantesController>();
+                        //  final _ctrl =context.read<ComprobantesController>();
 
+                        //       _ctrl.setTotal();
+                        //       _ctrl.setTarifa({});
+                        //        _ctrl.setTipoDocumento('');
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const CrearComprobante(
+                        //               tipo: 'CREATE',
+                        //             )));
+
+                             final _ctrl =context.read<ComprobantesController>();
+                              _ctrl.resetPlacas();
+                                _ctrl.setDocumento('');
+                                 _ctrl.setClienteComprbante({});
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
@@ -1189,6 +1226,7 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                     const CrearComprobante(
                                       tipo: 'CREATE',
                                     )));
+
                        
                       }
                   

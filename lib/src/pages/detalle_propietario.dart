@@ -293,6 +293,7 @@ class DetallePropietarioPage extends StatelessWidget {
                     height: size.iScreen(0.0),
                   ),
                   //         //==========================================//
+                  
                   SizedBox(
                     width: size.wScreen(100.0),
                     // color: Colors.blue,
@@ -395,6 +396,73 @@ class DetallePropietarioPage extends StatelessWidget {
                   SizedBox(
                     height: size.iScreen(0.0),
                   ),
+                  //         //==========================================//
+                  SizedBox(
+                    width: size.wScreen(100.0),
+                    // color: Colors.blue,
+                    child: Text('Placa:',
+                        style: GoogleFonts.lexendDeca(
+                            // fontSize: size.iScreen(2.0),
+                            fontWeight: FontWeight.normal,
+                            color: Colors.grey)),
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: size.iScreen(0.5)),
+                      width: size.wScreen(100.0),
+                      child: Wrap(
+                        children: (infoProveedor['perOtros'] as List)
+                            .map(
+                              (e) => Container(
+                                width: size.wScreen(100.0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      // width: size.wScreen(100.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: size.iScreen(0.3)),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: size.iScreen(1.0),
+                                          vertical: size.iScreen(0.5)),
+                                      child: Text('$e',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(1.7),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.black)),
+                                    ),
+                                    //***********************************************/
+                                    SizedBox(
+                                      width: size.iScreen(3.0),
+                                    ),
+                                    //*****************************************/
+                                   
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      )
+                      // Text(
+                      //   '${infoProveedor['perCelular']}',
+                      //   style: GoogleFonts.lexendDeca(
+                      //       fontSize: size.iScreen(1.8),
+                      //       // color: Colors.white,
+                      //       fontWeight: FontWeight.normal),
+                      // ),
+                      ),
+                  //*****************************************/
+
+                  SizedBox(
+                    height: size.iScreen(0.0),
+                  ),
+                  //*****************************************/
+
+                  SizedBox(
+                    height: size.iScreen(0.0),
+                  ),
                   //==========================================//
                   SizedBox(
                     width: size.wScreen(100.0),
@@ -422,166 +490,166 @@ class DetallePropietarioPage extends StatelessWidget {
                     height: size.iScreen(0.0),
                   ),
                   //==========================================//
-                   SizedBox(
-                    width: size.wScreen(100.0),
-                    // color: Colors.blue,
-                    child: Text('Transacciones:',
-                        style: GoogleFonts.lexendDeca(
-                            // fontSize: size.iScreen(2.0),
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey)),
-                  ),
-                  //*****************************************/
+                  //  SizedBox(
+                  //   width: size.wScreen(100.0),
+                  //   // color: Colors.blue,
+                  //   child: Text('Transacciones:',
+                  //       style: GoogleFonts.lexendDeca(
+                  //           // fontSize: size.iScreen(2.0),
+                  //           fontWeight: FontWeight.normal,
+                  //           color: Colors.grey)),
+                  // ),
+                  // //*****************************************/
 
-                  SizedBox(
-                    height: size.iScreen(1.0),
-                  ),
-                  //==========================================//
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //==========================================//
 
-                     Container(
-                    width: size.wScreen(100.0),
-                    height: size.hScreen(6.0),
-                    // color: Colors.red,
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: size.iScreen(0.3)),
-                          child: Chip(
-                            label: Text(
-                              'Facturas',
-                              style: GoogleFonts.lexendDeca(
-                                  // fontSize: size.iScreen(1.8),
-                                  // color: Colors.white,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            avatar: Container(
-                               margin: EdgeInsets.only(left: size.iScreen(0.5)),
-                              decoration: BoxDecoration(
-                                // color: primaryColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: primaryColor,
-                                  width: size.iScreen(0.2),
-                                ),
-                              ),
-                              width: size.iScreen(3),
-                              height: size.iScreen(3),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '0',
-                                style: TextStyle(
-                                    // fontSize: size.iScreen(50),
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: size.iScreen(0.3),
-                          ),
-                          child: Chip(
-                              label: Text(
-                            'PreFacturas',
-                            style: GoogleFonts.lexendDeca(
-                                // fontSize: size.iScreen(1.8),
-                                // color: Colors.white,
-                                fontWeight: FontWeight.normal),
-                          ), avatar: Container(
-                             margin: EdgeInsets.only(left: size.iScreen(0.5)),
-                              decoration: BoxDecoration(
-                                // color: primaryColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: primaryColor,
-                                  width: size.iScreen(0.2),
-                                ),
-                              ),
-                              width: size.iScreen(3),
-                              height: size.iScreen(3),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '3',
-                                style: TextStyle(
-                                    // fontSize: size.iScreen(50),
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: size.iScreen(0.3),
-                          ),
-                          child: Chip(
-                              label: Text(
-                            'Proformas',
-                            style: GoogleFonts.lexendDeca(
-                                // fontSize: size.iScreen(1.8),
-                                // color: Colors.white,
-                                fontWeight: FontWeight.normal),
-                          ), avatar: Container(
-                            margin: EdgeInsets.only(left: size.iScreen(0.5)),
-                              decoration: BoxDecoration(
-                                // color: primaryColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: primaryColor,
-                                  width: size.iScreen(0.2),
-                                ),
-                              ),
-                              width: size.iScreen(3),
-                              height: size.iScreen(3),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '6',
-                                style: TextStyle(
-                                    // fontSize: size.iScreen(50),
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: size.iScreen(0.3),
-                          ),
-                          child: Chip(
-                              label: Text(
-                            'Notas Crédito',
-                            style: GoogleFonts.lexendDeca(
-                                // fontSize: size.iScreen(1.8),
-                                // color: Colors.white,
-                                fontWeight: FontWeight.normal),
-                          ), avatar: Container(
-                            margin: EdgeInsets.only(left: size.iScreen(0.5)),
-                              decoration: BoxDecoration(
-                                // color: primaryColor,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: primaryColor,
-                                  width: size.iScreen(0.2),
-                                ),
-                              ),
-                              width: size.iScreen(3),
-                              height: size.iScreen(3),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '6',
-                                style: TextStyle(
-                                    // fontSize: size.iScreen(50),
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),),
-                        ),
-                      ],
-                    ),
-                  ),
+                  //    Container(
+                  //   width: size.wScreen(100.0),
+                  //   height: size.hScreen(6.0),
+                  //   // color: Colors.red,
+                  //   child: ListView(
+                  //     physics: const BouncingScrollPhysics(),
+                  //     scrollDirection: Axis.horizontal,
+                  //     children: [
+                  //       Container(
+                  //         margin: EdgeInsets.symmetric(
+                  //             horizontal: size.iScreen(0.3)),
+                  //         child: Chip(
+                  //           label: Text(
+                  //             'Facturas',
+                  //             style: GoogleFonts.lexendDeca(
+                  //                 // fontSize: size.iScreen(1.8),
+                  //                 // color: Colors.white,
+                  //                 fontWeight: FontWeight.normal),
+                  //           ),
+                  //           avatar: Container(
+                  //              margin: EdgeInsets.only(left: size.iScreen(0.5)),
+                  //             decoration: BoxDecoration(
+                  //               // color: primaryColor,
+                  //               shape: BoxShape.circle,
+                  //               border: Border.all(
+                  //                 color: primaryColor,
+                  //                 width: size.iScreen(0.2),
+                  //               ),
+                  //             ),
+                  //             width: size.iScreen(3),
+                  //             height: size.iScreen(3),
+                  //             alignment: Alignment.center,
+                  //             child: Text(
+                  //               '0',
+                  //               style: TextStyle(
+                  //                   // fontSize: size.iScreen(50),
+                  //                   color: primaryColor,
+                  //                   fontWeight: FontWeight.bold),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.symmetric(
+                  //           horizontal: size.iScreen(0.3),
+                  //         ),
+                  //         child: Chip(
+                  //             label: Text(
+                  //           'PreFacturas',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               // fontSize: size.iScreen(1.8),
+                  //               // color: Colors.white,
+                  //               fontWeight: FontWeight.normal),
+                  //         ), avatar: Container(
+                  //            margin: EdgeInsets.only(left: size.iScreen(0.5)),
+                  //             decoration: BoxDecoration(
+                  //               // color: primaryColor,
+                  //               shape: BoxShape.circle,
+                  //               border: Border.all(
+                  //                 color: primaryColor,
+                  //                 width: size.iScreen(0.2),
+                  //               ),
+                  //             ),
+                  //             width: size.iScreen(3),
+                  //             height: size.iScreen(3),
+                  //             alignment: Alignment.center,
+                  //             child: Text(
+                  //               '3',
+                  //               style: TextStyle(
+                  //                   // fontSize: size.iScreen(50),
+                  //                   color: primaryColor,
+                  //                   fontWeight: FontWeight.bold),
+                  //             ),
+                  //           ),),
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.symmetric(
+                  //           horizontal: size.iScreen(0.3),
+                  //         ),
+                  //         child: Chip(
+                  //             label: Text(
+                  //           'Proformas',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               // fontSize: size.iScreen(1.8),
+                  //               // color: Colors.white,
+                  //               fontWeight: FontWeight.normal),
+                  //         ), avatar: Container(
+                  //           margin: EdgeInsets.only(left: size.iScreen(0.5)),
+                  //             decoration: BoxDecoration(
+                  //               // color: primaryColor,
+                  //               shape: BoxShape.circle,
+                  //               border: Border.all(
+                  //                 color: primaryColor,
+                  //                 width: size.iScreen(0.2),
+                  //               ),
+                  //             ),
+                  //             width: size.iScreen(3),
+                  //             height: size.iScreen(3),
+                  //             alignment: Alignment.center,
+                  //             child: Text(
+                  //               '6',
+                  //               style: TextStyle(
+                  //                   // fontSize: size.iScreen(50),
+                  //                   color: primaryColor,
+                  //                   fontWeight: FontWeight.bold),
+                  //             ),
+                  //           ),),
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.symmetric(
+                  //           horizontal: size.iScreen(0.3),
+                  //         ),
+                  //         child: Chip(
+                  //             label: Text(
+                  //           'Notas Crédito',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               // fontSize: size.iScreen(1.8),
+                  //               // color: Colors.white,
+                  //               fontWeight: FontWeight.normal),
+                  //         ), avatar: Container(
+                  //           margin: EdgeInsets.only(left: size.iScreen(0.5)),
+                  //             decoration: BoxDecoration(
+                  //               // color: primaryColor,
+                  //               shape: BoxShape.circle,
+                  //               border: Border.all(
+                  //                 color: primaryColor,
+                  //                 width: size.iScreen(0.2),
+                  //               ),
+                  //             ),
+                  //             width: size.iScreen(3),
+                  //             height: size.iScreen(3),
+                  //             alignment: Alignment.center,
+                  //             child: Text(
+                  //               '6',
+                  //               style: TextStyle(
+                  //                   // fontSize: size.iScreen(50),
+                  //                   color: primaryColor,
+                  //                   fontWeight: FontWeight.bold),
+                  //             ),
+                  //           ),),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
 
                 ],

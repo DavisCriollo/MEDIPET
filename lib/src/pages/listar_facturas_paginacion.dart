@@ -336,8 +336,30 @@ class _ListarFacturasPaginacionState extends State<ListarFacturasPaginacion> {
                         if (  index==0) {
                           ctrl. setInfoBusquedaFacturasPaginacion([]);
                           ctrl.resetValorTotal();
-                            ctrl.buscaAllFacturasPaginacion(
-                                '',false,ctrl.getTabIndex);
+                              final _controllerFacturas =
+                                context.read<FacturasController>();
+
+                            _controllerFacturas
+                                .onSearchTextFacturaPaginacion("");
+
+                            _controllerFacturas
+                                .setBtnSearchFacturaPaginacion(false);
+                            _controllerFacturas
+                                .setErrorFacturasPaginacion(null);
+
+                            _controllerFacturas
+                                .setError401FacturasPaginacion(false);
+
+                            _controllerFacturas.resetFormFacturas();
+                            _controllerFacturas.setPage(0);
+                            _controllerFacturas.setIsNext(false);
+                            _controllerFacturas
+                                .setInfoBusquedaFacturasPaginacion([]);
+                            _controllerFacturas.buscaAllFacturasPaginacion(
+                                '',false,_controllerFacturas.getTabIndex);
+                          
+                          //   ctrl.buscaAllFacturasPaginacion(
+                          //       '',false,ctrl.getTabIndex);
 
                         }
                         if ( index==1) {
@@ -1247,7 +1269,9 @@ Container(
                       ),
                       onPressed: () {
                          final _ctrl =context.read<ComprobantesController>();
-
+                         _ctrl.resetPlacas();
+                                _ctrl.setDocumento('');
+                                 _ctrl.setClienteComprbante({});
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');

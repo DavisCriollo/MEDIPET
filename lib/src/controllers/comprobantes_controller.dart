@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 
 import 'package:neitorcont/src/api/api_provider.dart';
+import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -29,6 +30,7 @@ import 'dart:typed_data';
 class ComprobantesController extends ChangeNotifier {
   final _api = ApiProvider();
   GlobalKey<FormState> comprobantesFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> placaFormKey = GlobalKey<FormState>();
 
   AuthResponse? usuarios;
   bool validateForm() {
@@ -38,7 +40,13 @@ class ComprobantesController extends ChangeNotifier {
       return false;
     }
   }
-
+ bool validateFormPlaca() {
+    if (placaFormKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   String _tipoDocumento = '';
   String get getTipoDocumento  => _tipoDocumento;
@@ -372,7 +380,108 @@ print('LA CANTIDAD ES: $_cantidad');
     notifyListeners(); // Notifica a los widgets escuchando este provider
   }
 
-//=============================================================//
+//============================= BUSCA CLIENTE COMPROBANTES  ================================//
+Map<String,dynamic> _clienteComprobante={};
+Map<String,dynamic> get getClienteComprobante=>_clienteComprobante;
+void setClienteComprbante(Map<String,dynamic> _info){
+  _clienteComprobante={};
+_clienteComprobante.addAll(_info);
+
+
+if (_clienteComprobante.isNotEmpty) {
+   _listaAddPlacas=[];
+  for (var item in _clienteComprobante['perOtros']) {
+   _listaAddPlacas!.add(item);
+  
+}
+}
+
+
+print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
+  notifyListeners();
+  
+}
+
+
+ Future buscaClienteComprobante() async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.searchClienteComprobante(
+      search: _documento,
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      if (response.isNotEmpty) {
+        setClienteComprbante(response[0]);
+         return response;
+      } else {
+             setClienteComprbante({});
+              return {};
+      }
+      
+    
+  // print('==LA DATA ===> $response');
+
+        
+        // filtrarFacturasDeHoy(dataSort);
+
+
+
+       
+      }
+
+      //===========================================//
+
+    
+    if (response == null) {
+     
+   
+      return null;
+    }
+ }
+
+//********************//
+
+//================================SELECCIONAMOS EL COLOR=============================================//
+ String? _documento = '';
+  String? get getDocumento => _documento;
+
+  void setDocumento(String? value) {
+  _documento = value;
+    print('==_documento ===> $_documento');
+    notifyListeners();
+  }
+
+
+//========================== LISTA DE PLACAS  =======================//
+  String? _itemAddPlaca = '';
+  String? get getItemAddPlaca => _itemAddPlaca;
+
+  void seItemAddPlaca(String? valor) {
+    _itemAddPlaca = valor;
+    // print('item Celulars: $_itemAddCelulares');
+    notifyListeners();
+  }
+
+
+  List? _listaAddPlacas = [];
+  List? get getlistaAddPlacas => _listaAddPlacas;
+
+  void agregaListaPlacas( ) {
+    _listaAddPlacas!.add(_itemAddPlaca);
+
+    notifyListeners();
+  }
+
+  void eliminaPlaca(String? _placa) {
+    _listaAddPlacas!.removeWhere((e) => e == _placa);
+
+    notifyListeners();
+  }
+  resetPlacas(){
+     _listaAddPlacas!.clear();
+  }
 
 
 

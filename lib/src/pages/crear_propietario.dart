@@ -48,6 +48,8 @@ class _CrearPropietarioState extends State<CrearPropietario> {
   TextEditingController _textObservacion = TextEditingController();
   TextEditingController _textAddTelefono = TextEditingController();
   TextEditingController _textAddCorreo = TextEditingController();
+ TextEditingController _textAddPlaca = TextEditingController();
+
   TextEditingController controllerTextCountry = TextEditingController();
   Genero? _genero;
   // PhoneCountryData? _initialCountryData;
@@ -153,8 +155,8 @@ _textCedula.text='';
         child: Scaffold(
           appBar: AppBar(
             title: widget.action == 'CREATE' || widget.action == 'SEARCH'
-                ?  Text('Crear Propietario')
-                :  Text('Editar Propietario'),
+                ?  Text('Crear Cliente')
+                :  Text('Editar Cliente'),
             actions: [
               Container(
                 margin: EdgeInsets.only(right: size.iScreen(1.5)),
@@ -330,10 +332,11 @@ _textCedula.text='';
                      _textDireccion.text=ctrlPropi.getDireccion!.toUpperCase();
                       _textTelefono.text=ctrlPropi.labelTelefono!;
                     _textObservacion.text=ctrlPropi.getObservacion!.toUpperCase();
-
+                    
                }else{
                  _textCedula.text='';
-                NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
+                // NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
+                
                }
                                               
 
@@ -393,7 +396,8 @@ _textCedula.text='';
                                     ),
                                   ],
                                 ),
-                                Column(
+                            widget.user!.empCategoria!='CONTABLE'
+                            ?    Column(
                                   children: [
                                     SizedBox(
                                       // width: size.wScreen(30.0),
@@ -532,7 +536,7 @@ _textCedula.text='';
                                   
                                   
                                   ],
-                                ),
+                                ):Container(),
                               ],
                             ),
 
@@ -749,6 +753,162 @@ _textCedula.text='';
 
                                     // color: Colors.blue,
                                     child: Consumer<PropietariosController>(
+                                      builder: (_, valuePlaca, __) {
+                                        return Row(
+                                          children: [
+                                            Text('Placa: ',
+                                                style: GoogleFonts.lexendDeca(
+                                                    // fontSize: size.iScreen(2.0),
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.grey)),
+                                            valuePlaca
+                                                    .getlistaAddPlacas!
+                                                    .isNotEmpty
+                                                ? Text(
+                                                    '${valuePlaca.getlistaAddPlacas!.length} ',
+                                                    style:
+                                                        GoogleFonts.lexendDeca(
+                                                            // fontSize: size.iScreen(2.0),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            color: Colors.grey))
+                                                : Container(),
+                                          ],
+                                        );
+                                      },
+                                    )),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _agregaPlaca(context, controller, size);
+                                    },
+                                    child: 
+                                    // Consumer<AppTheme>(builder: (_, valueTheme, __) {  
+                                    //   return Container(
+                                    //     alignment: Alignment.center,
+                                    //     color: valueTheme.getPrimaryTextColor,
+                                    //     width: size.iScreen(3.5),
+                                    //     padding: EdgeInsets.only(
+                                    //       top: size.iScreen(0.5),
+                                    //       bottom: size.iScreen(0.5),
+                                    //       left: size.iScreen(0.5),
+                                    //       right: size.iScreen(0.5),
+                                    //     ),
+                                    //     child: Icon(
+                                    //       Icons.add,
+                                    //       color: valueTheme.getSecondryTextColor,
+                                    //       size: size.iScreen(2.0),
+                                    //     ),
+                                    //   );
+                                    // },
+                                    
+                                    // ),
+                                       Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                        return Container(
+                                          alignment: Alignment.center,
+                                          color: valueTheme.appTheme.primaryColor,
+                                          width: size.iScreen(3.5),
+                                          padding: EdgeInsets.only(
+                                            top: size.iScreen(0.5),
+                                            bottom: size.iScreen(0.5),
+                                            left: size.iScreen(0.5),
+                                            right: size.iScreen(0.5),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: size.iScreen(2.0),
+                                          ),
+                                        );
+                                      },
+                                      ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+//***********************************************/
+                            SizedBox(
+                              height: size.iScreen(0.0),
+                            ),
+                            //*****************************************/
+
+                            Consumer<PropietariosController>(
+                              builder: (_, valuePlacas, __) {
+                                return SizedBox(
+                                  // color: Colors.red,
+                                  width: size.wScreen(100.0),
+                                  child: Wrap(
+                                    children: valuePlacas
+                                        .getlistaAddPlacas!
+                                        .map(
+                                          (e) => Row(
+                                            children: [
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onDoubleTap: () {
+                                                    // print(e);
+                                                    valuePlacas
+                                                        .eliminaPlaca(e);
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors
+                                                            .grey.shade200,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.0)),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: size
+                                                                .iScreen(0.5)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: size
+                                                                .iScreen(1.0),
+                                                            vertical: size
+                                                                .iScreen(0.5)),
+                                                    child: Text('$e',
+                                                        style: GoogleFonts
+                                                            .lexendDeca(
+                                                                fontSize: size
+                                                                    .iScreen(
+                                                                        2.0),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                                color: Colors
+                                                                    .black)),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                );
+                              },
+                            ),
+//
+                         
+                           
+                            //***********************************************/
+                            SizedBox(
+                              height: size.iScreen(2.0),
+                            ),
+                            //*****************************************/
+
+                            Row(
+                              children: [
+                                SizedBox(
+                                    width: size.wScreen(20.0),
+
+                                    // color: Colors.blue,
+                                    child: Consumer<PropietariosController>(
                                       builder: (_, valueCantCelulares, __) {
                                         return Row(
                                           children: [
@@ -873,7 +1033,7 @@ _textCedula.text='';
                                                             .lexendDeca(
                                                                 fontSize: size
                                                                     .iScreen(
-                                                                        1.7),
+                                                                        2.0),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -1094,7 +1254,7 @@ _textCedula.text='';
                                                             .lexendDeca(
                                                                 fontSize: size
                                                                     .iScreen(
-                                                                        1.7),
+                                                                        2.0),
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .normal,
@@ -1683,6 +1843,119 @@ _textCedula.text='';
         ));
   }
 
+  Future<bool?> _agregaPlaca(BuildContext context,
+      PropietariosController controller, Responsive size) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+            title: Container(child: const Text("AGREGAR PLACA")),
+            content: Card(
+              color: Colors.transparent,
+              elevation: 0.0,
+              child: Form(
+                key: controller.placaFormKey,
+                child: 
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: size.iScreen(50.0),
+                      child: 
+                      Container(
+                        // width: size.wScreen(45.0),
+                        child: TextFormField(
+                         textAlign: TextAlign.center,
+                          autofocus: true,
+                          controller: _textAddPlaca,
+                          decoration: const InputDecoration(
+                         
+
+                             
+                              ),
+                              style:TextStyle(
+                                fontSize:size.iScreen(3.5),
+                                color:Colors.black
+                              ),
+                              
+//  initialCountryCode: 'EC',
+
+                          // keyboardType: TextInputType.none,
+                          inputFormatters: <TextInputFormatter>[
+                            UpperCaseText(),
+                          ],
+                          onChanged: (text) {
+                           
+                            controller.seItemAddPlaca(text);
+                          },
+                          
+                        ),
+                      ),
+                    ),
+                   TextButton(
+                        onPressed: () {
+                          final isValidS = controller.validateFormPlaca();
+                          if (!isValidS) return;
+                          if (isValidS) {
+                            _textAddPlaca.text = '';
+                            controller.agregaListaPlacas();
+                            Navigator.pop(context);
+                          }
+                          //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
+                        },
+                        child: 
+                        // Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                        //                 return Container(
+                        //                   alignment: Alignment.center,
+                        //                   color: valueTheme.appTheme.primaryColor,
+                        //                   width: size.iScreen(3.5),
+                        //                   padding: EdgeInsets.only(
+                        //                     top: size.iScreen(0.5),
+                        //                     bottom: size.iScreen(0.5),
+                        //                     left: size.iScreen(0.5),
+                        //                     right: size.iScreen(0.5),
+                        //                   ),
+                        //                   child: Icon(
+                        //                     Icons.add,
+                        //                     color: Colors.white,
+                        //                     size: size.iScreen(2.0),
+                        //                   ),
+                        //                 );
+                        //               },
+                        //               ),
+                     Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                          return    Container(
+                          decoration: BoxDecoration(
+                              color: valueTheme.appTheme.primaryColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          // color: primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.iScreen(0.5),
+                              horizontal: size.iScreen(0.5)),
+                          child: Text('Agregar',
+                              style: GoogleFonts.lexendDeca(
+                                  // fontSize: size.iScreen(2.0),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white)),
+                        );
+
+                       },)
+                        
+                        
+                     
+                    )
+                  ],
+                ),
+              ),
+            )
+
+            //  },)
+
+            );
+      },
+    );
+  }
+
   Future<bool?> _agregaCelular(BuildContext context,
       PropietariosController controller, Responsive size) {
     return showDialog<bool>(
@@ -1723,7 +1996,7 @@ _textCedula.text='';
                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           ],
                           onChanged: (phone) {
-                            print(phone.completeNumber);
+                            // print(phone.completeNumber);
                             controller.seItemAddCelulars(phone.completeNumber);
                           },
                           onCountryChanged: (country) {
@@ -1735,7 +2008,7 @@ _textCedula.text='';
                     TextButton(
                         onPressed: () {
                           controller.seItemAddCelulars(
-                              controller.getItemAddCelulars!.replaceAll(
+                              controller.getItemAddCelular!.replaceAll(
                                   '+593', controller.getItemCodeCelular!));
 
                           final isValidS = controller.validateFormCelular();
@@ -1747,10 +2020,12 @@ _textCedula.text='';
                           }
                           //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
                         },
-                        child:Consumer<AppTheme>(builder: (_, value,__) { 
+
+
+                        child:Consumer<ThemeProvider>(builder: (_, valueTheme, __) { 
                           return    Container(
                           decoration: BoxDecoration(
-                              color: value.getPrimaryTextColor,
+                             color: valueTheme.appTheme.primaryColor,
                               borderRadius: BorderRadius.circular(5.0)),
                           // color: primaryColor,
                           padding: EdgeInsets.symmetric(
@@ -1882,10 +2157,10 @@ _textCedula.text='';
                           //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
                         },
                         child: 
-                      Consumer<AppTheme>(builder: (_, value,__) { 
+                    Consumer<ThemeProvider>(builder: (_, valueTheme, __) { 
                           return    Container(
                           decoration: BoxDecoration(
-                              color: value.getPrimaryTextColor,
+                              color: valueTheme.appTheme.primaryColor,
                               borderRadius: BorderRadius.circular(5.0)),
                           // color: primaryColor,
                           padding: EdgeInsets.symmetric(
@@ -1929,6 +2204,13 @@ _textCedula.text='';
             if (  controller.getRecomendacion == null) {
                NotificatiosnService.showSnackBarDanger(
             'Debe seleccionar Recomendación');
+            }
+       
+      }
+       else if ( widget.user!.empCategoria!='CONTABLE') {
+            if (  controller.getGeneros == null) {
+               NotificatiosnService.showSnackBarDanger(
+            'Debe seleccionar Género');
             }
        
       }

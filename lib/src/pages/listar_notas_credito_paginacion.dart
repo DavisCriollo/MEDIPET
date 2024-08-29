@@ -319,8 +319,31 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                         if (  index==0) {
                           ctrl. setInfoBusquedaNotasCreditosPaginacion([]);
                           ctrl.resetValorTotal();
-                            ctrl.buscaAllNotasCreditosPaginacion(
-                                '',false,ctrl.getTabIndex);
+                            // ctrl.buscaAllNotasCreditosPaginacion(
+                            //     '',false,ctrl.getTabIndex);
+                             final _controllerNotasCredito =
+                                context.read<NotasCreditosController>();
+
+                            _controllerNotasCredito
+                                .onSearchTextNotasCreditoPaginacion("");
+
+                            _controllerNotasCredito
+                                .setBtnSearchNotasCreditoPaginacion(false);
+                            _controllerNotasCredito
+                                .setErrorNotasCreditosPaginacion(null);
+
+                            _controllerNotasCredito
+                                .setError401NotasCreditosPaginacion(false);
+
+                            _controllerNotasCredito.resetFormNotasCreditos();
+                            _controllerNotasCredito.setPage(0);
+                            _controllerNotasCredito.setIsNext(false);
+                            _controllerNotasCredito
+                                .setInfoBusquedaNotasCreditosPaginacion([]);
+                            _controllerNotasCredito.buscaAllNotasCreditosPaginacion(
+                                '', true,_controllerNotasCredito.getTabIndex);
+
+
 
                         }
                         if ( index==1) {

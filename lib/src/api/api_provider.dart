@@ -1943,6 +1943,7 @@ class ApiProvider {
       if (dataResp.statusCode == 404) {
         return null;
       }
+      
       if (dataResp.statusCode == 401) {
        
         return null;
@@ -1959,12 +1960,14 @@ class ApiProvider {
   Future searchCliente({
     BuildContext? context,
     String? search,
-    // String? estado,
+    String? rol,
     String? token,
   }) async {
     try {
       // final url = Uri.parse('$_url/proveedores/agregarperfil/0?search=$search');
-      final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search');
+      // final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search');
+       final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search&fromapp=true&rol=rol');
+      
 
       final dataResp = await _http.get(
         url,
@@ -1974,16 +1977,22 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+       final responseData = jsonDecode(dataResp.body);
+      // print('RESPONSE: ${dataResp.statusCode}');
+      
+      // print('RESPONSE: ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 // print('RESPONSE: ${dataResp.body}');
 // print('RESPONSE:DSDSD ${dataResp.body}');
         // final responseData = AllInformesGuardias.fromJson(dataResp.body);
 
-        final responseData = jsonDecode(dataResp.body);
         return responseData;
       }
       if (dataResp.statusCode == 404) {
+        return null;
+      }
+       if (dataResp.statusCode == 409) {
+         snaks.NotificatiosnService.showSnackBarDanger("${responseData["msg"]}");
         return null;
       }
       if (dataResp.statusCode == 401) {
@@ -2000,7 +2009,57 @@ class ApiProvider {
   }
 
 
+  //=========================BUSCA  CLIENTE COMPROBANTE =====================================//
+  Future searchClienteComprobante({
+    BuildContext? context,
+    String? search,
 
+    String? token,
+  }) async {
+    try {
+      // final url = Uri.parse('$_url/proveedores/agregarperfil/0?search=$search');
+      // final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search');
+       final url = Uri.parse('$_url/proveedores/listar_clientes_factura/0?search=$search');
+      
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+       final responseData = jsonDecode(dataResp.body);
+      // print('RESPONSE: ${dataResp.statusCode}');
+      
+      // print('RESPONSE: ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+// print('RESPONSE: ${dataResp.body}');
+// print('RESPONSE:DSDSD ${dataResp.body}');
+        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
+        return responseData['data'];
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+       if (dataResp.statusCode == 409) {
+         snaks.NotificatiosnService.showSnackBarDanger("${responseData["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        // NotificatiosnService.showSnackBarError("Su Sesión ha Expirado");
+        //  Auth.instance.deleteSesion(context!);
+        // Auth.instance.deleteIdRegistro();
+        // Auth.instance.deleteTurnoSesion();
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
 
 
 

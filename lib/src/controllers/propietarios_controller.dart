@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 class PropietariosController extends ChangeNotifier {
   GlobalKey<FormState> propietariosFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> placaFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> celularFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> correoFormKey = GlobalKey<FormState>();
   final _api = ApiProvider();
@@ -23,6 +24,13 @@ class PropietariosController extends ChangeNotifier {
     }
   }
 
+  bool validateFormPlaca() {
+    if (placaFormKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   bool validateFormCelular() {
     if (celularFormKey.currentState!.validate()) {
       return true;
@@ -195,7 +203,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setGeneros(String? value) {
     _generos = value;
-    print('==_generos===> $_generos');
+    // print('==_generos===> $_generos');
     notifyListeners();
   }
 
@@ -281,8 +289,42 @@ class PropietariosController extends ChangeNotifier {
   //   // print('item Celulars: $_itemAddCelulares');
   //   notifyListeners();
   // }
+
+  // void getNumeroCelular(){
+
+  //   _itemAddCelulares!.replaceAll('from', replace)
+  // }
+//========================== LISTA DE PLACAS  =======================//
+  String? _itemAddPlaca = '';
+  String? get getItemAddPlaca => _itemAddPlaca;
+
+  void seItemAddPlaca(String? valor) {
+    _itemAddPlaca = valor;
+    // print('item Celulars: $_itemAddCelulares');
+    notifyListeners();
+  }
+
+
+  List? _listaAddPlacas = [];
+  List? get getlistaAddPlacas => _listaAddPlacas;
+
+  void agregaListaPlacas() {
+    _listaAddPlacas!.add(_itemAddPlaca);
+
+    notifyListeners();
+  }
+
+  void eliminaPlaca(String? _placa) {
+    _listaAddPlacas!.removeWhere((e) => e == _placa);
+
+    notifyListeners();
+  }
+  resetPlacas(){
+     _listaAddPlacas!.clear();
+  }
+//========================== LISTA DE CELULARES  =======================//
   String? _itemAddCelulares = '';
-  String? get getItemAddCelulars => _itemAddCelulares;
+  String? get getItemAddCelular => _itemAddCelulares;
 
   void seItemAddCelulars(String? valor) {
     _itemAddCelulares = valor;
@@ -290,11 +332,6 @@ class PropietariosController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void getNumeroCelular(){
-
-  //   _itemAddCelulares!.replaceAll('from', replace)
-  // }
-//========================== LISTA DE CORREOS  =======================//
 
   List? _listaAddCelulares = [];
   List? get getlistaAddCelulares => _listaAddCelulares;
@@ -310,7 +347,9 @@ class PropietariosController extends ChangeNotifier {
 
     notifyListeners();
   }
-
+resetCelulares(){
+     _listaAddCelulares!.clear();
+  }
 //========================== VALIDA INPUT CORREO  =======================//
   bool? _isCorreo;
 
@@ -346,6 +385,9 @@ class PropietariosController extends ChangeNotifier {
 
     notifyListeners();
   }
+  resetCorreos(){
+     _listaAddCorreos!.clear();
+  }
 
 //================================SELECCIONAMOS EL NOMBRE=============================================//
   String? _nombres = '';
@@ -353,7 +395,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setNombres(String? value) {
     _nombres = value;
-    print('==_nombres===> $_nombres');
+    // print('==_nombres===> $_nombres');
     notifyListeners();
   }
 
@@ -445,7 +487,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setListaTodosLosPaises(List data) {
     _listaTodosLosPaises = data;
-    print('PAISES: $_listaTodosLosPaises');
+   
     notifyListeners();
   }
 
@@ -536,7 +578,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setListaTodosLosCantones(List data) {
     _listaTodosLosCantones = data;
-    print('data CANTONES : ${_listaTodosLosCantones}');
+    // print('data CANTONES : ${_listaTodosLosCantones}');
     notifyListeners();
   }
 
@@ -641,7 +683,7 @@ class PropietariosController extends ChangeNotifier {
       "tabla": "proveedor", //DEFECTO
       "rucempresa": infoUser!.rucempresa, // LOGIN
       "rol": infoUser.rol, //LOGIN
-      "infRol": infoUser.rol, // del login
+     
       "perId": "",
       "perDocTipo": _labelTipoDocumento,
       "perDocNumero": _documentos,
@@ -656,9 +698,9 @@ class PropietariosController extends ChangeNotifier {
       "perTelefono": _labelTelefono,
       "perCelular": _listaAddCelulares,
       "perGenero": _generos,
-      "perRecomendacion": _recomendacion,
-      "perFecNacimiento": "",
-      "perEspecialidad": "",
+      "perRecomendacion":"OTROS",// _recomendacion,
+      "perFecNacimiento": _listaBusquedaCliente['perFecNacimiento'],
+      "perEspecialidad": _listaBusquedaCliente['perEspecialidad'],
       "perTitulo": "",
       "perSenescyt": "",
       "perPersonal": "INTERNO",
@@ -671,11 +713,12 @@ class PropietariosController extends ChangeNotifier {
       "perCanton": _canton,
       "perEmpresa": [infoUser.rucempresa],
       "perUser": infoUser.usuario,
-      "perOtros": ["ZZZ9999"],
+      "perOtros": _listaAddPlacas,
       "perFoto": "",
       "perDocumento": "",
       "perUbicacion": {"longitud": "", "latitud": ""},
-      "perISPContratos": {}
+      "perISPContratos":_listaBusquedaCliente['perISPContratos'],
+
     };
     // };
     // print(
@@ -1096,6 +1139,11 @@ String?  _userData;
     setDireccion(_listaBusquedaCliente['perDireccion']);
     setLabelTelefono(_listaBusquedaCliente['perTelefono']);
     setGeneros(_listaBusquedaCliente['perGenero']);
+
+       for (var item in _listaBusquedaCliente['perOtros']) {
+           _listaAddPlacas!.add(item);
+        }
+
     //  _listaAddCelulares!.add(_listaBusquedaCliente['perCelular']);
         for (var item in _listaBusquedaCliente['perCelular']) {
            _listaAddCelulares!.add(item);
@@ -1106,11 +1154,14 @@ String?  _userData;
            _listaAddCorreos!.add(item);
         }
 
+        
+
     setPais(_listaBusquedaCliente['perPais']);
      setProvincia(_listaBusquedaCliente['perProvincia']);
       setCanton(_listaBusquedaCliente['perCanton']);
         setObservacion(_listaBusquedaCliente['perObsevacion']);
-    // print('Cliente; BUSCADA:$_listaBusquedaCliente;');
+
+    print('Cliente BUSCADA:$_listaBusquedaCliente;');
     notifyListeners();
   }
 
@@ -1127,7 +1178,8 @@ String?  _userData;
     final response = await _api.searchCliente(
       search: _documentos,
       // estado: 'CLIENTES',
-      token: '${dataUser!.token}',
+      rol: '${dataUser!.rol}',
+      token: '${dataUser.token}',
     );
     if (response != null) {
       _errorBusquedaCliente= true;

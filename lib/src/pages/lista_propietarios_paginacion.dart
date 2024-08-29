@@ -538,56 +538,56 @@ class _ListaPropietariosPaginacionState
                                                                             const DetallePropietarioPage()));
                                                           },
                                                         ),
-                                                        CupertinoActionSheetAction(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets.only(
-                                                                    right: size
-                                                                        .iScreen(
-                                                                            2.0)),
-                                                                child: Text(
-                                                                  'Editar',
-                                                                  style: GoogleFonts.lexendDeca(
-                                                                      fontSize:
-                                                                          size.iScreen(
-                                                                              1.8),
-                                                                      color: Colors
-                                                                          .black87,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                                ),
-                                                              ),
-                                                              const Icon(
-                                                                  Icons.edit)
-                                                              //    const Icon(
-                                                              //     FontAwesomeIcons.edit,
-                                                              // //  color: Colors.red,
-                                                              //   )
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
-                                                            providerPropietariosPaginacion
-                                                                .getInfoPropietario(
-                                                                    propietario,
-                                                                    true);
-                                                            Navigator.pop(
-                                                                context);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .push(MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                         CrearPropietario(
-                                                                            action:
-                                                                                'EDIT',user: _usuario,)))
-                                                                .then((value) =>
-                                                                    onRefresh());
-                                                          },
-                                                        ),
+                                                        // CupertinoActionSheetAction(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment:
+                                                        //         MainAxisAlignment
+                                                        //             .center,
+                                                        //     children: [
+                                                        //       Container(
+                                                        //         margin: EdgeInsets.only(
+                                                        //             right: size
+                                                        //                 .iScreen(
+                                                        //                     2.0)),
+                                                        //         child: Text(
+                                                        //           'Editar',
+                                                        //           style: GoogleFonts.lexendDeca(
+                                                        //               fontSize:
+                                                        //                   size.iScreen(
+                                                        //                       1.8),
+                                                        //               color: Colors
+                                                        //                   .black87,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .normal),
+                                                        //         ),
+                                                        //       ),
+                                                        //       const Icon(
+                                                        //           Icons.edit)
+                                                        //       //    const Icon(
+                                                        //       //     FontAwesomeIcons.edit,
+                                                        //       // //  color: Colors.red,
+                                                        //       //   )
+                                                        //     ],
+                                                        //   ),
+                                                        //   onPressed: () {
+                                                        //     providerPropietariosPaginacion
+                                                        //         .getInfoPropietario(
+                                                        //             propietario,
+                                                        //             true);
+                                                        //     Navigator.pop(
+                                                        //         context);
+                                                        //     Navigator.of(
+                                                        //             context)
+                                                        //         .push(MaterialPageRoute(
+                                                        //             builder: (context) =>
+                                                        //                  CrearPropietario(
+                                                        //                     action:
+                                                        //                         'EDIT',user: _usuario,)))
+                                                        //         .then((value) =>
+                                                        //             onRefresh());
+                                                        //   },
+                                                        // ),
                                                       ],
                                                       cancelButton:
                                                           CupertinoActionSheetAction(
@@ -849,11 +849,19 @@ ctrlPropi.setDocumento('');
  ctrlPropi.setGeneros('');
   ctrlPropi.setNombres('');
                      ctrlPropi.setDireccion('');
-                      ctrlPropi.setLabelTelefono('');
+                       ctrlPropi.setLabelTelefono('');
+                      ctrlPropi.seItemAddPlaca('');
+                       ctrlPropi.resetPlacas();
+                         ctrlPropi.resetCelulares();
+                        ctrlPropi.resetCorreos();
                     ctrlPropi.setObservacion('');
+
                      ctrlPropi.setPais('');
+                      ctrlPropi.setListaTodosLosPaises([]);
                       ctrlPropi.setProvincia('');
+                      ctrlPropi.setListaTodasLasProvincias([]);
                        ctrlPropi.setCanton('');
+                        ctrlPropi.setListaTodosLosCantones([]);
 
 
                       Navigator.of(context)

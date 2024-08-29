@@ -35,7 +35,7 @@ class HomeController extends ChangeNotifier {
 
   void setUsuarioInfo(Session? _user) {
     _usuarioInfo = _user;
-     print('=====_usuarioInfo====++ > ${_usuarioInfo!.empCategoria}');
+    //  print('=====_usuarioInfo====++ > ${_usuarioInfo!.empCategoria}');
     notifyListeners();
   }
 

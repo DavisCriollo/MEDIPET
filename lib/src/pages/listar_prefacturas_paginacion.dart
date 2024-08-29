@@ -338,8 +338,34 @@ Container(
                         if (  index==0) {
                           ctrl. setInfoBusquedaPreFacturasPaginacion([]);
                           ctrl.resetValorTotal();
-                            ctrl.buscaAllPreFacturasPaginacion(
-                                '',false,ctrl.getTabIndex);
+                          //   ctrl.buscaAllPreFacturasPaginacion(
+                          //       '',false,ctrl.getTabIndex);
+
+                         final _controllerPreFacturas =
+                                context.read<PreFacturasController>();
+
+                            _controllerPreFacturas
+                                .onSearchTextPreFacturaPaginacion("");
+
+                            _controllerPreFacturas
+                                .setBtnSearchPreFacturaPaginacion(false);
+                            _controllerPreFacturas
+                                .setErrorPreFacturasPaginacion(null);
+
+                            _controllerPreFacturas
+                                .setError401PreFacturasPaginacion(false);
+
+                            _controllerPreFacturas.resetFormPreFacturas();
+                            _controllerPreFacturas.setPage(0);
+                            _controllerPreFacturas.setIsNext(false);
+                            _controllerPreFacturas
+                                .setInfoBusquedaPreFacturasPaginacion([]);
+                            _controllerPreFacturas
+                                .buscaAllPreFacturasPaginacion('', true,_controllerPreFacturas.getTabIndex);
+
+
+
+
 
                         }
                         if ( index==1) {
@@ -1419,8 +1445,20 @@ Container(
                         color: Colors.white,
                       ),
                       onPressed: () {
-                         final _ctrl =context.read<ComprobantesController>();
+                        //  final _ctrl =context.read<ComprobantesController>();
 
+                        //       _ctrl.setTotal();
+                        //       _ctrl.setTarifa({});
+                        //        _ctrl.setTipoDocumento('');
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const CrearComprobante(
+                        //               tipo: 'CREATE',
+                        //             )));
+                         final _ctrl =context.read<ComprobantesController>();
+                          _ctrl.resetPlacas();
+                                _ctrl.setDocumento('');
+                                 _ctrl.setClienteComprbante({});
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
