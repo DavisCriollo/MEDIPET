@@ -1215,6 +1215,7 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                         //             )));
 
                              final _ctrl =context.read<ComprobantesController>();
+                              _ctrl.resetListasProdutos();
                               _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
                                  _ctrl.setClienteComprbante({});

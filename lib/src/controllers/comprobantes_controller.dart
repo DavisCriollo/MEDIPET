@@ -31,6 +31,7 @@ class ComprobantesController extends ChangeNotifier {
   final _api = ApiProvider();
   GlobalKey<FormState> comprobantesFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> placaFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> cantidadFormKey = GlobalKey<FormState>();
 
   AuthResponse? usuarios;
   bool validateForm() {
@@ -47,7 +48,14 @@ class ComprobantesController extends ChangeNotifier {
       return false;
     }
   }
-
+   bool validateFormCantidad() {
+    if (cantidadFormKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+//================== TIPO DE DOCUMENTO  ==========================//
   String _tipoDocumento = '';
   String get getTipoDocumento  => _tipoDocumento;
 
@@ -55,6 +63,16 @@ class ComprobantesController extends ChangeNotifier {
    _tipoDocumento =''; 
    _tipoDocumento = _tipo;
      print('==_tipoDocumento===> $_tipoDocumento');
+    notifyListeners();
+  }
+//================== FORMA DE PAGO  ==========================//
+  String _formaDePago = '';
+  String get getFormaDePago  => _formaDePago;
+
+  void setFormaDePago(String _forma) {
+   _formaDePago =''; 
+   _formaDePago = _forma;
+     print('==_formaDePago===> $_formaDePago');
     notifyListeners();
   }
 
@@ -482,6 +500,140 @@ print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
   resetPlacas(){
      _listaAddPlacas!.clear();
   }
+
+//****************BUSCA PRODUCTOS ******************//
+
+List<Map<String,dynamic>> _listaDeProductosFactura=[]; 
+
+List<Map<String,dynamic>> get getListaDeProductosFactura=>_listaDeProductosFactura; 
+
+void setListaDeProductosFactura(Map<String,dynamic> _item){
+    _listaDeProductosFactura.removeWhere((e) => e['invId']==_item['invId']);
+  _listaDeProductosFactura.add(_item); 
+  print('TODOS LOS PRODUCTOSFactura :$_listaDeProductosFactura');
+  notifyListeners();
+}
+
+//*************************ELIMINA EL ITEM SELECCIONADO ****************************//
+void deleteItem(Map<String, dynamic> itemToDelete) {
+  // Verifica si la clave 'venProductos' existe y si es una lista
+  if (_respuestaCalculoItem.containsKey('venProductos') && _respuestaCalculoItem['venProductos'] is List) {
+    // Convierte la lista de productos a una lista de mapas
+    List<Map<String, dynamic>> productos = List<Map<String, dynamic>>.from(_respuestaCalculoItem['venProductos']);
+    // Elimina el item que coincide con el código y descripción dados
+    productos.removeWhere((producto) =>
+        producto['codigo'] == itemToDelete['codigo'] &&
+        producto['descripcion'] == itemToDelete['descripcion']);
+    // Actualiza la lista de productos en el mapa original
+    _respuestaCalculoItem['venProductos'] = productos;
+  } 
+
+enviaProductoCalculo({},0);
+
+
+
+notifyListeners();
+  // Imprime la lista actualizada de productos
+  print('Lista de productos después de la eliminación:');
+  print(_respuestaCalculoItem['venProductos']);
+}
+
+
+void resetListasProdutos(){
+_listaDeProductosFactura=[];
+ _listaDeProductos=[]; 
+  _respuestaCalculoItem={}; 
+  
+ notifyListeners();
+}
+
+
+List _listaDeProductos=[]; 
+
+List get getListaDeProductos=>_listaDeProductos; 
+
+void setListaDeProductos(List _list){
+  _listaDeProductos=[]; 
+  _listaDeProductos.addAll(_list); 
+  print('TODOS LOS PRODUCTOS :$_listaDeProductos');
+  notifyListeners();
+}
+
+
+
+
+ Future buscaAllProductos() async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.searchAllProductos(
+    
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+
+      
+        setListaDeProductos(response);
+    }
+
+    
+    if (response == null) {
+     
+   
+      return null;
+    }
+ }
+
+//*********ENVIA ITEM PARA CALCULO***********//
+
+
+Map<String,dynamic> _respuestaCalculoItem={};
+
+Map<String,dynamic> get getRespuestaCalculoItem=>_respuestaCalculoItem;
+
+
+void setRespuestaCalculoItem(Map<String,dynamic> _item){
+   _respuestaCalculoItem={};
+  _respuestaCalculoItem.addAll(_item); 
+ 
+ 
+  print('RESPUESTA CALCULO ITEM :$_respuestaCalculoItem');
+  notifyListeners();
+}
+
+ Future enviaProductoCalculo(Map<String,dynamic> _item, int _action) async {
+    final dataUser = await Auth.instance.getSession();
+
+final _data ={
+  "porcentajeRecargo": 0, // default
+  "tasaIVA": '${dataUser!.iva}',//15, // login => iva
+  "listaProductos": _respuestaCalculoItem.isNotEmpty? _respuestaCalculoItem['venProductos']:[], // tomar del json del factura la propiedad 'venProductos'
+  "nuevoItem":{
+    "codigo":  _action==1?_item['invSerie']:0, // tomar del endpoint del producto seleccionado
+    "descripcion": _action==1? _item['invNombre']:'', // tomar del endpoint del producto seleccionado
+    "cantidad":  _action==1?_cantidad:0, // cantidad del producto que va vender
+    "valUnitarioInterno": _action==1? _item['invprecios'][0]:0, // tomar del endpoint del producto seleccionado
+    "descPorcentaje": 0, // Porcentaje de descuento en caso de existir (en la web existe un campo que coloca el porcentaje)
+    "llevaIva":  _action==1?_item['invIva']:'', // tomar del endpoint del producto seleccionado
+    "incluyeIva": _action==1?_item['invIncluyeIva']:'' // tomar del endpoint del producto seleccionado
+  }
+};
+
+    final response = await _api.sendProductoCalculos(
+      data: _data,
+      token: '${dataUser.token}',
+    );
+
+    if (response != null) {
+
+            setRespuestaCalculoItem(response);
+    }
+ if (response == null) {
+       return null;
+    }
+
+
+ }
 
 
 

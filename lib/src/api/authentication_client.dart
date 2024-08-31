@@ -36,6 +36,11 @@ class Auth {
       foto: data.foto,
       colorPrimario: data.colorPrimario,
       colorSecundario: data.colorSecundario,
+      
+      iva: data.iva,
+      permisosUsuario: data.permisosUsuario,
+      ciudad: data.ciudad,
+      sector: data.sector
     );
 // CONVERTIMOS  LA INFORMACION  A STRING PARA GUARDAR AL DISPOSITIVO
     final String value = jsonEncode(session.toJson());

@@ -1456,6 +1456,7 @@ Container(
                         //               tipo: 'CREATE',
                         //             )));
                          final _ctrl =context.read<ComprobantesController>();
+                          _ctrl.resetListasProdutos();
                           _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
                                  _ctrl.setClienteComprbante({});

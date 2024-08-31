@@ -2063,5 +2063,127 @@ class ApiProvider {
 
 
 
+  //=========================BUSCA  AL PRODUCTOS =====================================//
+  Future searchAllProductos({
+    BuildContext? context,
+
+
+    String? token,
+  }) async {
+    try {
+      // final url = Uri.parse('$_url/proveedores/agregarperfil/0?search=$search');
+      // final url = Uri.parse('$_url/proveedores/searchByCedulaOfRuc/0?search=$search');
+       final url = Uri.parse('$_url/inventario/todos/registros');
+      
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+       final responseData = jsonDecode(dataResp.body);
+      // print('RESPONSE: ${dataResp.statusCode}');
+      
+      // print('RESPONSE: ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+// print('RESPONSE: ${dataResp.body}');
+// print('RESPONSE:DSDSD ${dataResp.body}');
+        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+       if (dataResp.statusCode == 409) {
+         snaks.NotificatiosnService.showSnackBarDanger("${responseData["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        // NotificatiosnService.showSnackBarError("Su Sesión ha Expirado");
+        //  Auth.instance.deleteSesion(context!);
+        // Auth.instance.deleteIdRegistro();
+        // Auth.instance.deleteTurnoSesion();
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
+
+
+  //=========================REALIZA CALCULOS PRODUCTOS IVAS =====================================//
+  Future sendProductoCalculos({
+    BuildContext? context,
+    Map<String, dynamic>? data,
+
+    String? token,
+  }) async {
+
+//  print('RESPONSE: ${data}');
+
+
+    try {
+  
+      //  final url = Uri.parse('$_url/ventas/calcularProducto');
+      
+
+      // final dataResp = await _http.get(
+      //   url,
+      //   headers: {"x-auth-token": '$token'},
+      // );
+       final _data = json.encode(data);
+
+      var dataResp = await _http.post(
+          Uri.parse('$_url/ventas/calcularProducto'),
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": '$token'
+          },
+          body: _data);
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+       final responseData = jsonDecode(dataResp.body);
+      print('RESPONSE: ${dataResp.statusCode}');
+      
+      print('RESPONSE: ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+// print('RESPONSE: ${dataResp.body}');
+// print('RESPONSE:DSDSD ${dataResp.body}');
+        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+       if (dataResp.statusCode == 400) {
+         snaks.NotificatiosnService.showSnackBarDanger("${responseData["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        // NotificatiosnService.showSnackBarError("Su Sesión ha Expirado");
+        //  Auth.instance.deleteSesion(context!);
+        // Auth.instance.deleteIdRegistro();
+        // Auth.instance.deleteTurnoSesion();
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+ 
+ 
+ 
+  }
+
+
+
 
 }

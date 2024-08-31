@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-
+ final ctrl = context.read<HomeController>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Consumer<ThemeProvider>(
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                     // :
                      backgroundColor: Theme.of(context).primaryColor,
                   title:  Text(
-                      'NeitorVet',
+                  'NEITORCONT',
                      
                     ),
                   ) ,

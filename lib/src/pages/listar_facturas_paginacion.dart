@@ -1269,9 +1269,24 @@ Container(
                       ),
                       onPressed: () {
                          final _ctrl =context.read<ComprobantesController>();
+                           _ctrl.resetListasProdutos();
                          _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
-                                 _ctrl.setClienteComprbante({});
+                                 _ctrl.setClienteComprbante({
+			"perId": 1,
+			"perNombre": "CONSUMIDOR FINAL",
+			"perDocNumero": "9999999999999",
+			"perDocTipo": "RUC",
+			"perTelefono": "0000000001",
+			"perDireccion": "s/n",
+			"perEmail": [
+				"sin@sincorreo.com"
+			],
+			"perCelular": [],
+			"perOtros": [
+				"ZZZ9999"
+			]
+		});
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
