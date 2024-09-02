@@ -726,7 +726,10 @@ resetCelulares(){
     // print(_pyloadNuevoPropietario);
     // // // print(
     // //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevoPropietario);
+  
+   serviceSocket.sendMessage('client:guardarData', _pyloadNuevoPropietario);
+  
+  //  serviceSocket.socket!.emit('client:guardarData', _pyloadNuevoPropietario);
   }
 
 //==================== LISTO TODOS  PROPIETARIOS====================//
@@ -852,8 +855,10 @@ resetCelulares(){
       "perId": idPropietario,
     };
 
-    serviceSocket.socket!
-        .emit('client:eliminarData', _pyloadEliminaPropietario);
+serviceSocket.sendMessage('client:guardarData', _pyloadEliminaPropietario);
+
+    // serviceSocket.socket!
+        // .emit('client:eliminarData', _pyloadEliminaPropietario);
   }
 
   //     '======================================================================GET INFO PROPIETARIO ===================================================');
@@ -991,7 +996,12 @@ String?  _userData;
     // print(_pyloadNuevoPropietario);
     // // // print(
     // //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaPropietario);
+    
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaPropietario);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaPropietario);
+
+
+
     // serviceSocket.sendMessage('client:actualizarData', _pyloadEditaPropietario);
   }
 
@@ -1197,6 +1207,51 @@ String?  _userData;
       return null;
     }
   }
+
+
+
+//================================ BUSQUEDA DE PRODUCTO=============================================//
+
+//   bool _btnSearch = false;
+//   bool get btnSearch => _btnSearch;
+
+//   void setBtnSearch(bool action) {
+//     _btnSearch = action;
+//     notifyListeners();
+//   }
+  
+
+//  List<dynamic> _allItemsFilters=[];
+//    List<dynamic> get allItemsFilters => _allItemsFilters;
+//    void setListFilter( List<dynamic> _list){
+//   _allItemsFilters = [];
+
+// // _sortList();
+
+
+
+// _allItemsFilters.addAll(_list);
+// // print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+
+//   notifyListeners();
+//  }
+
+//   void search(String query) {
+//       List<Map<String, dynamic>> originalList = List.from(getListaDeProductos); // Copia de la lista original
+//     if (query.isEmpty) {
+//       _allItemsFilters = originalList;
+//     } else {
+//       _allItemsFilters = originalList.where((estudiante) {
+//         return 
+//         // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+//                estudiante['invNombre'].toLowerCase().contains(query.toLowerCase()) ;
+//       }).toList();
+//     }
+//     notifyListeners();
+//   }
+
+
+
 
 
 

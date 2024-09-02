@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 
 import 'package:neitorcont/src/api/api_provider.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
+import 'package:neitorcont/src/controllers/home_controller.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
+import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
@@ -27,7 +30,9 @@ import 'package:provider/provider.dart';
 import 'dart:typed_data';
 
 
+
 class ComprobantesController extends ChangeNotifier {
+
   final _api = ApiProvider();
   GlobalKey<FormState> comprobantesFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> placaFormKey = GlobalKey<FormState>();
@@ -63,6 +68,16 @@ class ComprobantesController extends ChangeNotifier {
    _tipoDocumento =''; 
    _tipoDocumento = _tipo;
      print('==_tipoDocumento===> $_tipoDocumento');
+    notifyListeners();
+  }
+  //================== TIPO DE DOCUMENTO  ==========================//
+  String _nombreConductor = '';
+  String get getNombreConductor  => _nombreConductor;
+
+  void setNombreConductor(String _name) {
+   _nombreConductor =''; 
+   _nombreConductor = _name;
+     print('==_nombreConductor===> $_nombreConductor');
     notifyListeners();
   }
 //================== FORMA DE PAGO  ==========================//
@@ -372,7 +387,18 @@ print('LA CANTIDAD ES: $_cantidad');
 
     notifyListeners();
   }
+ //================================INPUT   PRECIO=============================================//
+ double _precio =1.0;
+  double get getPrecio => _precio;
 
+  void setPrecio(double value) {
+    _precio = value;
+
+print('LA precio ES: $_precio');
+ calculateTotal();
+
+    notifyListeners();
+  }
 
   //================================INPUT   CANTIDAD=============================================//
 
@@ -461,7 +487,7 @@ print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
 
 //********************//
 
-//================================SELECCIONAMOS EL COLOR=============================================//
+//================================SELECCIONAMOS EL DOCUMENTO=============================================//
  String? _documento = '';
   String? get getDocumento => _documento;
 
@@ -555,7 +581,7 @@ List get getListaDeProductos=>_listaDeProductos;
 void setListaDeProductos(List _list){
   _listaDeProductos=[]; 
   _listaDeProductos.addAll(_list); 
-  print('TODOS LOS PRODUCTOS :$_listaDeProductos');
+  // print('TODOS LOS PRODUCTOS :$_listaDeProductos');
   notifyListeners();
 }
 
@@ -574,6 +600,9 @@ void setListaDeProductos(List _list){
 
       
         setListaDeProductos(response);
+setListFilter( response);
+
+
     }
 
     
@@ -597,7 +626,7 @@ void setRespuestaCalculoItem(Map<String,dynamic> _item){
   _respuestaCalculoItem.addAll(_item); 
  
  
-  print('RESPUESTA CALCULO ITEM :$_respuestaCalculoItem');
+  // print('RESPUESTA CALCULO ITEM :$_respuestaCalculoItem');
   notifyListeners();
 }
 
@@ -612,7 +641,7 @@ final _data ={
     "codigo":  _action==1?_item['invSerie']:0, // tomar del endpoint del producto seleccionado
     "descripcion": _action==1? _item['invNombre']:'', // tomar del endpoint del producto seleccionado
     "cantidad":  _action==1?_cantidad:0, // cantidad del producto que va vender
-    "valUnitarioInterno": _action==1? _item['invprecios'][0]:0, // tomar del endpoint del producto seleccionado
+    "valUnitarioInterno": _action==1? _precio:0, // tomar del endpoint del producto seleccionado
     "descPorcentaje": 0, // Porcentaje de descuento en caso de existir (en la web existe un campo que coloca el porcentaje)
     "llevaIva":  _action==1?_item['invIva']:'', // tomar del endpoint del producto seleccionado
     "incluyeIva": _action==1?_item['invIncluyeIva']:'' // tomar del endpoint del producto seleccionado
@@ -635,6 +664,189 @@ final _data ={
 
  }
 
+//================================SELECCIONAMOS EL COLOR=============================================//
+ String? _tipoDeTransaccion = '';
+  String? get getTipoDeTransaccion => _tipoDeTransaccion;
+
+  void setTipoDeTransaccion(String? value) {
+    _tipoDeTransaccion = '';
+  _tipoDeTransaccion = value;
+    print('==_tipoDeTransaccion ===> $_tipoDeTransaccion');
+    notifyListeners();
+  }
+
+
+//*************CREAR FACTURA ******************//
+
+
+
+ Future createFactura(BuildContext context) async {
+   final socketService = SocketService();
+    final dataUser = await Auth.instance.getSession();
+    DateTime now = DateTime.now();
+  String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+ 
+
+final _nuevaFactura =
+ {
+  "venEmpRegimen": "", // default
+  "venProductosAntiguos": [], // default
+ 
+  "optionDocumento": _tipoDeTransaccion, // Indica el tipo de documento: 'F' para FACTURA, 'N' para PREFACTURA y 'P' para PROFORMA
+ 
+  "venTotalRetencion": "0.00", // default
+  "venOption": "1", // default 1 porque es nuevo, los otros numeros son para otros caso de editar, ect (1 => nuevo, 2 => copia, 3 => editar, 4 => notacredito)
+  "venTipoDocumento": _tipoDeTransaccion, // Indica el tipo de documento: 'F' para FACTURA, 'N' para PREFACTURA y 'P' para PROFORMA
+ 
+  "venIdCliente": _clienteComprobante['perId'], // tomar del endpoint cliente
+  "venRucCliente": _clienteComprobante['perDocNumero'], // tomar del endpoint cliente
+  "venTipoDocuCliente": _clienteComprobante['perDocTipo'], // tomar del endpoint cliente
+  "venNomCliente": _clienteComprobante['perNombre'], // tomar del endpoint cliente
+  "venEmailCliente": _clienteComprobante['perEmail'], // tomar del endpoint cliente
+  "venTelfCliente": _clienteComprobante['perTelefono'], // tomar del endpoint cliente
+  "venCeluCliente": _clienteComprobante['perCelular'], // tomar del endpoint cliente
+  "venDirCliente":_clienteComprobante['perDireccion'], // tomar del endpoint cliente
+ 
+  "venEmpRuc": "",// default
+  "venEmpNombre": "",// default
+  "venEmpComercial": "",// default
+  "venEmpDireccion": "",// default
+  "venEmpTelefono": "",// default
+  "venEmpEmail": "",// default
+  "venEmpObligado": "",// default
+  
+  "venFormaPago": _formaDePago, // Método de pago:TARJETA PREPAGO,DINERO ELECTRONICO,TARJETA DEBITO,CHEQUE,DEPOSITO,TRANSFERENCIA,TARJETA DE CREDITO,EFECTIVO
+  
+  "venNumero": "0", // default
+  "venFacturaCredito": "NO", // Indica si la factura es a crédito: 'SI' o 'NO'
+  "venDias": "0", // Número de días de crédito si 'venFacturaCredito' es 'SI'; de lo contrario, asignar 0
+  "venAbono": "0", // Monto del abono; por defecto 0, asignar el valor si existe un abono
+  "venDescPorcentaje": "0", // Porcentaje de descuento; de lo contrario, asignar 0
+  
+  "venOtrosDetalles": _listaAddPlacas, //lista de placas 
+  "venObservacion": "", // Observaciones sobre la factura; dejar vacío si no hay
+  
+
+  "venSubTotal12": _respuestaCalculoItem['venSubTotal12'], // obtener del endpoint calcularProducto, por dafault 0
+  "venSubtotal0": _respuestaCalculoItem['venSubtotal0'], // obtener del endpoint calcularProducto, por dafault 0
+  "venDescuento": _respuestaCalculoItem['venDescuento'], // obtener del endpoint calcularProducto, por dafault 0
+  "venSubTotal": _respuestaCalculoItem['venSubTotal'], // obtener del endpoint calcularProducto, por dafault 0
+  "venTotalIva": _respuestaCalculoItem['venTotalIva'], // obtener del endpoint calcularProducto, por dafault 0
+  "venCostoProduccion": _respuestaCalculoItem['venCostoProduccion'], // obtener del endpoint calcularProducto, por dafault 0
+  "venTotal": _respuestaCalculoItem['venTotal'], // obtener del endpoint calcularProducto, por dafault 0
+
+
+
+
+  "venFechaFactura": formattedDate, // Fecha de emisión de la factura
+  "venNumFactura": "", // default
+  "venNumFacturaAnterior": "", // default
+  "venAutorizacion": "0", // default
+  "venFechaAutorizacion": "", // default
+  "venErrorAutorizacion": "NO", // default
+  "venEstado": "ACTIVA", // default
+  "venEnvio": "NO", // default
+  "fechaSustentoFactura": "", // default
+  "venEmpresa": dataUser!.rucempresa,  //login
+  "venProductos": _respuestaCalculoItem['venProductos'],
+   // obtener del endpoint calcularProducto, por dafault []
+       "tabla": "ventas", //DEFECTO
+      "rucempresa": dataUser.rucempresa, // LOGIN
+      "venUser": dataUser.usuario, // login
+      "rol": dataUser.rol, //LOGIN
+};
+
+
+socketService.sendMessage('client:guardarData', _nuevaFactura);
+
+
+ }
+
+//===========================OBTENEMOS LA RESPUESTA DE LA FACTURA REALIZADA===================================//
+
+// //=============VERIFICA ESTADO=============//
+bool? _isFacturaOk=false;
+
+  bool? get isFacturaOk => _isFacturaOk;
+
+  void setFacturaOk(bool? value) {
+    _isFacturaOk = value;
+    print('_isFacturaOk : $_isFacturaOk');
+    notifyListeners();  // Esto notificará a los listeners sobre el cambio
+  }
+
+// //==========================//
+
+//================================ BANDERA DE SI EXISTE CLIENTE=============================================//
+ bool? _existCliente = false;
+  bool? get getExistCliente => _existCliente;
+
+  void setExistCliente(bool? value) {
+  _existCliente = value;
+    print('==_existCliente ===> $_existCliente');
+    notifyListeners();
+  }
+
+//================================ BUSQUEDA DE PRODUCTO=============================================//
+
+  bool _btnSearch = false;
+  bool get btnSearch => _btnSearch;
+
+  void setBtnSearch(bool action) {
+    _btnSearch = action;
+    notifyListeners();
+  }
+  //===================BOTON SEARCH MORE CLIENTE==========================//
+
+  // bool _btnSearchMore = false;
+  // bool get btnSearchMore => _btnSearchMore;
+
+  // void setBtnSearchMore(bool action) {
+  //   _btnSearchMore = action;
+
+  //   notifyListeners();
+  // }
+
+//  List<Map<String, String>> _allItemsFilters = [];
+
+
+
+ List<dynamic> _allItemsFilters=[];
+   List<dynamic> get allItemsFilters => _allItemsFilters;
+   void setListFilter( List<dynamic> _list){
+  _allItemsFilters = [];
+
+// _sortList();
+
+
+
+_allItemsFilters.addAll(_list);
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+
+  notifyListeners();
+ }
+
+  void search(String query) {
+      List<Map<String, dynamic>> originalList = List.from(getListaDeProductos); // Copia de la lista original
+    if (query.isEmpty) {
+      _allItemsFilters = originalList;
+    } else {
+      _allItemsFilters = originalList.where((estudiante) {
+        return 
+        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+               estudiante['invNombre'].toLowerCase().contains(query.toLowerCase()) ;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+// void _sortList() {
+//     _allItemsFilters.sort((a, b) {
+//       final nameA = a['invNombre']?.toLowerCase() ?? '';
+//       final nameB = b['invNombre']?.toLowerCase() ?? '';
+//       return nameA.compareTo(nameB);
+//     });
+//   }
 
 
 

@@ -451,7 +451,9 @@ class VacunasController extends ChangeNotifier {
     // print(_pyloadNuevaVacuna);
     // // // print(
     //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaVacuna);
+   
+   serviceSocket.sendMessage('client:guardarData', _pyloadNuevaVacuna);
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaVacuna);
   }
 
 //================================== CREA NUEVA CONSIGNA  ==============================//
@@ -497,7 +499,9 @@ class VacunasController extends ChangeNotifier {
     // print(_pyloadEditarVacuna);
     // // // print(
     //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditarVacuna);
+    
+     serviceSocket.sendMessage('client:actualizarData', _pyloadEditarVacuna);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditarVacuna);
   }
 
   //================================== ELIMINAR  VACUNA  ==============================//
@@ -514,7 +518,8 @@ class VacunasController extends ChangeNotifier {
       "carnId": idVacuna,
     };
 
-    serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaVacuna);
+  serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaVacuna);
+    // serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaVacuna);
   }
 
 //=====================//

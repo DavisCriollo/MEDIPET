@@ -75,37 +75,37 @@ class _ListaPeluqueriaPagiacionState extends State<ListaPeluqueriaPagiacion> {
 
   void initData() async {
       _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<PeluqueriaController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    // await loadInfo.buscaAllPeluqueria('');
-// await loadInfo.buscaRecomendaciones();
-    // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'peluqueria') {
-        loadInfo.buscaAllPeluqueriasPaginacion('',false);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'peluqueria') {
-        loadInfo.buscaAllPeluqueriasPaginacion('',false);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'peluqueria') {
+//     final loadInfo = context.read<PeluqueriaController>();
+//     // Provider.of<PropietariosController>(context, listen: false);
+//     // await loadInfo.buscaAllPeluqueria('');
+// // await loadInfo.buscaRecomendaciones();
+//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
+//     final serviceSocket = context.read<SocketService>();
+//     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'peluqueria') {
+//         loadInfo.buscaAllPeluqueriasPaginacion('',false);
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'peluqueria') {
+//         loadInfo.buscaAllPeluqueriasPaginacion('',false);
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+//       if (data['tabla'] == 'peluqueria') {
       
-  //  loadInfo.setPage(0);
-  //                   loadInfo.setCantidad(25);
-  //                   loadInfo.buscaAllPeluqueriasPaginacion('', false);
+//   //  loadInfo.setPage(0);
+//   //                   loadInfo.setCantidad(25);
+//   //                   loadInfo.buscaAllPeluqueriasPaginacion('', false);
 
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
   }
 
   @override

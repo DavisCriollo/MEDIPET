@@ -39,26 +39,7 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-//   Future validaInicioDeSesion(BuildContext context,) async {
-//     final dataUser = await Auth.instance.getSession();
-//     //  print( 'token Usuario${dataUser!.token}');
-
-//     final response = await _api.revisaToken(
-//       token: dataUser!.token,
-//     );
-
-//     if (response != null) {
-     
-//   //  print('=========++ > ${response}');
-//       return response;
-//     }
-//     if (response == null) {
-//       // print('=========++ > ${response}');
-//       await Auth.instance.deleteSesion(context);
-
-//       return null;
-//     }
-//   }
+//==========================//
   
 
 

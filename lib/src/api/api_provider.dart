@@ -2150,9 +2150,9 @@ class ApiProvider {
         return null;
       }
        final responseData = jsonDecode(dataResp.body);
-      print('RESPONSE: ${dataResp.statusCode}');
+      // print('RESPONSE: ${dataResp.statusCode}');
       
-      print('RESPONSE: ${dataResp.body}');
+      // print('RESPONSE: ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 // print('RESPONSE: ${dataResp.body}');
 // print('RESPONSE:DSDSD ${dataResp.body}');

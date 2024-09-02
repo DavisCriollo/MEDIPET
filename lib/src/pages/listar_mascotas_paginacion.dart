@@ -81,28 +81,28 @@ class _ListaMascotaPaginacionState extends State<ListaMascotaPaginacion> {
     // await loadInfo.buscaAllMascotasPaginacion('',false);
 // await loadInfo.buscaRecomendaciones();
     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPaginacion('', false);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPaginacion('', false);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPaginacion('', false);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'mascota') {
+    //     loadInfo.buscaAllMascotasPaginacion('', false);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'mascota') {
+    //     loadInfo.buscaAllMascotasPaginacion('', false);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'mascota') {
+    //     loadInfo.buscaAllMascotasPaginacion('', false);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket?.on('server:error', (data) {
+    //   NotificatiosnService.showSnackBarError(data['msg']);
+    // });
   }
 
   @override

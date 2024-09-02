@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/crear_historia_clinica.dart';
 import 'package:neitorcont/src/pages/crear_hospitalizacion.dart';
 import 'package:neitorcont/src/pages/crear_mascota.dart';
@@ -53,6 +54,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'crearReserva': (_) =>  const CrearReserva(),
 
   // 'SunmiScreen': (_) =>   InnerPrinterExample(),
+   'comprobante': (_) =>  const CrearComprobante(),
  
   
 };

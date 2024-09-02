@@ -79,6 +79,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:neitorcont/src/api/authentication_client.dart';
+import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/home_controller.dart';
 import 'package:neitorcont/src/controllers/propietarios_controller.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -211,7 +213,7 @@ import 'package:neitorcont/src/services/notifications_service.dart';
 
 
 
-//************************//
+//***********PERFECTO*************//
 
 enum ServerStatus {
   Online,
@@ -234,6 +236,18 @@ class SocketService extends ChangeNotifier {
   ServerStatus _serverStatus = ServerStatus.Connecting;
   late IO.Socket? _socket;
   bool _snackbarShown = false;
+
+
+  // Estado que se actualizará cuando se reciba una respuesta del servidor
+  Map<String, dynamic>? _latestResponse={};
+  Map<String, dynamic>? get latestResponse => _latestResponse;
+  void resetResponseSocket(){
+
+_latestResponse={};
+
+  notifyListeners();
+
+}
 
   ServerStatus get serverStatus => _serverStatus;
   IO.Socket? get socket => _socket;
@@ -299,47 +313,104 @@ class SocketService extends ChangeNotifier {
 //     });
 
         //=================GUARDADO=====================//
-    _socket?.on('server:guardadoExitoso', (data) {
+    _socket?.on('server:guardadoExitoso', (data) async {
+       final dataUser = await Auth.instance.getSession();
+      
+
+        if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlPropietario=PropietariosController();
-        if (data['tabla'] == 'proveedor') {
         _ctrlPropietario.buscaAllPropietarios('');
          // Maneja la respuesta del servidor aquí
-        _showSnackbar('$data',);
+        _showSnackbar('Registro guardado exitosamente');
          notifyListeners();
         }
+        // Condición para la tabla 'factura'
+    else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+        // Implementa la lógica específica para la tabla 'factura'
+        print('Factura guardada exitosamente');
+        // _ctrlComprobante.setInfoFacturaResponse(data);
+        // _ctrlComprobante.setFacturaOk(true);
+        _showSnackbar('Factura guardada exitosamente');
+        //==============LA RSPUESTA ===================//
+        _latestResponse=data;
+        print('$data');
+        // Llama a cualquier función relacionada, si es necesario
+        // final _ctrlFactura = FacturaController();
+        // _ctrlFactura.someFunction();
+        notifyListeners();
+    } 
+        
        
     });
        //=================ACTUALIZADO=====================//
-    _socket?.on('server:actualizadoExitoso', (data) {
+    _socket?.on('server:actualizadoExitoso', (data)  async{
+         final dataUser = await Auth.instance.getSession();
         final _ctrlPropietario=PropietariosController();
-        if (data['tabla'] == 'proveedor') {
+        if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         _ctrlPropietario.buscaAllPropietarios('');
          // Maneja la respuesta del servidor aquí
-        _showSnackbar('$data');
+        _showSnackbar('Registro actualizado exitosamente');
          notifyListeners();
         }
+         else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+        // Implementa la lógica específica para la tabla 'factura'
+        // print('Factura guardada exitosamente');
+        _showSnackbar('Factura actualizada exitosamente');
+        //==============LA RSPUESTA ===================//
+        print('$data');
+        // Llama a cualquier función relacionada, si es necesario
+        // final _ctrlFactura = FacturaController();
+        // _ctrlFactura.someFunction();
+        notifyListeners();
+    } 
        
     });
         //=================ELIMINADO=====================//
-    _socket?.on('server:eliminadoExitoso', (data) {
+    _socket?.on('server:eliminadoExitoso', (data) async {
+         final dataUser = await Auth.instance.getSession();
         final _ctrlPropietario=PropietariosController();
-        if (data['tabla'] == 'proveedor') {
+        if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         _ctrlPropietario.buscaAllPropietarios('');
          // Maneja la respuesta del servidor aquí
-        _showSnackbar('$data');
+        // _showSnackbar('$data');
+          _showSnackbar('Registro eliminado exitosamente');
          notifyListeners();
         }
+        else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+        // Implementa la lógica específica para la tabla 'factura'
+        // print('Factura guardada exitosamente');
+        _showSnackbar('Factura eliminada exitosamente');
+        //==============LA RSPUESTA ===================//
+        print('$data');
+        // Llama a cualquier función relacionada, si es necesario
+        // final _ctrlFactura = FacturaController();
+        // _ctrlFactura.someFunction();
+        notifyListeners();
+    } 
        
     });
           //=================ERROR=====================//
-    _socket?.on('server:error', (data) {
-        final _ctrlPropietario=PropietariosController();
-        if (data['tabla'] == 'proveedor') {
-        _ctrlPropietario.buscaAllPropietarios('');
-         // Maneja la respuesta del servidor aquí
-        _showSnackbarError('${data['msg']}');
+    _socket?.on('server:error', (data)  async{
+         final dataUser = await Auth.instance.getSession();
+       
+        if (data['tabla'] == 'proveedor'&& data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+          final _ctrlPropietario=PropietariosController(); 
+          _ctrlPropietario.buscaAllPropietarios('');
+         _showSnackbarError('${data['msg']}');
          notifyListeners();
         }
+        else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+        // Implementa la lógica específica para la tabla 'factura'
+        // _ctrlComprobante.setFacturaOk(false);
+       
+        _showSnackbarError('${data['msg']}');
+        
+        notifyListeners();
+    } 
        
     });
 

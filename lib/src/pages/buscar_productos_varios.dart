@@ -32,6 +32,7 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
   final ctrlTheme = context.read<ThemeProvider>();
+
          
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -84,7 +85,10 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                 ),
                 textAlign: TextAlign.start,
                 style: const TextStyle(),
-                onChanged: (text) {},
+                onChanged: (text) {
+                    final _ctrl=context.read<ComprobantesController>();
+                     _ctrl.search(text);
+                },
                 validator: (text) {
                   if (text!.trim().isNotEmpty) {
                     return null;
@@ -99,6 +103,17 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
               SizedBox(
                 height: size.iScreen(1.0),
               ),
+
+                //************************//
+
+                
+
+
+
+                //**************************//
+
+
+
               Consumer<ComprobantesController>(builder: (_, value, __) { 
                 return  
                 value.getRespuestaCalculoItem.isNotEmpty
@@ -157,11 +172,27 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                             // Text("sin datos");
                           }
 
-                          return ListView.builder(
-                            itemCount: provider.getListaDeProductos.length,
+                          return 
+                          
+                          (provider.allItemsFilters.isEmpty)
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ))
+                                        : (provider.allItemsFilters.length > 0)
+                                            ?
+                          
+                          
+                          ListView.builder(
+                            itemCount: provider.allItemsFilters.length,
                             itemBuilder: (BuildContext context, int index) {
                               final producto =
-                                  provider.getListaDeProductos[index];
+                                  provider.allItemsFilters[index];
                               return 
                               Card(
                                 child: ListTile(
@@ -237,7 +268,9 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
 
                               
                             },
-                          );
+                          ) : const NoData(
+                              label: 'No existen datos para mostar',
+                            );
                         },
                       )
                       ))
@@ -372,6 +405,9 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
 //   }
 Future<bool?> _agregaCantidad(BuildContext context,
     ComprobantesController controller, Responsive size,Map<String,dynamic> _item) {
+controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
+
+
   return showDialog<bool>(
     context: context,
     builder: (context) {
@@ -398,51 +434,106 @@ Future<bool?> _agregaCantidad(BuildContext context,
                                   fontWeight: FontWeight.normal,
                                   // color: Colors.white,
                                 )),
+                  
                     SizedBox(
-                      width: size.iScreen(20.0),
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        autofocus: true,
-                        decoration:  InputDecoration(
-                           label: Text( 'Ingrese Cantidad'),
-                                    labelStyle:TextStyle(color: Colors.red,fontSize: size.iScreen(1.9)),
-                          // Aquí puedes agregar más personalización si es necesario
-                        ),
-                        style: TextStyle(
-                          fontSize: size.iScreen(3.5),
-                          color: Colors.black,
-                        ),
-                         keyboardType:const TextInputType.numberWithOptions(
-                                                decimal:
-                                                    true),
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(
-                                              r'^\d*\.?\d*$')),
-                        ],
-                        onChanged: (text) {
-                                          double value = 0.0;
-                                          if (text.isNotEmpty) {
-                                            try {
-                                              value = double.parse(text);
-                                            } catch (e) {
-                                              // Manejo del error si el parse falla
-                                              value = 0.0;
-                                            }
-                                          }
-                                          controller.setCantidad(value);
-                                        },
-                                         validator: (text) {
-                                          if (text == null || text.isEmpty) {
-                                            return 'Por favor, ingrese  cantidad';
-                                          }
-                                          final value = double.tryParse(text);
-                                          if (value == null) {
-                                            return 'Ingrese un número válido';
-                                          }
-                                          return null; // Devuelve null si la validación es exitosa
-                                        },
-                      ),
-                    ),
+  // width: size.iScreen(20.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      Expanded(
+        child: Container(
+          width: size.iScreen(18.0),
+          child: TextFormField(
+            initialValue: '${controller.getPrecio}',
+            textAlign: TextAlign.center,
+            autofocus: false,
+            decoration: InputDecoration(
+              label: Text('Precio'),
+              labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
+              // Aquí puedes agregar más personalización si es necesario
+            ),
+            style: TextStyle(
+              fontSize: size.iScreen(3.0),
+              color: Colors.black,
+            ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+            ],
+            onChanged: (text) {
+              double value = 0.0;
+              if (text.isNotEmpty) {
+                try {
+                  value = double.parse(text);
+                } catch (e) {
+                  // Manejo del error si el parse falla
+                  value = 0.0;
+                }
+              }
+              controller.setPrecio(value);
+            },
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return 'Por favor, ingrese precio';
+              }
+              final value = double.tryParse(text);
+              if (value == null) {
+                return 'Ingrese un número válido';
+              }
+              return null; // Devuelve null si la validación es exitosa
+            },
+          ),
+        ),
+      ),
+      SizedBox(width: size.iScreen(3.0)),
+      Expanded(
+        child: Container(
+          width: size.iScreen(10.0),
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            autofocus: true,
+            decoration: InputDecoration(
+              label: Text('Cantidad'),
+              labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
+              // Aquí puedes agregar más personalización si es necesario
+            ),
+            style: TextStyle(
+              fontSize: size.iScreen(3.5),
+              color: Colors.black,
+            ),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+            ],
+            onChanged: (text) {
+              double value = 0.0;
+              if (text.isNotEmpty) {
+                try {
+                  value = double.parse(text);
+                } catch (e) {
+                  // Manejo del error si el parse falla
+                  value = 0.0;
+                }
+              }
+              controller.setCantidad(value);
+            },
+            validator: (text) {
+              if (text == null || text.isEmpty) {
+                return 'Por favor, ingrese cantidad';
+              }
+              final value = double.tryParse(text);
+              if (value == null) {
+                return 'Ingrese un número válido';
+              }
+              return null; // Devuelve null si la validación es exitosa
+            },
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
                     SizedBox(height: size.iScreen(2.0)),
                     TextButton(
                       onPressed: () {
@@ -485,5 +576,12 @@ Future<bool?> _agregaCantidad(BuildContext context,
     },
   );
 }
+
+
+
+
+
+
+
 
 }

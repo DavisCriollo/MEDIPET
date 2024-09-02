@@ -859,7 +859,9 @@ class PeluqueriaController extends ChangeNotifier {
     // print(_pyloadNuevaPeluqueria);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaPeluqueria);
+   
+      serviceSocket.sendMessage('client:guardarData', _pyloadNuevaPeluqueria);
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaPeluqueria);
   }
 
   //================================== ELIMINAR  PELUQUERIA  ==============================//
@@ -876,7 +878,9 @@ class PeluqueriaController extends ChangeNotifier {
       "pelId": idPeluqueria,
     };
 
-    serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaPeluqueria);
+
+ serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaPeluqueria);
+    // serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaPeluqueria);
   }
 
   //================================GET INFO PELUQUERIA=============================================//
@@ -1078,7 +1082,10 @@ String? _userData='';
     // print(_pyloadEditaPeluqueria);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaPeluqueria);
+   
+   
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaPeluqueria);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaPeluqueria);
   }
 
 

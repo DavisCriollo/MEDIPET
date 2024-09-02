@@ -145,8 +145,8 @@ class VideosController extends ChangeNotifier {
       "rol": infoUser.rol,
       "tutoId": idVideo,
     };
-
-    serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaVideo);
+serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaVideo);
+    // serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaVideo);
   }
 
 //====  LISTA CATEGORIAS =================//
@@ -251,7 +251,9 @@ class VideosController extends ChangeNotifier {
     // print(_pyloadNuevaTutorial);
     // // print(
     //   //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevoTutorial);
+   
+   serviceSocket.sendMessage('client:guardarData', _pyloadNuevoTutorial);
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevoTutorial);
   }
 //================================== EDITA TUTORIALS  ==============================//
 
@@ -280,7 +282,9 @@ class VideosController extends ChangeNotifier {
     // print(_pyloadEditarTutorial);
     // // print(
     //   //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditarTutorial);
+   
+     serviceSocket.sendMessage('client:actualizarData', _pyloadEditarTutorial);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditarTutorial);
   }
 
 //================================== CREA ITEM TUTORIAL  ==============================//
@@ -311,7 +315,9 @@ class VideosController extends ChangeNotifier {
     // print(_pyloadItemTutorial);
     // // print(
     //   //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadItemTutorial);
+   
+    serviceSocket.sendMessage('client:actualizarData', _pyloadItemTutorial);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadItemTutorial);
   }
 
   //================================== ELIMINAR  TUTORIAL  ==============================//
@@ -341,8 +347,10 @@ class VideosController extends ChangeNotifier {
       "tutoFecReg": ""
     };
 
-    serviceSocket.socket!
-        .emit('client:actualizarData', _pyloadEliminaItemTutorial);
+     serviceSocket.sendMessage('client:actualizarData', _pyloadEliminaItemTutorial);
+
+    // serviceSocket.socket!
+    //     .emit('client:actualizarData', _pyloadEliminaItemTutorial);
   }
 
   // bool _exist = false;

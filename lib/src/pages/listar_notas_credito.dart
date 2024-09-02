@@ -43,32 +43,32 @@ class _ListarNotasCreditoState extends State<ListarNotasCredito> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<NotasCreditosController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    // await loadInfo.buscaAllNotasCreditos('');
+    // final loadInfo = context.read<NotasCreditosController>();
+    // // Provider.of<PropietariosController>(context, listen: false);
+    // // await loadInfo.buscaAllNotasCreditos('');
 
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditos('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditos('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'notascredito') {
-        loadInfo.buscaAllNotasCreditos('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'notascredito') {
+    //     loadInfo.buscaAllNotasCreditos('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'notascredito') {
+    //     loadInfo.buscaAllNotasCreditos('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'notascredito') {
+    //     loadInfo.buscaAllNotasCreditos('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket?.on('server:error', (data) {
+    //   NotificatiosnService.showSnackBarError(data['msg']);
+    // });
   }
 
   @override

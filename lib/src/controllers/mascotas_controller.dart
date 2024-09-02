@@ -1010,7 +1010,10 @@ class MascotasController extends ChangeNotifier {
     // print(_pyloadNuevaMascota);
     // // // print(
     //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaMascota);
+   
+    serviceSocket.sendMessage('client:guardarData', _pyloadNuevaMascota);
+   
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaMascota);
   }
 
   //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
@@ -1234,7 +1237,8 @@ class MascotasController extends ChangeNotifier {
     // print(_pyloadEditaMascota);
     // // // print(
     // //     '==========================JSON DE PERSONAL DEIGNADO ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaMascota);
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaMascota);
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaMascota);
   }
 
   //     '==========================SELECCIONA TELEFONO===============================');
@@ -1276,8 +1280,9 @@ class MascotasController extends ChangeNotifier {
       "nombre": infoUser.nombre,
     };
 
-    serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaMascota);
-    // buscaAllMascotasPaginacion('',false);
+     serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaMascota);
+    // serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaMascota);
+    
     
 
 

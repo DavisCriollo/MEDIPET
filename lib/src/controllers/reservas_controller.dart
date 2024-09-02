@@ -620,7 +620,9 @@ class ReservasController extends ChangeNotifier {
       "resId": idReserva,
     };
 
-    serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaReserva);
+     serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaReserva);
+
+    // serviceSocket.socket!.emit('client:eliminarData', _pyloadEliminaReserva);
   }
 
 //======================================= GET INFO RESERVA ===========================================================//
@@ -710,7 +712,9 @@ _userData=_data['resUser'];
     // print(_pyloadNuevaReserva);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaReserva);
+   
+    serviceSocket.sendMessage('client:guardarData', _pyloadNuevaReserva);
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaReserva);
   }
 
   //================================== CREA RESERVA  ==============================//
@@ -757,6 +761,9 @@ _userData=_data['resUser'];
     // print(_pyloadEditaReserva);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaReserva);
+    
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaReserva);
+    
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaReserva);
   }
 }

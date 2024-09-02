@@ -47,34 +47,34 @@ class _ListaHistoriaClinicaState extends State<ListaHistoriaClinica> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<HistoriaClinicaController>();
+//     final loadInfo = context.read<HistoriaClinicaController>();
 
-    // Provider.of<PropietariosController>(context, listen: false);
-    await loadInfo.buscaAllHistoriasClinicas('');
-// await loadInfo.buscaRecomendaciones();
-    // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'historiaclinica') {
-        loadInfo.buscaAllHistoriasClinicas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'historiaclinica') {
-        loadInfo.buscaAllHistoriasClinicas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'historiaclinica') {
-        loadInfo.buscaAllHistoriasClinicas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//     // Provider.of<PropietariosController>(context, listen: false);
+//     await loadInfo.buscaAllHistoriasClinicas('');
+// // await loadInfo.buscaRecomendaciones();
+//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
+//     final serviceSocket = context.read<SocketService>();
+//     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'historiaclinica') {
+//         loadInfo.buscaAllHistoriasClinicas('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'historiaclinica') {
+//         loadInfo.buscaAllHistoriasClinicas('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+//       if (data['tabla'] == 'historiaclinica') {
+//         loadInfo.buscaAllHistoriasClinicas('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
   }
 
   @override

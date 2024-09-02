@@ -42,32 +42,32 @@ class _ListarPreFacturasState extends State<ListarPreFacturas> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<PreFacturasController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    // await loadInfo.buscaAllPreFacturas('');
+    // final loadInfo = context.read<PreFacturasController>();
+    // // Provider.of<PropietariosController>(context, listen: false);
+    // // await loadInfo.buscaAllPreFacturas('');
 
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'prefacturas') {
-        loadInfo.buscaAllPreFacturas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'prefacturas') {
-        loadInfo.buscaAllPreFacturas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'prefacturas') {
-        loadInfo.buscaAllPreFacturas('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'prefacturas') {
+    //     loadInfo.buscaAllPreFacturas('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'prefacturas') {
+    //     loadInfo.buscaAllPreFacturas('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'prefacturas') {
+    //     loadInfo.buscaAllPreFacturas('');
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket?.on('server:error', (data) {
+    //   NotificatiosnService.showSnackBarError(data['msg']);
+    // });
   }
 
   @override

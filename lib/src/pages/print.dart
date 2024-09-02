@@ -1308,191 +1308,322 @@ class _PrintTicketState extends State<PrintTicket> {
                           child: const Text('CUT PAPER')),
                     ]),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () async {
-                            await SunmiPrinter.initPrinter();
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 20),
+              //   child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //       children: [
+              //         ElevatedButton(
+              //             onPressed: () async {
+              //               await SunmiPrinter.initPrinter();
 
-                            await SunmiPrinter.startTransactionPrint(true);
-                            await SunmiPrinter.setAlignment(
-                                SunmiPrintAlign.CENTER);
-                            await SunmiPrinter.line();
-                            await SunmiPrinter.printText('Payment receipt');
-                            await SunmiPrinter.printText(
-                                'Using the old way to bold!');
-                            await SunmiPrinter.line();
+              //               await SunmiPrinter.startTransactionPrint(true);
+              //               await SunmiPrinter.setAlignment(
+              //                   SunmiPrintAlign.CENTER);
+              //               await SunmiPrinter.line();
+              //               await SunmiPrinter.printText('Payment receipt');
+              //               await SunmiPrinter.printText(
+              //                   'Using the old way to bold!');
+              //               await SunmiPrinter.line();
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'Name',
-                                  width: 12,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: 'Qty',
-                                  width: 6,
-                                  align: SunmiPrintAlign.CENTER),
-                              ColumnMaker(
-                                  text: 'UN',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                              ColumnMaker(
-                                  text: 'TOT',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'Name',
+              //                     width: 12,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: 'Qty',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.CENTER),
+              //                 ColumnMaker(
+              //                     text: 'UN',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //                 ColumnMaker(
+              //                     text: 'TOT',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'Fries',
-                                  width: 12,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '4x',
-                                  width: 6,
-                                  align: SunmiPrintAlign.CENTER),
-                              ColumnMaker(
-                                  text: '3.00',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                              ColumnMaker(
-                                  text: '12.00',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'Fries',
+              //                     width: 12,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '4x',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.CENTER),
+              //                 ColumnMaker(
+              //                     text: '3.00',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //                 ColumnMaker(
+              //                     text: '12.00',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'Strawberry',
-                                  width: 12,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '1x',
-                                  width: 6,
-                                  align: SunmiPrintAlign.CENTER),
-                              ColumnMaker(
-                                  text: '24.44',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                              ColumnMaker(
-                                  text: '24.44',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'Strawberry',
+              //                     width: 12,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '1x',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.CENTER),
+              //                 ColumnMaker(
+              //                     text: '24.44',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //                 ColumnMaker(
+              //                     text: '24.44',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'Soda',
-                                  width: 12,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '1x',
-                                  width: 6,
-                                  align: SunmiPrintAlign.CENTER),
-                              ColumnMaker(
-                                  text: '1.99',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                              ColumnMaker(
-                                  text: '1.99',
-                                  width: 6,
-                                  align: SunmiPrintAlign.RIGHT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'Soda',
+              //                     width: 12,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '1x',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.CENTER),
+              //                 ColumnMaker(
+              //                     text: '1.99',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //                 ColumnMaker(
+              //                     text: '1.99',
+              //                     width: 6,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //               ]);
 
-                            await SunmiPrinter.line();
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'TOTAL',
-                                  width: 25,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '38.43',
-                                  width: 5,
-                                  align: SunmiPrintAlign.RIGHT),
-                            ]);
+              //               await SunmiPrinter.line();
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'TOTAL',
+              //                     width: 25,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '38.43',
+              //                     width: 5,
+              //                     align: SunmiPrintAlign.RIGHT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'ARABIC TEXT',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: 'اسم المشترك',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'ARABIC TEXT',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: 'اسم المشترك',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'اسم المشترك',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: 'اسم المشترك',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'اسم المشترك',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: 'اسم المشترك',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'RUSSIAN TEXT',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: 'Санкт-Петербу́рг',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'Санкт-Петербу́рг',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: 'Санкт-Петербу́рг',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'RUSSIAN TEXT',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: 'Санкт-Петербу́рг',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'Санкт-Петербу́рг',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: 'Санкт-Петербу́рг',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
 
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: 'CHINESE TEXT',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '風俗通義',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
-                            await SunmiPrinter.printRow(cols: [
-                              ColumnMaker(
-                                  text: '風俗通義',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                              ColumnMaker(
-                                  text: '風俗通義',
-                                  width: 15,
-                                  align: SunmiPrintAlign.LEFT),
-                            ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: 'CHINESE TEXT',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '風俗通義',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
+              //               await SunmiPrinter.printRow(cols: [
+              //                 ColumnMaker(
+              //                     text: '風俗通義',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //                 ColumnMaker(
+              //                     text: '風俗通義',
+              //                     width: 15,
+              //                     align: SunmiPrintAlign.LEFT),
+              //               ]);
 
-                            await SunmiPrinter.setAlignment(
-                                SunmiPrintAlign.CENTER);
-                            await SunmiPrinter.line();
-                            await SunmiPrinter.bold();
-                            await SunmiPrinter.printText(
-                                'Transaction\'s Qrcode');
-                            await SunmiPrinter.resetBold();
-                            await SunmiPrinter.printQRCode(
-                                'https://github.com/brasizza/sunmi_printer');
-                            await SunmiPrinter.lineWrap(2);
-                            await SunmiPrinter.exitTransactionPrint(true);
-                          },
-                          child: const Text('TICKET EXAMPLE')),
-                    ]),
+              //               await SunmiPrinter.setAlignment(
+              //                   SunmiPrintAlign.CENTER);
+              //               await SunmiPrinter.line();
+              //               await SunmiPrinter.bold();
+              //               await SunmiPrinter.printText(
+              //                   'Transaction\'s Qrcode');
+              //               await SunmiPrinter.resetBold();
+              //               await SunmiPrinter.printQRCode(
+              //                   'https://github.com/brasizza/sunmi_printer');
+              //               await SunmiPrinter.lineWrap(2);
+              //               await SunmiPrinter.exitTransactionPrint(true);
+              //             },
+              //             child: const Text('TICKET EXAMPLE')
+              //             ),
+              //       ]),
+              // ),
+             
+             Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      ElevatedButton(
+        onPressed: () async {
+
+
+        //  _infoPrint();  
+          //Inicializa la impresora
+          await SunmiPrinter.initPrinter();
+          await SunmiPrinter.startTransactionPrint(true);
+          
+          // Alinea al centro y imprime el nombre de la empresa
+          await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+          await SunmiPrinter.printText('EMPRESA XYZ');
+          
+          // Imprime el número de factura
+          await SunmiPrinter.printText('Factura: 2346-454646-12');
+          await SunmiPrinter.line();
+
+          // Encabezado de la tabla
+          await SunmiPrinter.printRow(cols: [
+            ColumnMaker(
+              text: 'Descripción',
+              width: 12,
+              align: SunmiPrintAlign.LEFT,
+            ),
+            ColumnMaker(
+              text: 'Cant',
+              width: 6,
+              align: SunmiPrintAlign.CENTER,
+            ),
+            ColumnMaker(
+              text: 'vU',
+              width: 6,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+            ColumnMaker(
+              text: 'TOT',
+              width: 6,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+          ]);
+
+          // Lista de ítems a imprimir
+          List<Map<String, dynamic>> items = [
+            {
+              'descripcion': 'Fries',
+              'cantidad': '4x',
+              'precioUnitario': '3.00',
+              'total': '12.00'
+            },
+            {
+              'descripcion': 'Strawberry',
+              'cantidad': '1x',
+              'precioUnitario': '24.44',
+              'total': '24.44'
+            },
+            {
+              'descripcion': 'Soda',
+              'cantidad': '1x',
+              'precioUnitario': '1.99',
+              'total': '1.99'
+            },
+          ];
+
+          // Imprime cada ítem en la lista
+          for (var item in items) {
+            await SunmiPrinter.printRow(cols: [
+              ColumnMaker(
+                text: item['descripcion'],
+                width: 12,
+                align: SunmiPrintAlign.LEFT,
               ),
+              ColumnMaker(
+                text: item['cantidad'],
+                width: 6,
+                align: SunmiPrintAlign.CENTER,
+              ),
+              ColumnMaker(
+                text: item['precioUnitario'],
+                width: 6,
+                align: SunmiPrintAlign.RIGHT,
+              ),
+              ColumnMaker(
+                text: item['total'],
+                width: 6,
+                align: SunmiPrintAlign.RIGHT,
+              ),
+            ]);
+          }
+
+          await SunmiPrinter.line();
+
+          // Imprime el total
+          await SunmiPrinter.printRow(cols: [
+            ColumnMaker(
+              text: 'TOTAL',
+              width: 25,
+              align: SunmiPrintAlign.LEFT,
+            ),
+            ColumnMaker(
+              text: items.fold('0', (sum, item) => sum +  (double.parse(item['total'])).toStringAsFixed(2)),
+              width: 5,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+          ]);
+
+          // Otros textos y códigos QR
+          await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+          await SunmiPrinter.bold();
+          await SunmiPrinter.printText('Transaction\'s Qrcode');
+          await SunmiPrinter.resetBold();
+          await SunmiPrinter.printQRCode('https://github.com/brasizza/sunmi_printer');
+          await SunmiPrinter.lineWrap(2);
+          await SunmiPrinter.exitTransactionPrint(true);
+        },
+        child: const Text('TICKET EXAMPLE'),
+      ),
+    ],
+  ),
+),
+             
+             
+             
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
@@ -1514,6 +1645,261 @@ class _PrintTicketState extends State<PrintTicket> {
           ),
         ));
   }
+
+  void _infoPrint(Map<String, dynamic> _data) async {
+
+
+    final Map<String, dynamic>  _info = {
+  "venId": 9595,
+  "venFecReg": "2024-09-01T22:00:58.000Z",
+  "venEmpRegimen": "CONTRIBUYENTE RÉGIMEN GENERAL",
+  "venTotalRetencion": 0.00,
+  "venOption": 1,
+  "venTipoDocumento": "N",
+  "venIdCliente": 2814,
+  "venRucCliente": 1719972687,
+  "venTipoDocuCliente": "CEDULA",
+  "venNomCliente": "CRIOLLO PARRALES EDWIN DAVID",
+  "venEmailCliente": ["daviss_15_03@hotmail.com"],
+  "venTelfCliente": "",
+  "venCeluCliente": ["+593990421172"],
+  "venDirCliente": "COOP. JORGE MAHUAD CALLE ALBERTO DURERO Y LEONARDO DA VINCE",
+  "venEmpRuc": 1716527971001,
+  "venEmpNombre": "LOOR LOOR JONNATHAN JAVIER",
+  "venEmpComercial": "2JL SOLUCIONES INTEGRALES",
+  "venEmpDireccion": "SANTO DOMINGO / AV CLEMENCIA DE MORA S/N Y RIO CHAMBIRA",
+  "venEmpTelefono": "+593980290473",
+  "venEmpEmail": "soporte@2jl.ec",
+  "venEmpObligado": "SI",
+  "venFormaPago": "EFECTIVO",
+  "venNumero": 0,
+  "venFacturaCredito": "NO",
+  "venDias": 0,
+  "venAbono": 0,
+  "venDescPorcentaje": 0,
+  "venOtrosDetalles": ["GGGGGG"],
+  "venObservacion": "",
+  "venSubTotal12": 50.00,
+  "venSubtotal0": 4.00,
+  "venDescuento": 0.00,
+  "venSubTotal": 54.00,
+  "venTotalIva": 7.50,
+  "venCostoProduccion": 26.00,
+  "venTotal": 61.50,
+  "venFechaFactura": "2024-09-01",
+  "venNumFactura": "001-003-000000040",
+  "venNumFacturaAnterior": "",
+  "venAutorizacion": 0,
+  "venFechaAutorizacion": "",
+  "venErrorAutorizacion": "NO",
+  "venEstado": "ACTIVA",
+  "venEnvio": "NO",
+  "fechaSustentoFactura": "",
+  "venEmpresa": "NE2021",
+  "venProductos": [
+    {
+      "codigo": "SE1",
+      "descripcion": "Prueba",
+      "cantidad": 4,
+      "valUnitarioInterno": 1,
+      "descPorcentaje": 0,
+      "llevaIva": "NO",
+      "incluyeIva": "SI",
+      "valorUnitario": 1,
+      "descuento": 0,
+      "precioSubTotalProducto": 4,
+      "valorIva": 0,
+      "recargoPorcentaje": 0,
+      "costoProduccion": 1,
+      "recargo": 0
+    },
+    {
+      "codigo": "BI16",
+      "descripcion": "CANALETA DE PISO, 2 PATCH CORD DE 5 M CAT6 A",
+      "cantidad": 2,
+      "valUnitarioInterno": 25.00,
+      "descPorcentaje": 0,
+      "llevaIva": "SI",
+      "incluyeIva": "NO",
+      "valorUnitario": 25,
+      "descuento": 0,
+      "precioSubTotalProducto": 50,
+      "valorIva": 7.5,
+      "recargoPorcentaje": 0,
+      "costoProduccion": 25,
+      "recargo": 0
+    }
+  ],
+  "venUser": "admin",
+  "venEmpAgenteRetencion": "SI",
+  "venEmpContribuyenteEspecial": "PERSONA NATURAL",
+  "venEmpLeyenda": "",
+  "venEmpIva": 15,
+  "rucempresa": "NE2021",
+  "rol": ["SUPERADMIN"],
+  "tabla": "ventas",
+  "msg": "NOTA DE VENTA Registrado Correctamente",
+  "alert": "success"
+};
+
+ 
+
+   // Inicializa la impresora
+          await SunmiPrinter.initPrinter();
+          await SunmiPrinter.startTransactionPrint(true);
+          
+          // Alinea al centro y imprime el nombre de la empresa
+          await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+          await SunmiPrinter.printText('${_info['venEmpComercial']}');
+           await SunmiPrinter.printText('${_info['venEmpRuc']}');
+          await SunmiPrinter.printText('${_info['venEmpDireccion']}');
+          await SunmiPrinter.printText('${_info['venEmpTelefono']}');
+           await SunmiPrinter.printText('${_info['venEmpEmail']}');
+          // Imprime el número de CLIENTE
+            await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+           await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
+          await SunmiPrinter.printText('${_info['venRucCliente']}');
+           await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+           await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
+             await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+  // Imprime el número de factura
+          // Encabezado de la tabla
+          await SunmiPrinter.printRow(cols: [
+            ColumnMaker(
+              text: 'Descripción',
+              width: 12,
+              align: SunmiPrintAlign.LEFT,
+            ),
+            ColumnMaker(
+              text: 'Cant',
+              width: 6,
+              align: SunmiPrintAlign.CENTER,
+            ),
+            ColumnMaker(
+              text: 'vU',
+              width: 6,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+            ColumnMaker(
+              text: 'TOT',
+              width: 6,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+          ]);
+
+          // Lista de ítems a imprimir
+          List<Map<String, dynamic>> items = [
+            {
+              'descripcion': 'Fries',
+              'cantidad': '4x',
+              'precioUnitario': '3.00',
+              'total': '12.00'
+            },
+            {
+              'descripcion': 'Strawberry',
+              'cantidad': '1x',
+              'precioUnitario': '24.44',
+              'total': '24.44'
+            },
+            {
+              'descripcion': 'Soda',
+              'cantidad': '1x',
+              'precioUnitario': '1.99',
+              'total': '1.99'
+            },
+          ];
+
+          // Imprime cada ítem en la lista
+          for (var item in _info['venProductos']) {
+            await SunmiPrinter.printRow(cols: [
+              ColumnMaker(
+                text: item['descripcion'],
+                width: 12,
+                align: SunmiPrintAlign.LEFT,
+              ),
+              ColumnMaker(
+                text: item['cantidad'],
+                width: 6,
+                align: SunmiPrintAlign.CENTER,
+              ),
+              ColumnMaker(
+                text: item['valorUnitario'],
+                width: 6,
+                align: SunmiPrintAlign.RIGHT,
+              ),
+              ColumnMaker(
+                text: item['precioSubTotalProducto'],
+                width: 6,
+                align: SunmiPrintAlign.RIGHT,
+              ),
+            ]);
+          }
+
+          await SunmiPrinter.line();
+          // Agrega  fila
+
+            await SunmiPrinter.printRow(cols: [
+              ColumnMaker(
+                text: 'SubTotal', // Texto para la nueva fila
+                width: 25,
+                align: SunmiPrintAlign.LEFT,
+              ),
+              ColumnMaker(
+                text:  _info['precioSubTotalProducto'], // Valor para la nueva fila
+                width: 5,
+                align: SunmiPrintAlign.RIGHT,
+              ),
+            ]);
+
+          // Imprime el total
+          await SunmiPrinter.printRow(cols: [
+            ColumnMaker(
+              text: 'Iva',
+              width: 25,
+              align: SunmiPrintAlign.LEFT,
+            ),
+            ColumnMaker(
+              text: _info['venTotalIva'],
+              width: 5,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+          ]);
+
+               // Imprime el total
+          await SunmiPrinter.printRow(cols: [
+            ColumnMaker(
+              text: 'TOTAL',
+              width: 25,
+              align: SunmiPrintAlign.LEFT,
+            ),
+            ColumnMaker(
+              text: _info['venTotal'],
+              width: 5,
+              align: SunmiPrintAlign.RIGHT,
+            ),
+          ]);
+          // Otros textos y códigos QR
+          await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+          await SunmiPrinter.line();
+          await SunmiPrinter.bold();
+          await SunmiPrinter.printText('Transaction\'s Qrcode');
+          await SunmiPrinter.resetBold();
+          await SunmiPrinter.printQRCode('https://github.com/brasizza/sunmi_printer');
+          await SunmiPrinter.lineWrap(2);
+          await SunmiPrinter.exitTransactionPrint(true);
+
+
+
+
+
+  }
+
+
+
 }
 
 Future<Uint8List> readFileBytes(String path) async {

@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Session? usuario;
 
-  final socket = SocketService();
+  // final socket = SocketService();
   final homeContrtoller = HomeController();
   final propietarioContrtoller = PropietariosController();
   final themeContrtoller = AppTheme();

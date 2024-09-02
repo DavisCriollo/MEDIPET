@@ -62,37 +62,37 @@ class _ListaMascotasPropietarioState extends State<ListaMascotasPropietario> {
     _usuario = await Auth.instance.getSession();
 
     // print('informacion usuario=====> :${_usuario!.nomComercial}');
-    final loadInfo = context.read<MascotasController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    await loadInfo.buscaAllMascotasPropietario(
-        '', widget.propietario['perDocNumero']);
-// await loadInfo.buscaRecomendaciones();
-    // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPropietario(
-            '', widget.propietario['perDocNumero']);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPropietario(
-            '', widget.propietario['perDocNumero']);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'mascota') {
-        loadInfo.buscaAllMascotasPropietario(
-            '', widget.propietario['perDocNumero']);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//     final loadInfo = context.read<MascotasController>();
+//     // Provider.of<PropietariosController>(context, listen: false);
+//     await loadInfo.buscaAllMascotasPropietario(
+//         '', widget.propietario['perDocNumero']);
+// // await loadInfo.buscaRecomendaciones();
+//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
+//     final serviceSocket = context.read<SocketService>();
+//     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'mascota') {
+//         loadInfo.buscaAllMascotasPropietario(
+//             '', widget.propietario['perDocNumero']);
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'mascota') {
+//         loadInfo.buscaAllMascotasPropietario(
+//             '', widget.propietario['perDocNumero']);
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+//       if (data['tabla'] == 'mascota') {
+//         loadInfo.buscaAllMascotasPropietario(
+//             '', widget.propietario['perDocNumero']);
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
   }
 
   @override

@@ -59,32 +59,32 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<AnuladasController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    // await loadInfo.buscaAllFacturas('');
+    // final loadInfo = context.read<AnuladasController>();
+    // // Provider.of<PropietariosController>(context, listen: false);
+    // // await loadInfo.buscaAllFacturas('');
 
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'facturas') {
-        loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'facturas') {
-        loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'facturas') {
-        loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'facturas') {
+    //     loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'facturas') {
+    //     loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'facturas') {
+    //     loadInfo.buscaAllAnuladasPaginacion('', false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket?.on('server:error', (data) {
+    //   NotificatiosnService.showSnackBarError(data['msg']);
+    // });
   }
 
   @override

@@ -811,7 +811,9 @@ _isFechaCita=_estado;
     // print(_pyloadNuevaReceta);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaReceta);
+   
+    serviceSocket.sendMessage('client:guardarData', _pyloadNuevaReceta);
+    // serviceSocket.socket!.emit('client:guardarData', _pyloadNuevaReceta);
   }
   //================================== CREA RECETA  ==============================//
   Future editaReceta(
@@ -877,7 +879,10 @@ _isFechaCita=_estado;
     // print(_pyloadEditaReceta);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaReceta);
+   
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaReceta);
+   
+    // serviceSocket.socket!.emit('client:actualizarData', _pyloadEditaReceta);
   }
     //================================== ELIMINAR  PRIPIETARIO  ==============================//
   Future eliminaReceta(BuildContext context, int? idReceta) async {
@@ -893,9 +898,9 @@ _isFechaCita=_estado;
       "rol": infoUser.rol,
       "recId": idReceta,
     };
-
-    serviceSocket.socket!
-        .emit('client:eliminarData', _pyloadEliminaReceta);
+  serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaReceta);
+    // serviceSocket.socket!
+    //     .emit('client:eliminarData', _pyloadEliminaReceta);
   }
 
 

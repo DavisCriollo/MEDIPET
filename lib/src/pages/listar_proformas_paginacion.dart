@@ -62,32 +62,32 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<ProformasController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    // await loadInfo.buscaAllProformas('');
+    // final loadInfo = context.read<ProformasController>();
+    // // Provider.of<PropietariosController>(context, listen: false);
+    // // await loadInfo.buscaAllProformas('');
 
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'proformas') {
-        loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'proformas') {
-        loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'proformas') {
-        loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+    // final serviceSocket = context.read<SocketService>();
+    // serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+    //   if (data['tabla'] == 'proformas') {
+    //     loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+    //   if (data['tabla'] == 'proformas') {
+    //     loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+    //   if (data['tabla'] == 'proformas') {
+    //     loadInfo.buscaAllProformasPaginacion('',false,loadInfo.getTabIndex);
+    //     // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+    //   }
+    // });
+    // serviceSocket.socket?.on('server:error', (data) {
+    //   NotificatiosnService.showSnackBarError(data['msg']);
+    // });
   }
 
   @override
@@ -1218,13 +1218,36 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                               _ctrl.resetListasProdutos();
                               _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
-                                 _ctrl.setClienteComprbante({});
+                                _ctrl.setFacturaOk(false);
+                                   _ctrl.setFormaDePago('');
+                                _ctrl.setTipoDeTransaccion('P');
+                           _ctrl.setClienteComprbante({
+			"perId": 1,
+			"perNombre": "CONSUMIDOR FINAL",
+			"perDocNumero": "9999999999999",
+			"perDocTipo": "RUC",
+			"perTelefono": "0000000001",
+			"perDireccion": "s/n",
+			"perEmail": [
+				"sin@sincorreo.com"
+			],
+			"perCelular": [],
+			"perOtros": [
+				"ZZZ9999"
+			]
+		});
+      //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
+    final ctrlSocket=context.read<SocketService>();
+     ctrlSocket.resetResponseSocket();
+      //******************************************//
+        _ctrl.setExistCliente(true);
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const CrearComprobante(
+                                     CrearComprobante(
+                                       user:_usuario ,
                                       tipo: 'CREATE',
                                     )));
 

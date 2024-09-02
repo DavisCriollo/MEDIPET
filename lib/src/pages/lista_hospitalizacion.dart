@@ -50,33 +50,33 @@ class _ListaHospitalizacionState extends State<ListaHospitalizacion> {
 
   void initData() async {
     _usuario = await Auth.instance.getSession();
-    final loadInfo = context.read<HospitalizacionController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    await loadInfo.buscaAllHospitalizaciones('');
-// await loadInfo.buscaRecomendaciones();
-    // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    final serviceSocket = context.read<SocketService>();
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'hospitalizacion') {
-        loadInfo.buscaAllHospitalizaciones('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'hospitalizacion') {
-        loadInfo.buscaAllHospitalizaciones('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'hospitalizacion') {
-        loadInfo.buscaAllHospitalizaciones('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//     final loadInfo = context.read<HospitalizacionController>();
+//     // Provider.of<PropietariosController>(context, listen: false);
+//     await loadInfo.buscaAllHospitalizaciones('');
+// // await loadInfo.buscaRecomendaciones();
+//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
+//     final serviceSocket = context.read<SocketService>();
+//     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'hospitalizacion') {
+//         loadInfo.buscaAllHospitalizaciones('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'hospitalizacion') {
+//         loadInfo.buscaAllHospitalizaciones('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+//       if (data['tabla'] == 'hospitalizacion') {
+//         loadInfo.buscaAllHospitalizaciones('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
   }
 
   @override

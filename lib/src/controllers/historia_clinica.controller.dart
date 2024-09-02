@@ -763,8 +763,9 @@ bool? _error401HistoriaClinica =false; // sera nulo la primera vez
     // print(_pyloadNuevaHistoriaClinica);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!
-        .emit('client:guardarData', _pyloadNuevaHistoriaClinica);
+    serviceSocket.sendMessage('client:guardarData', _pyloadNuevaHistoriaClinica);
+  //   serviceSocket.socket!
+  //       .emit('client:guardarData', _pyloadNuevaHistoriaClinica);
   }
 
 //================================== EDITAR HISTORIA CLINICA  ==============================//
@@ -833,8 +834,10 @@ bool? _error401HistoriaClinica =false; // sera nulo la primera vez
     // print(_pyloadEditaHistoriaClinica);
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!
-        .emit('client:actualizarData', _pyloadEditaHistoriaClinica);
+   
+    serviceSocket.sendMessage('client:actualizarData', _pyloadEditaHistoriaClinica);
+    // serviceSocket.socket!
+    //     .emit('client:actualizarData', _pyloadEditaHistoriaClinica);
   }
 
   //================================== ELIMINAR  HISTORIA CLINICA  ==============================//
@@ -850,9 +853,9 @@ bool? _error401HistoriaClinica =false; // sera nulo la primera vez
       "rol": infoUser.rol,
       "hcliId": idhistoria,
     };
-
-    serviceSocket.socket!
-        .emit('client:eliminarData', _pyloadEliminaHistoriaClinica);
+        serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaHistoriaClinica);
+    // serviceSocket.socket!
+    //     .emit('client:eliminarData', _pyloadEliminaHistoriaClinica);
   }
 
   dynamic _infoHistoriaClinica;

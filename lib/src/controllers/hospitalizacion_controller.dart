@@ -3259,8 +3259,9 @@ _page = 0;
     // print('INFUSION: $_listInfusions');
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!
-        .emit('client:guardarData', _pyloadNuevaHospitalizacion);
+     serviceSocket.sendMessage('client:guardarData', _pyloadNuevaHospitalizacion);
+    // serviceSocket.socket!
+    //     .emit('client:guardarData', _pyloadNuevaHospitalizacion);
   }
 
   //================================== EDITAR HOSPITALIZACION  ==============================//
@@ -3379,8 +3380,11 @@ _page = 0;
 
     // print(
     //     '==========================SOCKET RECETA ===============================');
-    serviceSocket.socket!
-        .emit('client:actualizarData', _pyloadEditaHospitalizacion);
+    
+     serviceSocket.sendMessage('client:actualizarData', _pyloadEditaHospitalizacion);
+
+    // serviceSocket.socket!
+    //     .emit('client:actualizarData', _pyloadEditaHospitalizacion);
   }
 
 //=================================ALIMENTOS======================================//
@@ -3940,9 +3944,10 @@ _page = 0;
       "rol": infoUser.rol,
       "hospId": idHosp,
     };
+ serviceSocket.sendMessage('client:eliminarData', _pyloadEliminaHospitalizacion);
 
-    serviceSocket.socket!
-        .emit('client:eliminarData', _pyloadEliminaHospitalizacion);
+    // serviceSocket.socket!
+    //     .emit('client:eliminarData', _pyloadEliminaHospitalizacion);
   }
 
 //=================================================================================================================//

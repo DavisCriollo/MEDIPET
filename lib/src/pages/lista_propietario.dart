@@ -36,7 +36,7 @@ class ListaPropietarios extends StatefulWidget {
 class _ListaPropietariosState extends State<ListaPropietarios> {
   final TextEditingController _textSearchController = TextEditingController();
   Session? _usuario;
-  final serviceSocket = SocketService();
+
   // final propietarioContrtoller = SocketService();
   // final loadInfo =PropietariosController();
   // Provider.of<PropietariosController>(context, listen: false);
@@ -56,39 +56,40 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
   void initData() async {
     _usuario = await Auth.instance.getSession();
 
-    // print('object:${_usuario!.nomEmpresa}');
-    final loadInfo = context.read<PropietariosController>();
-    // Provider.of<PropietariosController>(context, listen: false);
-    await loadInfo.buscaAllPropietarios('');
-    await loadInfo.buscaAllPropietariosPaginacion('',false);
-// await loadInfo.buscaRecomendaciones();
-    // final serviceSocket = Provider.of<SocketService>(context, listen: false);
-    serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-      if (data['tabla'] == 'proveedor') {
-        loadInfo.buscaAllPropietarios('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-      if (data['tabla'] == 'proveedor') {
-        loadInfo.buscaAllPropietarios('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-      if (data['tabla'] == 'proveedor') {
-        loadInfo.buscaAllPropietarios('');
-        // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-      }
-    });
-    serviceSocket.socket?.on('server:error', (data) {
-      NotificatiosnService.showSnackBarError(data['msg']);
-    });
+//     // print('object:${_usuario!.nomEmpresa}');
+//     final loadInfo = context.read<PropietariosController>();
+//     // Provider.of<PropietariosController>(context, listen: false);
+//     await loadInfo.buscaAllPropietarios('');
+//     await loadInfo.buscaAllPropietariosPaginacion('',false);
+// // await loadInfo.buscaRecomendaciones();
+//     // final serviceSocket = Provider.of<SocketService>(context, listen: false);
+//     serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
+//       if (data['tabla'] == 'proveedor') {
+//         loadInfo.buscaAllPropietarios('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
+//       if (data['tabla'] == 'proveedor') {
+//         loadInfo.buscaAllPropietarios('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
+//       if (data['tabla'] == 'proveedor') {
+//         loadInfo.buscaAllPropietarios('');
+//         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
+//       }
+//     });
+//     serviceSocket.socket?.on('server:error', (data) {
+//       NotificatiosnService.showSnackBarError(data['msg']);
+//     });
   }
 
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
+      final serviceSocket = SocketService();
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(

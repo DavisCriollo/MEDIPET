@@ -81,6 +81,10 @@ class MyApp extends StatelessWidget {
          ChangeNotifierProvider(create: (_) => AppTheme()),
          
          ChangeNotifierProvider(create: (_) => SocketService()),
+
+    
+
+
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => PropietariosController()),
         ChangeNotifierProvider(create: (_) => MascotasController()),
