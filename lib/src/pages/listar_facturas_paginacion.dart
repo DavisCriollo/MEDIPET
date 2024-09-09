@@ -126,36 +126,40 @@ class _ListarFacturasPaginacionState extends State<ListarFacturasPaginacion> {
                                           controller: _textSearchController,
                                           autofocus: true,
                                           onChanged: (text) {
-                                            providerSearchFacturas
-                                                .onSearchTextFacturaPaginacion(
-                                                    text);
 
-                                            if (providerSearchFacturas
-                                                .nameSearchFacturaPaginacion
-                                                .isEmpty) {
-                                              //                 providerSearchFacturas
-                                              //     .setErrorMascotasPaginacion(null);
 
-                                              // providerSearchFacturas
-                                              //     .setError401MascotasPaginacion(
-                                              //         false);
-                                              providerSearchFacturas.setPage(0);
-                                              providerSearchFacturas
-                                                  .setCantidad(25);
-                                              // providerSearchFacturas.setIsNext(false);
-                                              providerSearchFacturas
-                                                  .buscaAllFacturasPaginacion(
-                                                      '', true,ctrl.getTabIndex);
+                                             providerSearchFacturas.search(text);
 
-                                              //   providerSearchFacturas
-                                              //       .setBtnSearchPropietarioPaginacion(
-                                              //           !providerSearchFacturas
-                                              //               .btnSearchPropietarioPaginacion);
-                                              //   _textSearchController.text = "";
-                                              //   providerSearchFacturas
-                                              //       .buscaAllPropietariosPaginacion(
-                                              //           '', false);
-                                            }
+                                            // providerSearchFacturas
+                                            //     .onSearchTextFacturaPaginacion(
+                                            //         text);
+
+                                            // if (providerSearchFacturas
+                                            //     .nameSearchFacturaPaginacion
+                                            //     .isEmpty) {
+                                            //   //                 providerSearchFacturas
+                                            //   //     .setErrorMascotasPaginacion(null);
+
+                                            //   // providerSearchFacturas
+                                            //   //     .setError401MascotasPaginacion(
+                                            //   //         false);
+                                            //   providerSearchFacturas.setPage(0);
+                                            //   providerSearchFacturas
+                                            //       .setCantidad(25);
+                                            //   // providerSearchFacturas.setIsNext(false);
+                                            //   providerSearchFacturas
+                                            //       .buscaAllFacturasPaginacion(
+                                            //           '', true,ctrl.getTabIndex);
+
+                                            //   //   providerSearchFacturas
+                                            //   //       .setBtnSearchPropietarioPaginacion(
+                                            //   //           !providerSearchFacturas
+                                            //   //               .btnSearchPropietarioPaginacion);
+                                            //   //   _textSearchController.text = "";
+                                            //   //   providerSearchFacturas
+                                            //   //       .buscaAllPropietariosPaginacion(
+                                            //   //           '', false);
+                                            // }
 
                                             // setState(() {});
                                           },
@@ -379,62 +383,50 @@ class _ListarFacturasPaginacionState extends State<ListarFacturasPaginacion> {
             children: [
               Container(
                 color: Colors.grey.shade200,
-                child: Consumer<FacturasController>(
+                child: 
+                
+                
+                
+                
+                
+                
+                
+                Consumer<FacturasController>(
                   builder: (_, providersfactura, __) {
-                    if (providersfactura.getErrorFacturasPaginacion == null &&
-                        providersfactura.getError401FacturasPaginacion == false) {
-                      return Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Cargando Datos...',
-                              style: GoogleFonts.lexendDeca(
-                                fontSize: size.iScreen(1.5),
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.iScreen(1.0),
-                            ),
-                            const CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    } else if (providersfactura.getErrorFacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getErrorFacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getError401FacturasPaginacion == true) {
-                      return const NoData(
-                        label: 'Su sesión ha expirado, vuelva a iniciar sesión',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getError401FacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    }
+                   
+                    if (providersfactura.allItemsFilters.isEmpty) {
+                            return const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                            // Text("sin datos");
+                          }
 
-                    return RefreshIndicator(
+                          return 
+                          
+                          (providersfactura.allItemsFilters.isEmpty)
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ))
+                                        : (providersfactura.allItemsFilters.length > 0)
+                                            ?
+                                             RefreshIndicator(
                       onRefresh: () => onRefresh(),
                       child: ListView.builder(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
-                        itemCount: providersfactura.getListaFacturasPaginacion.length + 1,
+                        itemCount: providersfactura.allItemsFilters.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          if (index < providersfactura.getListaFacturasPaginacion.length) {
+                          if (index < providersfactura.allItemsFilters.length) {
                             var _color;
-                             final factura = providersfactura.getListaFacturasPaginacion[index];
+                             final factura = providersfactura.allItemsFilters[index];
                             if (factura['venFecReg']==DateTime.now()) {
-                               final factura = providersfactura.getListaFacturasPaginacion[index];
+                               final factura = providersfactura.allItemsFilters[index];
                             }
                            
 
@@ -626,7 +618,7 @@ class _ListarFacturasPaginacionState extends State<ListarFacturasPaginacion> {
                                             ),
                                           ),
                                         ))
-                                    : providersfactura.getListaFacturasPaginacion.length > 25
+                                    : providersfactura.allItemsFilters.length > 25
                                         ? Container(
                                             margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
                                             child: const Center(child: CircularProgressIndicator()))
@@ -636,70 +628,323 @@ class _ListarFacturasPaginacionState extends State<ListarFacturasPaginacion> {
                           }
                         },
                       ),
-                    );
+                    ): const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                 
+                   
+                   
+                   
+                    // if (providersfactura.getErrorFacturasPaginacion == null &&
+                    //     providersfactura.getError401FacturasPaginacion == false) {
+                    //   return Center(
+                    //     child: Column(
+                    //       mainAxisSize: MainAxisSize.min,
+                    //       children: [
+                    //         Text(
+                    //           'Cargando Datos...',
+                    //           style: GoogleFonts.lexendDeca(
+                    //             fontSize: size.iScreen(1.5),
+                    //             color: Colors.black87,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //         SizedBox(
+                    //           height: size.iScreen(1.0),
+                    //         ),
+                    //         const CircularProgressIndicator(),
+                    //       ],
+                    //     ),
+                    //   );
+                    // } else if (providersfactura.getErrorFacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getErrorFacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getError401FacturasPaginacion == true) {
+                    //   return const NoData(
+                    //     label: 'Su sesión ha expirado, vuelva a iniciar sesión',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getError401FacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // }
+
+                    // return 
+                    // RefreshIndicator(
+                    //   onRefresh: () => onRefresh(),
+                    //   child: ListView.builder(
+                    //     controller: _scrollController,
+                    //     physics: const BouncingScrollPhysics(),
+                    //     itemCount: providersfactura.getListaFacturasPaginacion.length + 1,
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       if (index < providersfactura.getListaFacturasPaginacion.length) {
+                    //         var _color;
+                    //          final factura = providersfactura.getListaFacturasPaginacion[index];
+                    //         if (factura['venFecReg']==DateTime.now()) {
+                    //            final factura = providersfactura.getListaFacturasPaginacion[index];
+                    //         }
+                           
+
+                    //         if (factura['venEstado'] == 'AUTORIZADO') {
+                    //           _color = Colors.green;
+                    //         } else if (factura['venEstado'] == 'SIN AUTORIZAR') {
+                    //           _color = Colors.orange;
+                    //         }
+                    //         if (factura['venEstado'] == 'ANULADA') {
+                    //           _color = Colors.red;
+                    //         }
+
+                    //         return Slidable(
+                    //           startActionPane: ActionPane(
+                    //             motion: const ScrollMotion(),
+                    //             children: [
+                    //               SlidableAction(
+                    //                 backgroundColor: Colors.grey,
+                    //                 foregroundColor: Colors.white,
+                    //                 icon: Icons.list_alt_outlined,
+                    //                 label: 'Más acciones',
+                    //                 onPressed: (context) {
+                    //                   showCupertinoModalPopup(
+                    //                     context: context,
+                    //                     builder: (BuildContext context) => CupertinoActionSheet(
+                    //                       title: Text(
+                    //                         'Acciones',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(2.0),
+                    //                           color: primaryColor,
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                       ),
+                    //                       actions: <Widget>[
+                    //                         CupertinoActionSheetAction(
+                    //                           child: Row(
+                    //                             mainAxisAlignment: MainAxisAlignment.center,
+                    //                             children: [
+                    //                               Container(
+                    //                                 margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                    //                                 child: Text(
+                    //                                   'Ver PDF',
+                    //                                   style: GoogleFonts.lexendDeca(
+                    //                                     fontSize: size.iScreen(1.8),
+                    //                                     color: Colors.black87,
+                    //                                     fontWeight: FontWeight.normal,
+                    //                                   ),
+                    //                                 ),
+                    //                               ),
+                    //                               const Icon(
+                    //                                 FontAwesomeIcons.filePdf,
+                    //                                 color: Colors.red,
+                    //                               )
+                    //                             ],
+                    //                           ),
+                    //                           onPressed: () {
+                    //                             Navigator.pop(context);
+
+                    //                             Navigator.push(
+                    //                               context,
+                    //                               MaterialPageRoute(
+                    //                                 builder: (context) => ViewsPDFs(
+                    //                                   infoPdf:
+                    //                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                    //                                   labelPdf: 'infoFactura.pdf',
+                    //                                 ),
+                    //                               ),
+                    //                             );
+                    //                           },
+                    //                         ),
+                    //                       ],
+                    //                       cancelButton: CupertinoActionSheetAction(
+                    //                         child: Text('Cancel',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               fontSize: size.iScreen(2.0),
+                    //                               color: Colors.red,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             )),
+                    //                         isDefaultAction: true,
+                    //                         onPressed: () {
+                    //                           Navigator.pop(context, 'Cancel');
+                    //                         },
+                    //                       ),
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           child: Card(
+                    //             elevation: 5,
+                    //             child: Container(
+                    //               margin: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                    //               color: index % 2 == 0 ? Colors.grey.shade50 : Colors.grey.shade200,
+                    //               child: ListTile(
+                    //                 dense: true,
+                    //                 visualDensity: VisualDensity.comfortable,
+                    //                 leading: CircleAvatar(
+                    //                   child: Text(
+                    //                     '${factura['venNomCliente'].substring(0, 1)}',
+                    //                     style: Theme.of(context).textTheme.subtitle1,
+                    //                   ),
+                    //                   backgroundColor: Colors.grey[300],
+                    //                 ),
+                    //                 title: Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //                   children: [
+                    //                     SizedBox(
+                    //                       width: size.wScreen(50.0),
+                    //                       child: Text(
+                    //                         '${factura['venNomCliente']}',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                         overflow: TextOverflow.ellipsis,
+                    //                       ),
+                    //                     ),
+                    //                     Text(
+                    //                       '${factura['venEstado']}',
+                    //                       style: GoogleFonts.lexendDeca(
+                    //                         fontSize: size.iScreen(1.5),
+                    //                         color: _color,
+                    //                         fontWeight: FontWeight.bold,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //                 subtitle: Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //                   children: [
+                    //                     Column(
+                    //                       mainAxisAlignment: MainAxisAlignment.start,
+                    //                       children: [
+                    //                         Container(
+                    //                           width: size.wScreen(50.0),
+                    //                           child: Text(
+                    //                             '${factura['venNumFactura']}',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               fontSize: size.iScreen(1.5),
+                    //                               color: Colors.black54,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             ),
+                    //                             overflow: TextOverflow.ellipsis,
+                    //                           ),
+                    //                         ),
+                    //                         Container(
+                    //                           width: size.wScreen(50.0),
+                    //                           child: Text(
+                    //                             factura['venFecReg'] != ''
+                    //                                 ? '${factura['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                    //                                 : '--- --- ---',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               color: Colors.grey,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                     Container(
+                    //                       child: Text(
+                    //                         '\$${factura['venTotal']}',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(2.0),
+                    //                           color: Colors.black87,
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                         overflow: TextOverflow.ellipsis,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       } else {
+                    //         return Consumer<FacturasController>(
+                    //           builder: (_, valueNext, __) {
+                    //             return valueNext.getpage == null
+                    //                 ? Container(
+                    //                     margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                    //                     child: Center(
+                    //                       child: Text(
+                    //                         'No existen más datos',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(1.8),
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                       ),
+                    //                     ))
+                    //                 : providersfactura.getListaFacturasPaginacion.length > 25
+                    //                     ? Container(
+                    //                         margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                    //                         child: const Center(child: CircularProgressIndicator()))
+                    //                     : Container();
+                    //           },
+                    //         );
+                    //       }
+                    //     },
+                    //   ),
+                    // );
+                 
+                 
+                 
                   },
                 ),
+             
+             
+             
+             
+             
+             
               ),
              
              //*********** tab 2 *************//
 Container(
                 color: Colors.grey.shade200,
-                child: Consumer<FacturasController>(
+                child:
+                 Consumer<FacturasController>(
                   builder: (_, providersfactura, __) {
-                    if (providersfactura.getErrorFacturasPaginacion == null &&
-                        providersfactura.getError401FacturasPaginacion == false) {
-                      return Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Cargando Datos...',
-                              style: GoogleFonts.lexendDeca(
-                                fontSize: size.iScreen(1.5),
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.iScreen(1.0),
-                            ),
-                            const CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    } else if (providersfactura.getErrorFacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getErrorFacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getError401FacturasPaginacion == true) {
-                      return const NoData(
-                        label: 'Su sesión ha expirado, vuelva a iniciar sesión',
-                      );
-                    } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
-                        providersfactura.getError401FacturasPaginacion == false) {
-                      return const NoData(
-                        label: 'No existen datos para mostrar',
-                      );
-                    }
+                   
+                    if (providersfactura.allItemsFilters.isEmpty) {
+                            return const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                            // Text("sin datos");
+                          }
 
-                    return RefreshIndicator(
+                          return 
+                          
+                          (providersfactura.allItemsFilters.isEmpty)
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ))
+                                        : (providersfactura.allItemsFilters.length > 0)
+                                            ?
+                                             RefreshIndicator(
                       onRefresh: () => onRefresh(),
                       child: ListView.builder(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
-                        itemCount: providersfactura.getListaFacturasPaginacion.length + 1,
+                        itemCount: providersfactura.allItemsFilters.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          if (index < providersfactura.getListaFacturasPaginacion.length) {
+                          if (index < providersfactura.allItemsFilters.length) {
                             var _color;
-                             final factura = providersfactura.getListaFacturasPaginacion[index];
+                             final factura = providersfactura.allItemsFilters[index];
                             if (factura['venFecReg']==DateTime.now()) {
-                               final factura = providersfactura.getListaFacturasPaginacion[index];
+                               final factura = providersfactura.allItemsFilters[index];
                             }
                            
 
@@ -891,7 +1136,7 @@ Container(
                                             ),
                                           ),
                                         ))
-                                    : providersfactura.getListaFacturasPaginacion.length > 25
+                                    : providersfactura.allItemsFilters.length > 25
                                         ? Container(
                                             margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
                                             child: const Center(child: CircularProgressIndicator()))
@@ -901,9 +1146,543 @@ Container(
                           }
                         },
                       ),
-                    );
+                    ): const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                 
+                   
+                   
+                   
+                    // if (providersfactura.getErrorFacturasPaginacion == null &&
+                    //     providersfactura.getError401FacturasPaginacion == false) {
+                    //   return Center(
+                    //     child: Column(
+                    //       mainAxisSize: MainAxisSize.min,
+                    //       children: [
+                    //         Text(
+                    //           'Cargando Datos...',
+                    //           style: GoogleFonts.lexendDeca(
+                    //             fontSize: size.iScreen(1.5),
+                    //             color: Colors.black87,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //         SizedBox(
+                    //           height: size.iScreen(1.0),
+                    //         ),
+                    //         const CircularProgressIndicator(),
+                    //       ],
+                    //     ),
+                    //   );
+                    // } else if (providersfactura.getErrorFacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getErrorFacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getError401FacturasPaginacion == true) {
+                    //   return const NoData(
+                    //     label: 'Su sesión ha expirado, vuelva a iniciar sesión',
+                    //   );
+                    // } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                    //     providersfactura.getError401FacturasPaginacion == false) {
+                    //   return const NoData(
+                    //     label: 'No existen datos para mostrar',
+                    //   );
+                    // }
+
+                    // return 
+                    // RefreshIndicator(
+                    //   onRefresh: () => onRefresh(),
+                    //   child: ListView.builder(
+                    //     controller: _scrollController,
+                    //     physics: const BouncingScrollPhysics(),
+                    //     itemCount: providersfactura.getListaFacturasPaginacion.length + 1,
+                    //     itemBuilder: (BuildContext context, int index) {
+                    //       if (index < providersfactura.getListaFacturasPaginacion.length) {
+                    //         var _color;
+                    //          final factura = providersfactura.getListaFacturasPaginacion[index];
+                    //         if (factura['venFecReg']==DateTime.now()) {
+                    //            final factura = providersfactura.getListaFacturasPaginacion[index];
+                    //         }
+                           
+
+                    //         if (factura['venEstado'] == 'AUTORIZADO') {
+                    //           _color = Colors.green;
+                    //         } else if (factura['venEstado'] == 'SIN AUTORIZAR') {
+                    //           _color = Colors.orange;
+                    //         }
+                    //         if (factura['venEstado'] == 'ANULADA') {
+                    //           _color = Colors.red;
+                    //         }
+
+                    //         return Slidable(
+                    //           startActionPane: ActionPane(
+                    //             motion: const ScrollMotion(),
+                    //             children: [
+                    //               SlidableAction(
+                    //                 backgroundColor: Colors.grey,
+                    //                 foregroundColor: Colors.white,
+                    //                 icon: Icons.list_alt_outlined,
+                    //                 label: 'Más acciones',
+                    //                 onPressed: (context) {
+                    //                   showCupertinoModalPopup(
+                    //                     context: context,
+                    //                     builder: (BuildContext context) => CupertinoActionSheet(
+                    //                       title: Text(
+                    //                         'Acciones',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(2.0),
+                    //                           color: primaryColor,
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                       ),
+                    //                       actions: <Widget>[
+                    //                         CupertinoActionSheetAction(
+                    //                           child: Row(
+                    //                             mainAxisAlignment: MainAxisAlignment.center,
+                    //                             children: [
+                    //                               Container(
+                    //                                 margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                    //                                 child: Text(
+                    //                                   'Ver PDF',
+                    //                                   style: GoogleFonts.lexendDeca(
+                    //                                     fontSize: size.iScreen(1.8),
+                    //                                     color: Colors.black87,
+                    //                                     fontWeight: FontWeight.normal,
+                    //                                   ),
+                    //                                 ),
+                    //                               ),
+                    //                               const Icon(
+                    //                                 FontAwesomeIcons.filePdf,
+                    //                                 color: Colors.red,
+                    //                               )
+                    //                             ],
+                    //                           ),
+                    //                           onPressed: () {
+                    //                             Navigator.pop(context);
+
+                    //                             Navigator.push(
+                    //                               context,
+                    //                               MaterialPageRoute(
+                    //                                 builder: (context) => ViewsPDFs(
+                    //                                   infoPdf:
+                    //                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                    //                                   labelPdf: 'infoFactura.pdf',
+                    //                                 ),
+                    //                               ),
+                    //                             );
+                    //                           },
+                    //                         ),
+                    //                       ],
+                    //                       cancelButton: CupertinoActionSheetAction(
+                    //                         child: Text('Cancel',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               fontSize: size.iScreen(2.0),
+                    //                               color: Colors.red,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             )),
+                    //                         isDefaultAction: true,
+                    //                         onPressed: () {
+                    //                           Navigator.pop(context, 'Cancel');
+                    //                         },
+                    //                       ),
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           child: Card(
+                    //             elevation: 5,
+                    //             child: Container(
+                    //               margin: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                    //               color: index % 2 == 0 ? Colors.grey.shade50 : Colors.grey.shade200,
+                    //               child: ListTile(
+                    //                 dense: true,
+                    //                 visualDensity: VisualDensity.comfortable,
+                    //                 leading: CircleAvatar(
+                    //                   child: Text(
+                    //                     '${factura['venNomCliente'].substring(0, 1)}',
+                    //                     style: Theme.of(context).textTheme.subtitle1,
+                    //                   ),
+                    //                   backgroundColor: Colors.grey[300],
+                    //                 ),
+                    //                 title: Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //                   children: [
+                    //                     SizedBox(
+                    //                       width: size.wScreen(50.0),
+                    //                       child: Text(
+                    //                         '${factura['venNomCliente']}',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                         overflow: TextOverflow.ellipsis,
+                    //                       ),
+                    //                     ),
+                    //                     Text(
+                    //                       '${factura['venEstado']}',
+                    //                       style: GoogleFonts.lexendDeca(
+                    //                         fontSize: size.iScreen(1.5),
+                    //                         color: _color,
+                    //                         fontWeight: FontWeight.bold,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //                 subtitle: Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //                   children: [
+                    //                     Column(
+                    //                       mainAxisAlignment: MainAxisAlignment.start,
+                    //                       children: [
+                    //                         Container(
+                    //                           width: size.wScreen(50.0),
+                    //                           child: Text(
+                    //                             '${factura['venNumFactura']}',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               fontSize: size.iScreen(1.5),
+                    //                               color: Colors.black54,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             ),
+                    //                             overflow: TextOverflow.ellipsis,
+                    //                           ),
+                    //                         ),
+                    //                         Container(
+                    //                           width: size.wScreen(50.0),
+                    //                           child: Text(
+                    //                             factura['venFecReg'] != ''
+                    //                                 ? '${factura['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                    //                                 : '--- --- ---',
+                    //                             style: GoogleFonts.lexendDeca(
+                    //                               color: Colors.grey,
+                    //                               fontWeight: FontWeight.normal,
+                    //                             ),
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     ),
+                    //                     Container(
+                    //                       child: Text(
+                    //                         '\$${factura['venTotal']}',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(2.0),
+                    //                           color: Colors.black87,
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                         overflow: TextOverflow.ellipsis,
+                    //                       ),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         );
+                    //       } else {
+                    //         return Consumer<FacturasController>(
+                    //           builder: (_, valueNext, __) {
+                    //             return valueNext.getpage == null
+                    //                 ? Container(
+                    //                     margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                    //                     child: Center(
+                    //                       child: Text(
+                    //                         'No existen más datos',
+                    //                         style: GoogleFonts.lexendDeca(
+                    //                           fontSize: size.iScreen(1.8),
+                    //                           fontWeight: FontWeight.normal,
+                    //                         ),
+                    //                       ),
+                    //                     ))
+                    //                 : providersfactura.getListaFacturasPaginacion.length > 25
+                    //                     ? Container(
+                    //                         margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                    //                         child: const Center(child: CircularProgressIndicator()))
+                    //                     : Container();
+                    //           },
+                    //         );
+                    //       }
+                    //     },
+                    //   ),
+                    // );
+                 
+                 
+                 
                   },
                 ),
+             
+             
+             
+                
+                //  Consumer<FacturasController>(
+                //   builder: (_, providersfactura, __) {
+                //     if (providersfactura.getErrorFacturasPaginacion == null &&
+                //         providersfactura.getError401FacturasPaginacion == false) {
+                //       return Center(
+                //         child: Column(
+                //           mainAxisSize: MainAxisSize.min,
+                //           children: [
+                //             Text(
+                //               'Cargando Datos...',
+                //               style: GoogleFonts.lexendDeca(
+                //                 fontSize: size.iScreen(1.5),
+                //                 color: Colors.black87,
+                //                 fontWeight: FontWeight.bold,
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               height: size.iScreen(1.0),
+                //             ),
+                //             const CircularProgressIndicator(),
+                //           ],
+                //         ),
+                //       );
+                //     } else if (providersfactura.getErrorFacturasPaginacion == false) {
+                //       return const NoData(
+                //         label: 'No existen datos para mostrar',
+                //       );
+                //     } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                //         providersfactura.getErrorFacturasPaginacion == false) {
+                //       return const NoData(
+                //         label: 'No existen datos para mostrar',
+                //       );
+                //     } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                //         providersfactura.getError401FacturasPaginacion == true) {
+                //       return const NoData(
+                //         label: 'Su sesión ha expirado, vuelva a iniciar sesión',
+                //       );
+                //     } else if (providersfactura.getListaFacturasPaginacion.isEmpty &&
+                //         providersfactura.getError401FacturasPaginacion == false) {
+                //       return const NoData(
+                //         label: 'No existen datos para mostrar',
+                //       );
+                //     }
+
+                //     return RefreshIndicator(
+                //       onRefresh: () => onRefresh(),
+                //       child: ListView.builder(
+                //         controller: _scrollController,
+                //         physics: const BouncingScrollPhysics(),
+                //         itemCount: providersfactura.getListaFacturasPaginacion.length + 1,
+                //         itemBuilder: (BuildContext context, int index) {
+                //           if (index < providersfactura.getListaFacturasPaginacion.length) {
+                //             var _color;
+                //              final factura = providersfactura.getListaFacturasPaginacion[index];
+                //             if (factura['venFecReg']==DateTime.now()) {
+                //                final factura = providersfactura.getListaFacturasPaginacion[index];
+                //             }
+                           
+
+                //             if (factura['venEstado'] == 'AUTORIZADO') {
+                //               _color = Colors.green;
+                //             } else if (factura['venEstado'] == 'SIN AUTORIZAR') {
+                //               _color = Colors.orange;
+                //             }
+                //             if (factura['venEstado'] == 'ANULADA') {
+                //               _color = Colors.red;
+                //             }
+
+                //             return Slidable(
+                //               startActionPane: ActionPane(
+                //                 motion: const ScrollMotion(),
+                //                 children: [
+                //                   SlidableAction(
+                //                     backgroundColor: Colors.grey,
+                //                     foregroundColor: Colors.white,
+                //                     icon: Icons.list_alt_outlined,
+                //                     label: 'Más acciones',
+                //                     onPressed: (context) {
+                //                       showCupertinoModalPopup(
+                //                         context: context,
+                //                         builder: (BuildContext context) => CupertinoActionSheet(
+                //                           title: Text(
+                //                             'Acciones',
+                //                             style: GoogleFonts.lexendDeca(
+                //                               fontSize: size.iScreen(2.0),
+                //                               color: primaryColor,
+                //                               fontWeight: FontWeight.normal,
+                //                             ),
+                //                           ),
+                //                           actions: <Widget>[
+                //                             CupertinoActionSheetAction(
+                //                               child: Row(
+                //                                 mainAxisAlignment: MainAxisAlignment.center,
+                //                                 children: [
+                //                                   Container(
+                //                                     margin: EdgeInsets.only(right: size.iScreen(2.0)),
+                //                                     child: Text(
+                //                                       'Ver PDF',
+                //                                       style: GoogleFonts.lexendDeca(
+                //                                         fontSize: size.iScreen(1.8),
+                //                                         color: Colors.black87,
+                //                                         fontWeight: FontWeight.normal,
+                //                                       ),
+                //                                     ),
+                //                                   ),
+                //                                   const Icon(
+                //                                     FontAwesomeIcons.filePdf,
+                //                                     color: Colors.red,
+                //                                   )
+                //                                 ],
+                //                               ),
+                //                               onPressed: () {
+                //                                 Navigator.pop(context);
+
+                //                                 Navigator.push(
+                //                                   context,
+                //                                   MaterialPageRoute(
+                //                                     builder: (context) => ViewsPDFs(
+                //                                       infoPdf:
+                //                                         'https://syscontable.neitor.com/reportes/factura.php?codigo=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                //                                       labelPdf: 'infoFactura.pdf',
+                //                                     ),
+                //                                   ),
+                //                                 );
+                //                               },
+                //                             ),
+                //                           ],
+                //                           cancelButton: CupertinoActionSheetAction(
+                //                             child: Text('Cancel',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                   fontSize: size.iScreen(2.0),
+                //                                   color: Colors.red,
+                //                                   fontWeight: FontWeight.normal,
+                //                                 )),
+                //                             isDefaultAction: true,
+                //                             onPressed: () {
+                //                               Navigator.pop(context, 'Cancel');
+                //                             },
+                //                           ),
+                //                         ),
+                //                       );
+                //                     },
+                //                   ),
+                //                 ],
+                //               ),
+                //               child: Card(
+                //                 elevation: 5,
+                //                 child: Container(
+                //                   margin: EdgeInsets.only(bottom: size.iScreen(0.0)),
+                //                   color: index % 2 == 0 ? Colors.grey.shade50 : Colors.grey.shade200,
+                //                   child: ListTile(
+                //                     dense: true,
+                //                     visualDensity: VisualDensity.comfortable,
+                //                     leading: CircleAvatar(
+                //                       child: Text(
+                //                         '${factura['venNomCliente'].substring(0, 1)}',
+                //                         style: Theme.of(context).textTheme.subtitle1,
+                //                       ),
+                //                       backgroundColor: Colors.grey[300],
+                //                     ),
+                //                     title: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         SizedBox(
+                //                           width: size.wScreen(50.0),
+                //                           child: Text(
+                //                             '${factura['venNomCliente']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                               fontWeight: FontWeight.normal,
+                //                             ),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                         Text(
+                //                           '${factura['venEstado']}',
+                //                           style: GoogleFonts.lexendDeca(
+                //                             fontSize: size.iScreen(1.5),
+                //                             color: _color,
+                //                             fontWeight: FontWeight.bold,
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     subtitle: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         Column(
+                //                           mainAxisAlignment: MainAxisAlignment.start,
+                //                           children: [
+                //                             Container(
+                //                               width: size.wScreen(50.0),
+                //                               child: Text(
+                //                                 '${factura['venNumFactura']}',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                   fontSize: size.iScreen(1.5),
+                //                                   color: Colors.black54,
+                //                                   fontWeight: FontWeight.normal,
+                //                                 ),
+                //                                 overflow: TextOverflow.ellipsis,
+                //                               ),
+                //                             ),
+                //                             Container(
+                //                               width: size.wScreen(50.0),
+                //                               child: Text(
+                //                                 factura['venFecReg'] != ''
+                //                                     ? '${factura['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                //                                     : '--- --- ---',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                   color: Colors.grey,
+                //                                   fontWeight: FontWeight.normal,
+                //                                 ),
+                //                               ),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         Container(
+                //                           child: Text(
+                //                             '\$${factura['venTotal']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                               fontSize: size.iScreen(2.0),
+                //                               color: Colors.black87,
+                //                               fontWeight: FontWeight.normal,
+                //                             ),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             );
+                //           } else {
+                //             return Consumer<FacturasController>(
+                //               builder: (_, valueNext, __) {
+                //                 return valueNext.getpage == null
+                //                     ? Container(
+                //                         margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                //                         child: Center(
+                //                           child: Text(
+                //                             'No existen más datos',
+                //                             style: GoogleFonts.lexendDeca(
+                //                               fontSize: size.iScreen(1.8),
+                //                               fontWeight: FontWeight.normal,
+                //                             ),
+                //                           ),
+                //                         ))
+                //                     : providersfactura.getListaFacturasPaginacion.length > 25
+                //                         ? Container(
+                //                             margin: EdgeInsets.symmetric(vertical: size.iScreen(2.0)),
+                //                             child: const Center(child: CircularProgressIndicator()))
+                //                         : Container();
+                //               },
+                //             );
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   },
+                // ),
+             
+             
+             
+             
               ),
              
              
@@ -1272,7 +2051,7 @@ Container(
                            _ctrl.resetListasProdutos();
                          _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
-                                _ctrl.setFormaDePago('');
+                                _ctrl.setFormaDePago('EFECTIVO');
                                 _ctrl.setFacturaOk(false);
                                _ctrl.setTipoDeTransaccion('F');
                                  _ctrl.setClienteComprbante({

@@ -308,7 +308,7 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
       cantidad: _cantidad,
       input: 'venId',
       orden: false,
-    estado:'NOTA CREDITOS',
+      estado:'NOTA VENTAS',
       token: '${dataUser!.token}',
     );
 
@@ -327,6 +327,43 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
         dataSort.sort((a, b) => b['venFecReg']!.compareTo(a['venFecReg']!));
 
         setPage(response['data']['pagination']['next']);
+
+
+                //============================//
+
+//           DateTime hoy = DateTime.now();
+  
+//   List listaFiltrada = response['data']['results'].where((element) {
+//     // Convertir la cadena en DateTime
+//     DateTime fechaRegistro = DateTime.parse(element['venFecReg']);
+    
+//     // Comparar solo la parte de la fecha
+//     return fechaRegistro.year == hoy.year &&
+//            fechaRegistro.month == hoy.month &&
+//            fechaRegistro.day == hoy.day;
+//   }).toList();
+
+// for (var item in listaFiltrada) {
+//   print('LA LISTA PRE FACTURAS VERIFICADA : ${item}'); // Solo mostrará los elementos con fecha de hoy
+// }
+
+  
+
+//  DateTime hoy = DateTime.now();
+  
+//   List listaFiltrada = response['data']['results'].where((element) {
+//     // Convertir la cadena en DateTime
+//     DateTime fechaRegistro = DateTime.parse(element['venFecReg']);
+    
+//     // Comparar si la fecha es anterior a hoy
+//     return fechaRegistro.isBefore(DateTime(hoy.year, hoy.month, hoy.day));
+//   }).toList();
+
+//    print('LA LISTA PRE FACTURAS VERIFICADA : ${listaFiltrada}');  // Solo mostrará los elementos con fecha anterior a hoy
+
+        //=============================//
+
+
 
         // setInfoBusquedaPreFacturasPaginacion(dataSort);
 
@@ -375,7 +412,8 @@ List _facturas = [];
       }
       return false;
     }).toList();
-    setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+    // setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+    setListFilter( _facturasFiltradas);
     notifyListeners();
   }
 
@@ -391,7 +429,8 @@ List _facturas = [];
       }
       return false;
     }).toList();
-       setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+      //  setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+         setListFilter( _facturasFiltradas);
     notifyListeners();
   }
 
@@ -408,5 +447,55 @@ _tabIndex=_index;
 notifyListeners();
 
 }
+
+
+
+
+
+//=================BUSCADOR LOCAL==================//
+
+ List<dynamic> _allItemsFilters=[];
+   List<dynamic> get allItemsFilters => _allItemsFilters;
+   void setListFilter( List<dynamic> _list){
+  _allItemsFilters = [];
+
+// _sortList();
+
+
+
+_allItemsFilters.addAll(_list);
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+
+
+  notifyListeners();
+ }
+
+  void search(String query) {
+      List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+    if (query.isEmpty) {
+      _allItemsFilters = originalList;
+    } else {
+      _allItemsFilters = originalList.where((estudiante) {
+        return 
+        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+               estudiante['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+
+
+
+//====================================//
+
+
+
+
+
+
+
+
 
 }

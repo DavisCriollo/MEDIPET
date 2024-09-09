@@ -205,6 +205,7 @@ notifyListeners();
     _listaFacturasPaginacion=[];
     _listaFacturasPaginacion.addAll(data);
     print('Facturas :${_listaFacturasPaginacion.length}');
+     print('Facturas :${_listaFacturasPaginacion}');
 
 // obtenerFacturasDeHoy(_listaFacturasPaginacion);
 // Inicializar la variable de suma
@@ -356,6 +357,27 @@ void obtenerFacturasDeHoy(List listaFacturasPaginacion) {
         dataSort.sort((a, b) => b['venFecReg']!.compareTo(a['venFecReg']!));
 
         setPage(response['data']['pagination']['next']);
+
+
+        //============================//
+
+          DateTime hoy = DateTime.now();
+  
+  List listaFiltrada = response['data']['results'].where((element) {
+    // Convertir la cadena en DateTime
+    DateTime fechaRegistro = DateTime.parse(element['venFecReg']);
+    
+    // Comparar solo la parte de la fecha
+    return fechaRegistro.year == hoy.year &&
+           fechaRegistro.month == hoy.month &&
+           fechaRegistro.day == hoy.day;
+  }).toList();
+
+  print('LA LISTA VERIFICADA : ${listaFiltrada}'); // Solo mostrará los elementos con fecha de hoy
+
+
+
+        //=============================//
           
         // setInfoBusquedaFacturasPaginacion(dataSort);
 
@@ -442,7 +464,8 @@ List _facturas = [];
       }
       return false;
     }).toList();
-    setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+    // setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+     setListFilter( _facturasFiltradas);
     notifyListeners();
   }
 
@@ -458,7 +481,8 @@ List _facturas = [];
       }
       return false;
     }).toList();
-       setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+      //  setInfoBusquedaFacturasPaginacion(_facturasFiltradas);
+       setListFilter( _facturasFiltradas);
     notifyListeners();
   }
 
@@ -474,6 +498,50 @@ _tabIndex=_index;
 notifyListeners();
 
 }
+
+
+
+//=================BUSCADOR LOCAL==================//
+
+ List<dynamic> _allItemsFilters=[];
+   List<dynamic> get allItemsFilters => _allItemsFilters;
+   void setListFilter( List<dynamic> _list){
+  _allItemsFilters = [];
+
+// _sortList();
+
+
+
+_allItemsFilters.addAll(_list);
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+
+
+  notifyListeners();
+ }
+
+  void search(String query) {
+      List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+    if (query.isEmpty) {
+      _allItemsFilters = originalList;
+    } else {
+      _allItemsFilters = originalList.where((data) {
+        return 
+        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+               data['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+
+
+
+//====================================//
+
+
+
+
 
 
 

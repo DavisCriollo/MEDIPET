@@ -392,7 +392,8 @@ List _facturas = [];
       }
       return false;
     }).toList();
-    setInfoBusquedaNotasCreditosPaginacion(_facturasFiltradas);
+    // setInfoBusquedaNotasCreditosPaginacion(_facturasFiltradas);
+     setListFilter( _facturasFiltradas);
     notifyListeners();
   }
 
@@ -408,7 +409,10 @@ List _facturas = [];
       }
       return false;
     }).toList();
-       setInfoBusquedaNotasCreditosPaginacion(_facturasFiltradas);
+      //  setInfoBusquedaNotasCreditosPaginacion(_facturasFiltradas);
+     setListFilter( _facturasFiltradas);
+
+
     notifyListeners();
   }
 
@@ -424,6 +428,50 @@ _tabIndex=_index;
 notifyListeners();
 
 }
+
+
+
+
+
+//=================BUSCADOR LOCAL==================//
+
+ List<dynamic> _allItemsFilters=[];
+   List<dynamic> get allItemsFilters => _allItemsFilters;
+   void setListFilter( List<dynamic> _list){
+  _allItemsFilters = [];
+
+// _sortList();
+
+
+
+_allItemsFilters.addAll(_list);
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+
+
+  notifyListeners();
+ }
+
+  void search(String query) {
+      List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+    if (query.isEmpty) {
+      _allItemsFilters = originalList;
+    } else {
+      _allItemsFilters = originalList.where((estudiante) {
+        return 
+        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+               estudiante['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+
+
+
+//====================================//
+
+
 
 
 

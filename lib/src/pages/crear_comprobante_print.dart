@@ -20,6 +20,7 @@ import 'package:neitorcont/src/utils/dialogs.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/solo_decimales.dart';
+import 'package:neitorcont/src/utils/valida_email.dart';
 import 'package:provider/provider.dart';
 import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
@@ -41,8 +42,7 @@ class _CrearComprobanteState extends State<CrearComprobante> {
 
   TextEditingController _controller = TextEditingController();
    TextEditingController _textAddPlaca = TextEditingController();
-
-
+  TextEditingController _textAddCorreo = TextEditingController();
 
 
 //************  PARTE PARA CONFIGURAR LA IMPRESORA*******************//
@@ -98,7 +98,7 @@ bool printBinded = false;
 
  _controller.dispose();
   _textAddPlaca.dispose();
-
+    _textAddCorreo.dispose();
 
 
     super.dispose();
@@ -142,264 +142,807 @@ bool printBinded = false;
             })
           ],
         ),
-        body: Stack(
-          children: [
-            Container(
-              color: Colors.white,
-              margin: EdgeInsets.only(
-                  left: size.iScreen(1.0),
-                  right: size.iScreen(1.0),
-                  bottom: size.iScreen(1.0)),
-              width: size.wScreen(100),
-              height: size.hScreen(100),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Form(
-                  key: ctrl.comprobantesFormKey,
-                  child: Column(
-                    children: [
-                      // //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.5),
-                      // ),
-                      // //*****************************************/
-                      // Row(
-                      //   children: [
-                      //     SizedBox(
-                      //       // width: size.wScreen(100.0),
-                
-                      //       // color: Colors.blue,
-                      //       child: Text('TIPO CODUMENTO :',
-                      //           style: GoogleFonts.lexendDeca(
-                      //               // fontSize: size.iScreen(2.0),
-                      //               fontWeight: FontWeight.normal,
-                      //               color: Colors.grey)),
-                      //     ),
-                      //     Consumer<ComprobantesController>(
-                      //       builder: (_, valueTipo, __) {
-                      //         return Container(
-                      //           // color: Colors.red,
-                      //           width: size.wScreen(50.0),
-                
-                      //           // color: Colors.blue,
-                      //           child: Text(
-                      //               valueTipo.getTipoDocumento.isEmpty
-                      //                   ? ' --- --- --- --- ---'
-                      //                   : ' ${valueTipo.getTipoDocumento}',
-                      //               style: GoogleFonts.lexendDeca(
-                      //                   fontSize: size.iScreen(2.0),
-                      //                   fontWeight: FontWeight.normal,
-                      //                   color: valueTipo.getTipoDocumento.isEmpty
-                      //                       ? Colors.grey
-                      //                       : Colors.black)),
-                      //         );
-                      //       },
-                      //     ),
-                      //     Spacer(),
-                      //     ClipRRect(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       child: GestureDetector(
-                      //         onTap: () {
-                      //           // context
-                      //           //     .read<MascotasController>()
-                      //           //     .buscaAllMascotas('');
-                
-                      //           // // _buscarMascota(context, size);
-                      //           modalTipoDocumento(context, size, ctrl);
-                
-                      //           // //*******************************************/
-                      //         },
-                      //         child: Consumer<ThemeProvider>(
-                      //           builder: (_, valueTheme, __) {
-                      //             return Container(
-                      //               alignment: Alignment.center,
-                      //               color: valueTheme.appTheme.primaryColor,
-                      //               width: size.iScreen(3.5),
-                      //               padding: EdgeInsets.only(
-                      //                 top: size.iScreen(0.5),
-                      //                 bottom: size.iScreen(0.5),
-                      //                 left: size.iScreen(0.5),
-                      //                 right: size.iScreen(0.5),
-                      //               ),
-                      //               child: Icon(
-                      //                 Icons.add,
-                      //                 color: Colors.white,
-                      //                 size: size.iScreen(2.0),
-                      //               ),
-                      //             );
-                      //           },
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                      Container(
-                     
-                        padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
+        body: Container(
+          color: Colors.white,
+          margin: EdgeInsets.only(
+              left: size.iScreen(1.0),
+              right: size.iScreen(1.0),
+              bottom: size.iScreen(1.0)),
+          width: size.wScreen(100),
+          height: size.hScreen(100),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Form(
+              key: ctrl.comprobantesFormKey,
+              child: Column(
+                children: [
+                  // //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.5),
+                  // ),
+                  // //*****************************************/
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       // width: size.wScreen(100.0),
+            
+                  //       // color: Colors.blue,
+                  //       child: Text('TIPO CODUMENTO :',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               // fontSize: size.iScreen(2.0),
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Colors.grey)),
+                  //     ),
+                  //     Consumer<ComprobantesController>(
+                  //       builder: (_, valueTipo, __) {
+                  //         return Container(
+                  //           // color: Colors.red,
+                  //           width: size.wScreen(50.0),
+            
+                  //           // color: Colors.blue,
+                  //           child: Text(
+                  //               valueTipo.getTipoDocumento.isEmpty
+                  //                   ? ' --- --- --- --- ---'
+                  //                   : ' ${valueTipo.getTipoDocumento}',
+                  //               style: GoogleFonts.lexendDeca(
+                  //                   fontSize: size.iScreen(2.0),
+                  //                   fontWeight: FontWeight.normal,
+                  //                   color: valueTipo.getTipoDocumento.isEmpty
+                  //                       ? Colors.grey
+                  //                       : Colors.black)),
+                  //         );
+                  //       },
+                  //     ),
+                  //     Spacer(),
+                  //     ClipRRect(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //       child: GestureDetector(
+                  //         onTap: () {
+                  //           // context
+                  //           //     .read<MascotasController>()
+                  //           //     .buscaAllMascotas('');
+            
+                  //           // // _buscarMascota(context, size);
+                  //           modalTipoDocumento(context, size, ctrl);
+            
+                  //           // //*******************************************/
+                  //         },
+                  //         child: Consumer<ThemeProvider>(
+                  //           builder: (_, valueTheme, __) {
+                  //             return Container(
+                  //               alignment: Alignment.center,
+                  //               color: valueTheme.appTheme.primaryColor,
+                  //               width: size.iScreen(3.5),
+                  //               padding: EdgeInsets.only(
+                  //                 top: size.iScreen(0.5),
+                  //                 bottom: size.iScreen(0.5),
+                  //                 left: size.iScreen(0.5),
+                  //                 right: size.iScreen(0.5),
+                  //               ),
+                  //               child: Icon(
+                  //                 Icons.add,
+                  //                 color: Colors.white,
+                  //                 size: size.iScreen(2.0),
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+
+
+                  //**********************SE MUESTRA LA OPCION DE IMPRIMIR *************************//
+                        Consumer<SocketService>(
+        builder: (_,value, __) {
+         return 
+         value.latestResponse!.isNotEmpty
+        ? 
+        Container(
+            width: size.wScreen(100.0),
+          
+            decoration: BoxDecoration(
+                color: Colors.grey,
+              borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.0),
+          bottomRight: Radius.circular(20.0),
+        ),
+            ),
+            child: Column(
+        mainAxisSize: MainAxisSize.min, // Ajusta el tamaño del contenedor según su contenido
+        children: [
+
+          SizedBox(height:size.iScreen(1.5)), 
+          Text(
+        '¿Desea imprimir factura?',
+        style: GoogleFonts.lexendDeca(
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.iScreen(2.0),
                         
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                              Consumer<ComprobantesController>(builder: (_, value, __) { 
-                                return  
-                                value.getExistCliente==false
-                                ?ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: GestureDetector(
-                                onTap:() {
-                               
-                                         final ctrlPropi=  context.read<PropietariosController>();
-                         ctrlPropi.resetFormPropietario();
+                            ),
+        textAlign: TextAlign.center,
+          ),
+          SizedBox(width:size.iScreen(1.5)), // Espacio entre el texto y los botones
+          Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+            // SizedBox(width: 20),
+            
+           
+            ElevatedButton(
+              style: ButtonStyle(
+             // Color negro
+                
+              ),
+              onPressed: (){
+
+                    _printTicket(value.latestResponse);
+
+                    //========================================//
+                        final _ctrl =context.read<ComprobantesController>();
+                   if (_ctrl.getTipoDeTransaccion=='F') {
+                      //================FACTURAS F ==================//
+                 final _controllerFacturas =
+                            context.read<FacturasController>();
+
+                        _controllerFacturas
+                            .onSearchTextFacturaPaginacion("");
+
+                        _controllerFacturas
+                            .setBtnSearchFacturaPaginacion(false);
+                        _controllerFacturas
+                            .setErrorFacturasPaginacion(null);
+
+                        _controllerFacturas
+                            .setError401FacturasPaginacion(false);
+
+                        _controllerFacturas.resetFormFacturas();
+                        _controllerFacturas.setPage(0);
+                        _controllerFacturas.setIsNext(false);
+                        _controllerFacturas
+                            .setInfoBusquedaFacturasPaginacion([]);
+                        _controllerFacturas.buscaAllFacturasPaginacion(
+                            '',false,0);
+                   }
+                if (_ctrl.getTipoDeTransaccion=='N') {
+                //================PREFACTURAS N ==================//
+                 final _controllerPreFacturas =
+                            context.read<PreFacturasController>();
+
+                        _controllerPreFacturas
+                            .onSearchTextPreFacturaPaginacion("");
+
+                        _controllerPreFacturas
+                            .setBtnSearchPreFacturaPaginacion(false);
+                        _controllerPreFacturas
+                            .setErrorPreFacturasPaginacion(null);
+
+                        _controllerPreFacturas
+                            .setError401PreFacturasPaginacion(false);
+
+                        _controllerPreFacturas.resetFormPreFacturas();
+                        _controllerPreFacturas.setPage(0);
+                        _controllerPreFacturas.setIsNext(false);
+                        _controllerPreFacturas
+                            .setInfoBusquedaPreFacturasPaginacion([]);
+                        _controllerPreFacturas
+                            .buscaAllPreFacturasPaginacion('', true,0);
+                }
+                  if (_ctrl.getTipoDeTransaccion=='P') {
+                    //================PROFORMAS P ==================//
+            final _controllerProformas =
+                            context.read<ProformasController>();
+
+                        _controllerProformas
+                            .onSearchTextProformasPaginacion("");
+
+                        _controllerProformas
+                            .setBtnSearchProformasPaginacion(false);
+                        _controllerProformas
+                            .setErrorProformasPaginacion(null);
+
+                        _controllerProformas
+                            .setError401ProformasPaginacion(false);
+
+                        _controllerProformas.resetFormProformas();
+                        _controllerProformas.setPage(0);
+                        _controllerProformas.setIsNext(false);
+                        _controllerProformas
+                            .setInfoBusquedaProformasPaginacion([]);
+                        _controllerProformas.buscaAllProformasPaginacion(
+                            '', true,0);
+
+                     //==================================//
+                  }
+
+
+
+                    //****************************************//
+
+
+
+
+
+
+
+              },
+              child: Text('Imprimir', style: GoogleFonts.lexendDeca(
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.iScreen(1.8)
+                            ),),
+            ), // Espacio entre los botones
+            SizedBox(width: 20),
+             OutlinedButton(
+               style: ButtonStyle( backgroundColor: MaterialStateProperty.all(Colors.black), ),
+               onPressed: (){
+                 Navigator.pop(context);
+                    final _ctrl =context.read<ComprobantesController>();
+                    if (_ctrl.getTipoDeTransaccion=='F') {
+                       //================FACTURAS F ==================//
+                  final _controllerFacturas =
+                             context.read<FacturasController>();
+
+                         _controllerFacturas
+                             .onSearchTextFacturaPaginacion("");
+
+                         _controllerFacturas
+                             .setBtnSearchFacturaPaginacion(false);
+                         _controllerFacturas
+                             .setErrorFacturasPaginacion(null);
+
+                         _controllerFacturas
+                             .setError401FacturasPaginacion(false);
+
+                         _controllerFacturas.resetFormFacturas();
+                         _controllerFacturas.setPage(0);
+                         _controllerFacturas.setIsNext(false);
+                         _controllerFacturas
+                             .setInfoBusquedaFacturasPaginacion([]);
+                         _controllerFacturas.buscaAllFacturasPaginacion(
+                             '',false,0);
+                    }
+                 if (_ctrl.getTipoDeTransaccion=='N') {
+                 //================PREFACTURAS N ==================//
+                  final _controllerPreFacturas =
+                             context.read<PreFacturasController>();
+
+                         _controllerPreFacturas
+                             .onSearchTextPreFacturaPaginacion("");
+
+                         _controllerPreFacturas
+                             .setBtnSearchPreFacturaPaginacion(false);
+                         _controllerPreFacturas
+                             .setErrorPreFacturasPaginacion(null);
+
+                         _controllerPreFacturas
+                             .setError401PreFacturasPaginacion(false);
+
+                         _controllerPreFacturas.resetFormPreFacturas();
+                         _controllerPreFacturas.setPage(0);
+                         _controllerPreFacturas.setIsNext(false);
+                         _controllerPreFacturas
+                             .setInfoBusquedaPreFacturasPaginacion([]);
+                         _controllerPreFacturas
+                             .buscaAllPreFacturasPaginacion('', true,0);
+                 }
+                   if (_ctrl.getTipoDeTransaccion=='P') {
+                     //================PROFORMAS P ==================//
+             final _controllerProformas =
+                             context.read<ProformasController>();
+
+                         _controllerProformas
+                             .onSearchTextProformasPaginacion("");
+
+                         _controllerProformas
+                             .setBtnSearchProformasPaginacion(false);
+                         _controllerProformas
+                             .setErrorProformasPaginacion(null);
+
+                         _controllerProformas
+                             .setError401ProformasPaginacion(false);
+
+                         _controllerProformas.resetFormProformas();
+                         _controllerProformas.setPage(0);
+                         _controllerProformas.setIsNext(false);
+                         _controllerProformas
+                             .setInfoBusquedaProformasPaginacion([]);
+                         _controllerProformas.buscaAllProformasPaginacion(
+                             '', true,0);
+
+                      //==================================//
+                   }
+               },
+               child: Text('No', style: GoogleFonts.lexendDeca(
+                 color: Colors.white,
+                               fontWeight: FontWeight.bold,
+                               fontSize: size.iScreen(1.8)
+                             ),),
+             ),
+           
+        ],
+          ),
+        ],
+      ),
+          ):Container();
+          
+         
+        },),
+      
+          
+
+
+
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+                  Container(
+                 
+                    padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
+                    
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                          Consumer<ComprobantesController>(builder: (_, value, __) { 
+                            return  
+                            value.getExistCliente==false
+                            ?ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: GestureDetector(
+                            onTap:() {
+                           
+                                     final ctrlPropi=  context.read<PropietariosController>();
+                     ctrlPropi.resetFormPropietario();
 
 ctrlPropi.setDocumento('');
  ctrlPropi.setGeneros('');
   ctrlPropi.setNombres('');
-                     ctrlPropi.setDireccion('');
-                       ctrlPropi.setLabelTelefono('');
-                      ctrlPropi.seItemAddPlaca('');
-                       ctrlPropi.resetPlacas();
-                         ctrlPropi.resetCelulares();
-                        ctrlPropi.resetCorreos();
-                    ctrlPropi.setObservacion('');
+                 ctrlPropi.setDireccion('');
+                   ctrlPropi.setLabelTelefono('');
+                  ctrlPropi.seItemAddPlaca('');
+                   ctrlPropi.resetPlacas();
+                     ctrlPropi.resetCelulares();
+                    ctrlPropi.resetCorreos();
+                ctrlPropi.setObservacion('');
 
-                     ctrlPropi.setPais('');
-                      ctrlPropi.setListaTodosLosPaises([]);
-                      ctrlPropi.setProvincia('');
-                      ctrlPropi.setListaTodasLasProvincias([]);
-                       ctrlPropi.setCanton('');
-                        ctrlPropi.setListaTodosLosCantones([]);
+                 ctrlPropi.setPais('');
+                  ctrlPropi.setListaTodosLosPaises([]);
+                  ctrlPropi.setProvincia('');
+                  ctrlPropi.setListaTodasLasProvincias([]);
+                   ctrlPropi.setCanton('');
+                    ctrlPropi.setListaTodosLosCantones([]);
 
 
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (context) =>
-                                   CrearPropietario(action: 'CREATE',
-                                  user: widget.user,)));
-                                      },
-                                child:
-                                   
-                                    Consumer<ThemeProvider>(
-                                  builder: (_, valueTheme, __) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      color: valueTheme.appTheme.accentColor,
-                                      width: size.iScreen(4.5),
-                                      height: size.iScreen(4.5),
-                                      padding: EdgeInsets.only(
-                                        top: size.iScreen(0.5),
-                                        bottom: size.iScreen(0.5),
-                                        left: size.iScreen(0.5),
-                                        right: size.iScreen(0.5),
-                                      ),
-                                      child: Icon(
-                                        Icons.person_add_alt,
-                                        color: Colors.white,
-                                        size: size.iScreen(2.0),
-                                      ),
-                                    );
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) =>
+                               CrearPropietario(action: 'CREATE',
+                              user: widget.user,)));
                                   },
-                                ),
-                              ),
-                            ):Container();
-                                
-                               },),
-                               SizedBox(width: size.iScreen(1.0),),
-                            Consumer<ComprobantesController>(
-                              builder: (_, tipo, __) {
+                            child:
+                               
+                                Consumer<ThemeProvider>(
+                              builder: (_, valueTheme, __) {
                                 return Container(
-                                  width: size.iScreen(28),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      TextField(
-                                        decoration: InputDecoration(
-                                          label: Text( 'Ingrese Documento'),
-                                          labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
-                                          // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
-                                          // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                                          helperStyle:
-                                              TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
-                                        ),
-                                        inputFormatters: [
-                                          UpperCaseText(), // Limita a 13 dígitos
-                                        ],
-                                        style: TextStyle(
-                                          fontSize: size.iScreen( 3.0), // Ajusta el tamaño de la letra
-                                          // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        onChanged: (text) {
-                                          ctrl.setDocumento(text);
-                                        },
-                                      ),
-                                    ],
+                                  alignment: Alignment.center,
+                                  color: valueTheme.appTheme.accentColor,
+                                  width: size.iScreen(4.5),
+                                  height: size.iScreen(4.5),
+                                  padding: EdgeInsets.only(
+                                    top: size.iScreen(0.5),
+                                    bottom: size.iScreen(0.5),
+                                    left: size.iScreen(0.5),
+                                    right: size.iScreen(0.5),
+                                  ),
+                                  child: Icon(
+                                    Icons.person_add_alt,
+                                    color: Colors.white,
+                                    size: size.iScreen(2.0),
                                   ),
                                 );
                               },
                             ),
-                             Consumer<ComprobantesController>(builder: (_, value, __) { 
-                                return  ClipRRect(
+                          ),
+                        ):Container();
+                            
+                           },),
+                           SizedBox(width: size.iScreen(1.0),),
+                        Consumer<ComprobantesController>(
+                          builder: (_, tipo, __) {
+                            return Container(
+                              width: size.iScreen(28),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      label: Text( 'Ingrese Documento'),
+                                      labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
+                                      // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
+                                      // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                                      helperStyle:
+                                          TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
+                                    ),
+                                    inputFormatters: [
+                                      UpperCaseText(), // Limita a 13 dígitos
+                                    ],
+                                    style: TextStyle(
+                                      fontSize: size.iScreen( 3.0), // Ajusta el tamaño de la letra
+                                      // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    onChanged: (text) {
+                                      ctrl.setDocumento(text);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                         Consumer<ComprobantesController>(builder: (_, value, __) { 
+                            return  ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: GestureDetector(
+                            onTap: value.getDocumento!.isNotEmpty
+                                ? () async {
+                                    ProgressDialog.show(context);
+                                    final response = await value.buscaClienteComprobante();
+                                    ProgressDialog.dissmiss(context);
+                                    if (response != null) {
+                                       if(value.getClienteComprobante.isNotEmpty){
+                                       
+                                      //  NotificatiosnService.showSnackBarDanger( '${value.getClienteComprobante}');
+                                     }else{
+                                       value.setExistCliente(false);
+
+                                       final _ctrl =context.read<ComprobantesController>();
+                       _ctrl.resetListasProdutos();
+                     _ctrl.resetPlacas();
+                            _ctrl.setDocumento('');
+                            _ctrl.setFormaDePago('EFECTIVO');
+                            _ctrl.setFacturaOk(false);
+                           
+                             _ctrl.setClienteComprbante({});
+                             _ctrl.resetCorreos();
+
+
+
+                                      NotificatiosnService.showSnackBarDanger( 'No se encuentra información,ingrese datos manualmente');
+                                   
+                                     }
+                                     
+                                    } else {
+            
+                                    }
+                                    
+            
+                                    //     .searchAllPersinas('');
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             BuscarPropietario()));
+                                  }
+                                : () {
+                                    NotificatiosnService.showSnackBarDanger(
+                                        'Debe ingresar Documento para buscar');
+                                  },
+                            child:
+                                // Container(
+                                //   alignment: Alignment.center,
+                                //   color: primaryColor,
+                                //   width: size.iScreen(3.5),
+                                //   padding: EdgeInsets.only(
+                                //     top: size.iScreen(0.5),
+                                //     bottom: size.iScreen(0.5),
+                                //     left: size.iScreen(0.5),
+                                //     right: size.iScreen(0.5),
+                                //   ),
+                                //   child: Icon(
+                                //     Icons.search_outlined,
+                                //     color: Colors.white,
+                                //     size: size.iScreen(2.0),
+                                //   ),
+                                // ),
+                                Consumer<ThemeProvider>(
+                              builder: (_, valueTheme, __) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  color: valueTheme.appTheme.primaryColor,
+                                  width: size.iScreen(4.5),
+                                  height: size.iScreen(4.5),
+                                  padding: EdgeInsets.only(
+                                    top: size.iScreen(0.5),
+                                    bottom: size.iScreen(0.5),
+                                    left: size.iScreen(0.5),
+                                    right: size.iScreen(0.5),
+                                  ),
+                                  child: Icon(
+                                    Icons.search_outlined,
+                                    color: Colors.white,
+                                    size: size.iScreen(2.0),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      
+                           },)
+            
+            
+                       
+                        // SizedBox(
+                        //   width: size.iScreen(2.0),
+                        // ),
+            
+                         
+                      
+                      
+                      
+                      
+                      
+                      
+                        // Container(
+                        //   width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
+                        //   height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
+                        //   decoration: BoxDecoration(
+                        //     color:ctrlTheme.appTheme.primaryColor, // Color de fondo del contenedor
+                        //     borderRadius: BorderRadius.circular(8), // Forma circular
+                        //   ),
+                        //   child: IconButton(
+                        //     icon: Icon(Icons.search, color: Colors.white), // Icono de lupa
+                        //   //   onPressed:  ctrl.getDocumento!.isNotEmpty? () async {
+                        //   // //  final ctrlPropi=context.read<PropietariosController>();
+            
+                        //   //  ProgressDialog.show(context);
+                        //   //   final response = await   ctrl.buscaClienteComprobante();
+                        //   //   ProgressDialog.dissmiss(context);
+            
+                        //   //      if (response != null) {
+            
+                        //   //      }else{
+            
+                        //   //       // NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
+            
+                        //   //      }
+            
+                        //   //                                       //     .searchAllPersinas('');
+                        //   //                                       // Navigator.of(context).push(
+                        //   //                                       //     MaterialPageRoute(
+                        //   //                                       //         builder: (context) =>
+                        //   //                                       //             BuscarPropietario()));
+                        //   //                                     }:(){
+            
+                        //   //                            NotificatiosnService.showSnackBarDanger( 'Debe ingresar Documento para buscar');
+            
+                        //   //                                     },
+                        //   onPressed:ctrl.getDocumento!.isEmpty ?(){
+                        //     print('EL DATO A BUSCAR VACIO :  ${ctrl.getDocumento}');
+                        //   }:(){
+                        //     print('EL DATO A BUSCAR  :  ${ctrl.getDocumento}');
+                        //   },
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  //***********************************************/
+                  
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+            
+            Consumer<ComprobantesController>(builder: (_, value, __) {  
+            
+            return 
+            value.getClienteComprobante.isNotEmpty?
+             Column(
+                    children: [
+                      Container(
+                        width: size.wScreen(100.0),
+            
+                        // color: Colors.blue,
+                        child:  Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perNombre']}',
+                            style: GoogleFonts.lexendDeca(
+                              fontSize: size.iScreen(2.3),
+                              fontWeight: FontWeight.normal,
+                              color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
+                            )),
+                      ),
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+                  // Container(
+                  //   width: size.wScreen(100.0),
+            
+                  //   // color: Colors.blue,
+                  //   child:  Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':value.getClienteComprobante['perEmail'].isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perEmail'][0]}',
+                  //       style: GoogleFonts.lexendDeca(
+                  //         fontSize: size.iScreen(2.0),
+                  //         fontWeight: FontWeight.normal,
+                  //          color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
+                  //       )),
+                  // ),
+                    ],
+                  ):Container();
+            
+            
+            },),
+            
+                  
+                   
+                  //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  //*****************************************/
+                  // Container(
+                  //   color: Colors.grey.shade200,
+                  //   padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
+                  //   child:   Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     Container(
+                  //       width: size.iScreen(11),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //          TextField(
+                  //     inputFormatters: [
+                  //       FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Solo números y un punto
+                  //     ],
+                  //     decoration: InputDecoration(
+                  //       hintText: 'Kilometraje', // Texto de sugerencia dentro del campo
+                  //        helperStyle:TextStyle(color: Colors.grey.shade50),
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //     keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  //      style: TextStyle(
+                  //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+                  //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                  //     ),// Muestra teclado numérico con punto
+                  //   ),
+                  //           // TextField(
+                  //           //     controller: _rucCiController,
+                  //           //     keyboardType: TextInputType.number, // Solo permite números
+                  //           //     decoration: InputDecoration(
+                  //           //       hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
+                  //           //       // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                  //           //     ),
+                  //           //     inputFormatters: [
+                  //           //       FilteringTextInputFormatter.digitsOnly, // Solo números
+                  //           //       LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
+                  //           //     ],
+                  //           //     onChanged: (value) {
+                  //           //       if (value.length < 10) {
+                  //           //         // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
+                  //           //       }
+                  //           //     },
+                  //           //   ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //       width: size.iScreen(20),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           // TextField(
+                  //           //   decoration: InputDecoration(
+                  //           //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
+                  //           //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                  //           //   ),
+                  //           //    textAlign: TextAlign.center,
+                  //           // ),
+                  //           TextField(
+                  //               controller: _rucCliController,
+                  //               keyboardType: TextInputType.number, // Solo permite números
+                  //               decoration: InputDecoration(
+                  //                 hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
+                  //                 // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                  //                  helperStyle:TextStyle(color: Colors.grey.shade50),
+                  //               ),
+                  //               inputFormatters: [
+                  //                 FilteringTextInputFormatter.digitsOnly, // Solo números
+                  //                 LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
+                  //               ],
+                  //                style: TextStyle(
+                  //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+            
+                  //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                  //     ),
+                  //               onChanged: (value) {
+                  //                 if (value.length < 10) {
+                  //                   // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
+                  //                 }
+                  //               },
+                  //                textAlign: TextAlign.center,
+                  //             ),
+                  //         ],
+                  //       ),
+                  //     ),
+            
+                  //   ],
+                  //   ),
+                  // ),
+             //***********************************************/
+                        SizedBox(
+                          height: size.iScreen(0.0),
+                        ),
+                        //*****************************************/
+
+                        Row(
+                          children: [
+                            SizedBox(
+                                width: size.wScreen(20.0),
+
+                                // color: Colors.blue,
+                                child: Consumer<ComprobantesController>(
+                                  builder: (_, valueCantCorreos, __) {
+                                    return Row(
+                                      children: [
+                                        Text('Correo: ',
+                                            style: GoogleFonts.lexendDeca(
+                                                fontSize: size.iScreen(2.0),
+                                                fontWeight:
+                                                    FontWeight.normal,
+                                                color: Colors.grey)),
+                                        valueCantCorreos.getlistaAddCorreos!
+                                                .isNotEmpty
+                                            ? Text(
+                                                '${valueCantCorreos.getlistaAddCorreos!.length} ',
+                                                style:
+                                                    GoogleFonts.lexendDeca(
+                                                        fontSize: size.iScreen(2.0),
+                                                        fontWeight:
+                                                            FontWeight
+                                                                .normal,
+                                                        color: Colors.grey))
+                                            : Container(),
+                                      ],
+                                    );
+                                  },
+                                )),
+                            ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: GestureDetector(
-                                onTap: value.getDocumento!.isNotEmpty
-                                    ? () async {
-                                        ProgressDialog.show(context);
-                                        final response = await value.buscaClienteComprobante();
-                                        ProgressDialog.dissmiss(context);
-                                        if (response != null) {
-                                           if(value.getClienteComprobante.isNotEmpty){
-                                           
-                                          //  NotificatiosnService.showSnackBarDanger( '${value.getClienteComprobante}');
-                                         }else{
-                                           value.setExistCliente(false);
-                                          NotificatiosnService.showSnackBarDanger( 'No se encuentra información,ingrese datos manualmente');
-                                       
-                                         }
-                                         
-                                        } else {
-                
-                                        }
-                                        
-                
-                                        //     .searchAllPersinas('');
-                                        // Navigator.of(context).push(
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             BuscarPropietario()));
-                                      }
-                                    : () {
-                                        NotificatiosnService.showSnackBarDanger(
-                                            'Debe ingresar Documento para buscar');
-                                      },
-                                child:
-                                    // Container(
-                                    //   alignment: Alignment.center,
-                                    //   color: primaryColor,
-                                    //   width: size.iScreen(3.5),
-                                    //   padding: EdgeInsets.only(
-                                    //     top: size.iScreen(0.5),
-                                    //     bottom: size.iScreen(0.5),
-                                    //     left: size.iScreen(0.5),
-                                    //     right: size.iScreen(0.5),
-                                    //   ),
-                                    //   child: Icon(
-                                    //     Icons.search_outlined,
-                                    //     color: Colors.white,
-                                    //     size: size.iScreen(2.0),
-                                    //   ),
-                                    // ),
-                                    Consumer<ThemeProvider>(
-                                  builder: (_, valueTheme, __) {
+                                onTap: () {
+                                  _agregaCorreo(context, ctrl, size);
+
+//*******************************************/
+                                },
+                                child: 
+                                // Consumer<AppTheme>(builder: (_, valueTheme, __) {  
+                                //   return Container(
+                                //     alignment: Alignment.center,
+                                //     color: valueTheme.getPrimaryTextColor,
+                                //     width: size.iScreen(3.5),
+                                //     padding: EdgeInsets.only(
+                                //       top: size.iScreen(0.5),
+                                //       bottom: size.iScreen(0.5),
+                                //       left: size.iScreen(0.5),
+                                //       right: size.iScreen(0.5),
+                                //     ),
+                                //     child: Icon(
+                                //       Icons.add,
+                                //       color: valueTheme.getSecondryTextColor,
+                                //       size: size.iScreen(2.0),
+                                //     ),
+                                //   );
+                                // },
+                       
+                                // ),
+                                 Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
                                     return Container(
                                       alignment: Alignment.center,
                                       color: valueTheme.appTheme.primaryColor,
-                                      width: size.iScreen(4.5),
-                                      height: size.iScreen(4.5),
+                                      width: size.iScreen(3.5),
                                       padding: EdgeInsets.only(
                                         top: size.iScreen(0.5),
                                         bottom: size.iScreen(0.5),
@@ -407,1178 +950,925 @@ ctrlPropi.setDocumento('');
                                         right: size.iScreen(0.5),
                                       ),
                                       child: Icon(
-                                        Icons.search_outlined,
+                                        Icons.add,
                                         color: Colors.white,
                                         size: size.iScreen(2.0),
                                       ),
                                     );
                                   },
-                                ),
-                              ),
-                            );
-                          
-                               },)
-                
-                
-                           
-                            // SizedBox(
-                            //   width: size.iScreen(2.0),
-                            // ),
-                
-                             
-                          
-                          
-                          
-                          
-                          
-                          
-                            // Container(
-                            //   width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
-                            //   height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
-                            //   decoration: BoxDecoration(
-                            //     color:ctrlTheme.appTheme.primaryColor, // Color de fondo del contenedor
-                            //     borderRadius: BorderRadius.circular(8), // Forma circular
-                            //   ),
-                            //   child: IconButton(
-                            //     icon: Icon(Icons.search, color: Colors.white), // Icono de lupa
-                            //   //   onPressed:  ctrl.getDocumento!.isNotEmpty? () async {
-                            //   // //  final ctrlPropi=context.read<PropietariosController>();
-                
-                            //   //  ProgressDialog.show(context);
-                            //   //   final response = await   ctrl.buscaClienteComprobante();
-                            //   //   ProgressDialog.dissmiss(context);
-                
-                            //   //      if (response != null) {
-                
-                            //   //      }else{
-                
-                            //   //       // NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
-                
-                            //   //      }
-                
-                            //   //                                       //     .searchAllPersinas('');
-                            //   //                                       // Navigator.of(context).push(
-                            //   //                                       //     MaterialPageRoute(
-                            //   //                                       //         builder: (context) =>
-                            //   //                                       //             BuscarPropietario()));
-                            //   //                                     }:(){
-                
-                            //   //                            NotificatiosnService.showSnackBarDanger( 'Debe ingresar Documento para buscar');
-                
-                            //   //                                     },
-                            //   onPressed:ctrl.getDocumento!.isEmpty ?(){
-                            //     print('EL DATO A BUSCAR VACIO :  ${ctrl.getDocumento}');
-                            //   }:(){
-                            //     print('EL DATO A BUSCAR  :  ${ctrl.getDocumento}');
-                            //   },
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ),
-                      //***********************************************/
-                      
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                
-                Consumer<ComprobantesController>(builder: (_, value, __) {  
-                
-                return 
-                value.getClienteComprobante.isNotEmpty?
-                 Column(
-                        children: [
-                          Container(
-                            width: size.wScreen(100.0),
-                
-                            // color: Colors.blue,
-                            child:  Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perNombre']}',
-                                style: GoogleFonts.lexendDeca(
-                                  fontSize: size.iScreen(2.3),
-                                  fontWeight: FontWeight.normal,
-                                  color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
-                                )),
-                          ),
-                                   //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      //*****************************************/
-                      Container(
-                        width: size.wScreen(100.0),
-                
-                        // color: Colors.blue,
-                        child:  Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':value.getClienteComprobante['perEmail'].isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perEmail'][0]}',
-                            style: GoogleFonts.lexendDeca(
-                              fontSize: size.iScreen(2.0),
-                              fontWeight: FontWeight.normal,
-                               color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
-                            )),
-                      ),
-                        ],
-                      ):Container();
-                
-                
-                },),
-                
-                      
-                       
-                      //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      //*****************************************/
-                      // Container(
-                      //   color: Colors.grey.shade200,
-                      //   padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
-                      //   child:   Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     Container(
-                      //       width: size.iScreen(11),
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //          TextField(
-                      //     inputFormatters: [
-                      //       FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Solo números y un punto
-                      //     ],
-                      //     decoration: InputDecoration(
-                      //       hintText: 'Kilometraje', // Texto de sugerencia dentro del campo
-                      //        helperStyle:TextStyle(color: Colors.grey.shade50),
-                      //     ),
-                      //     textAlign: TextAlign.center,
-                      //     keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      //      style: TextStyle(
-                      //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
-                      //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                      //     ),// Muestra teclado numérico con punto
-                      //   ),
-                      //           // TextField(
-                      //           //     controller: _rucCiController,
-                      //           //     keyboardType: TextInputType.number, // Solo permite números
-                      //           //     decoration: InputDecoration(
-                      //           //       hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
-                      //           //       // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                      //           //     ),
-                      //           //     inputFormatters: [
-                      //           //       FilteringTextInputFormatter.digitsOnly, // Solo números
-                      //           //       LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
-                      //           //     ],
-                      //           //     onChanged: (value) {
-                      //           //       if (value.length < 10) {
-                      //           //         // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
-                      //           //       }
-                      //           //     },
-                      //           //   ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     Container(
-                      //       width: size.iScreen(20),
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           // TextField(
-                      //           //   decoration: InputDecoration(
-                      //           //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
-                      //           //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                      //           //   ),
-                      //           //    textAlign: TextAlign.center,
-                      //           // ),
-                      //           TextField(
-                      //               controller: _rucCliController,
-                      //               keyboardType: TextInputType.number, // Solo permite números
-                      //               decoration: InputDecoration(
-                      //                 hintText: 'RUC/CI', // Texto de sugerencia dentro del campo
-                      //                 // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                      //                  helperStyle:TextStyle(color: Colors.grey.shade50),
-                      //               ),
-                      //               inputFormatters: [
-                      //                 FilteringTextInputFormatter.digitsOnly, // Solo números
-                      //                 LengthLimitingTextInputFormatter(13), // Limita a 13 dígitos
-                      //               ],
-                      //                style: TextStyle(
-                      //       fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
-                
-                      //       // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                      //     ),
-                      //               onChanged: (value) {
-                      //                 if (value.length < 10) {
-                      //                   // Opcional: Mostrar algún mensaje de error si la longitud es menor a 10
-                      //                 }
-                      //               },
-                      //                textAlign: TextAlign.center,
-                      //             ),
-                      //         ],
-                      //       ),
-                      //     ),
-                
-                      //   ],
-                      //   ),
-                      // ),
-                
-                      //*****************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                      Row(
-                        children: [
-                          SizedBox(
-                            // width: size.wScreen(100.0),
-                
-                            // color: Colors.blue,
-                            child: Text('Placa: ',
-                                style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(2.0),
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey)),
-                          ),
-                       
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: GestureDetector(
-                              onTap: () {
-                                // context
-                                //     .read<MascotasController>()
-                                //     .buscaAllMascotas('');
-                
-                                // // _buscarMascota(context, size);
-                                _agregaPlaca(context,ctrl,size);
-                
-                                // //*******************************************/
-                              },
-                              child: Consumer<ThemeProvider>(
-                                builder: (_, valueTheme, __) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    color: valueTheme.appTheme.primaryColor,
-                                    width: size.iScreen(4.5),
-                                    padding: EdgeInsets.only(
-                                      top: size.iScreen(0.5),
-                                      bottom: size.iScreen(0.5),
-                                      left: size.iScreen(0.5),
-                                      right: size.iScreen(0.5),
-                                    ),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: size.iScreen(2.0),
-                                    ),
-                                  );
-                                },
+                                  ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                          //***********************************************/
+                        SizedBox(
+                          height: size.iScreen(0.0),
+                        ),
                         //*****************************************/
-                       SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                        //*****************************************/
-                      SizedBox(
-                         width: size.wScreen(100.0),
-                        child: 
-                        Consumer<ComprobantesController>(builder: (_, value, __) {  
-                          return 
-                          value.getlistaAddPlacas!.isNotEmpty?
-                          Wrap( children: (value.getlistaAddPlacas as List).map((e) =>
-                          GestureDetector(
-                            onDoubleTap: () {
-                              value.eliminaPlaca(e);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0),vertical: size.iScreen(0.5)),
-                               padding: EdgeInsets.symmetric(horizontal: size.iScreen(0.5)),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(8)
+
+                        Consumer<ComprobantesController>(
+                          builder: (_, valueCorreos, __) {
+                            return SizedBox(
+                              // color: Colors.red,
+                              width: size.wScreen(100.0),
+                              child: Wrap(
+                                children: valueCorreos.getlistaAddCorreos!
+                                    .map(
+                                      (e) => Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onDoubleTap: () {
+                                                // print(e);
+                                                valueCorreos
+                                                    .eliminaCorreo(e);
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors
+                                                        .grey.shade200,
+                                                    borderRadius:
+                                                        BorderRadius
+                                                            .circular(5.0)),
+                                                margin:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: size
+                                                            .iScreen(0.5)),
+                                                padding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: size
+                                                            .iScreen(1.0),
+                                                        vertical: size
+                                                            .iScreen(0.5)),
+                                                child: Text('$e',
+                                                    style: GoogleFonts
+                                                        .lexendDeca(
+                                                            fontSize: size
+                                                                .iScreen(
+                                                                    2.0),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            color: Colors
+                                                                .black)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
                               ),
-                            
-                              child: Text('$e',
+
+                              // Column(
+                              //   children: [
+                              //     Row(
+                              //       children: [
+                              //         Expanded(
+                              //           child: Container(
+                              //             decoration: BoxDecoration(
+                              //                 color: Colors.grey.shade300,
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(5.0)),
+                              //             margin: EdgeInsets.symmetric(
+                              //                 vertical: size.iScreen(0.5)),
+                              //             padding: EdgeInsets.symmetric(
+                              //                 horizontal: size.iScreen(1.0),
+                              //                 vertical: size.iScreen(0.5)),
+                              //             child: Text('correo@corresdf.com',
+                              //                 style: GoogleFonts.lexendDeca(
+                              //                     fontSize: size.iScreen(1.7),
+                              //                     fontWeight: FontWeight.normal,
+                              //                     color: Colors.black)),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ],
+                              // ),
+                            );
+                          },
+                        ),
+                        //***********************************************/
+                        SizedBox(
+                          height: size.iScreen(1.5),
+                        ),
+
+                       
+            //*****************************************/
+                  SizedBox(
+                    height: size.iScreen(0.0),
+                  ),
+                  //*****************************************/
+                  Row(
+                    children: [
+                      SizedBox(
+                        // width: size.wScreen(100.0),
+            
+                        // color: Colors.blue,
+                        child: Text('Placa: ',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(2.0),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey)),
+                      ),
+                   
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: GestureDetector(
+                          onTap: () {
+                            // context
+                            //     .read<MascotasController>()
+                            //     .buscaAllMascotas('');
+            
+                            // // _buscarMascota(context, size);
+                            _agregaPlaca(context,ctrl,size);
+            
+                            // //*******************************************/
+                          },
+                          child: Consumer<ThemeProvider>(
+                            builder: (_, valueTheme, __) {
+                              return Container(
+                                alignment: Alignment.center,
+                                color: valueTheme.appTheme.primaryColor,
+                                width: size.iScreen(4.5),
+                                padding: EdgeInsets.only(
+                                  top: size.iScreen(0.5),
+                                  bottom: size.iScreen(0.5),
+                                  left: size.iScreen(0.5),
+                                  right: size.iScreen(0.5),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: size.iScreen(2.0),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                    //*****************************************/
+                   SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                    //*****************************************/
+                  SizedBox(
+                     width: size.wScreen(100.0),
+                    child: 
+                    Consumer<ComprobantesController>(builder: (_, value, __) {  
+                      return 
+                      value.getlistaAddPlacas!.isNotEmpty?
+                      Wrap( children: (value.getlistaAddPlacas as List).map((e) =>
+                      GestureDetector(
+                        onDoubleTap: () {
+                          value.eliminaPlaca(e);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: size.iScreen(1.0),vertical: size.iScreen(0.5)),
+                           padding: EdgeInsets.symmetric(horizontal: size.iScreen(0.5)),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(8)
+                          ),
+                        
+                          child: Text('$e',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(2.3),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black)),
+                        ),
+                      )
+                      ).toList(),)
+                      :Text('--- --- --- --- ---',
+                            style: GoogleFonts.lexendDeca(
+                              fontSize: size.iScreen(2.3),
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey
+                            ));
+                      
+                    },),
+                    
+                  ),
+            
+
+            //***************************/
+                
+                  Container(
+                    width: size.iScreen(100),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // TextField(
+                        //   decoration: InputDecoration(
+                        //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
+                        //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                        //   ),
+                        //    textAlign: TextAlign.center,
+                        // ),
+                        TextFormField(
+                          inputFormatters: [
+                            UpperCaseText(),
+                          ],
+                          decoration: InputDecoration(
+                            label:  const Text( 'Nombre Conductor'),
+                            // Texto de sugerencia dentro del campo
+                            // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                            helperStyle: TextStyle(color: Colors.grey.shade50),
+                          ),
+                          style: TextStyle(
+                            fontSize:
+                                size.iScreen(2.3), // Ajusta el tamaño de la letra
+                            // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                          ),
+                          textAlign: TextAlign.left,
+                        onChanged: (text) {
+                      ctrl.setNombreConductor(text);
+                    },
+                    validator: (text) {
+                      if (text!.trim().isNotEmpty) {
+                        return null;
+                      } else {
+                        return 'Ingrese nombre de Conductor';
+                      }
+                    },
+
+
+
+                        ),
+                      ],
+                    ),
+                  ),
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+            
+                  //       Container(
+                  //         width: size.wScreen(100),
+                  //         child:
+                  //        Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: <Widget>[
+                  //     RadioButtonWithLabel(value: 1, label: 'Pasaporte'),
+                  //     RadioButtonWithLabel(value: 2, label: 'Calibración'),
+                  //     RadioButtonWithLabel(value: 3, label: 'Venta Cupo'),
+                  //     RadioButtonWithLabel(value: 4, label: 'Prepago'),
+                  //   ],
+                  // ),
+            
+                  //       ),
+            
+                  // ContainerRow(),
+            
+            //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //*****************************************/
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       // width: size.wScreen(100.0),
+            
+                  //       // color: Colors.blue,
+                  //       child: Text('FORMA DE PAGO: ',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               fontSize: size.iScreen(2.0),
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Colors.grey)),
+                  //     ),
+                  //     Text('EFECTIVO',
+                  //         style: GoogleFonts.lexendDeca(
+                  //             fontSize: size.iScreen(2.3),
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.green)),
+                  //   ],
+                  // ),
+                   //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.5),
+                  ),
+                  //*****************************************/
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: size.wScreen(16.0),
+            
+                        // color: Colors.blue,
+                        child: Text('FORMA DE PAGO :',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(2.0),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey)),
+                      ),
+                      Consumer<ComprobantesController>(builder: (_, value, __) { 
+                         return Container(
+                            // color: Colors.red,
+                            width: size.wScreen(70.0),
+            
+                            // color: Colors.blue,
+                            child: Text(
+                                value.getFormaDePago.isEmpty
+                                    ? ' --- --- --- --- --- --- --- ---'
+                                    : ' ${value.getFormaDePago}',
                                 style: GoogleFonts.lexendDeca(
                                     fontSize: size.iScreen(2.3),
                                     fontWeight: FontWeight.normal,
-                                    color: Colors.black)),
-                            ),
-                          )
-                          ).toList(),)
-                          :Text('--- --- --- --- ---',
-                                style: GoogleFonts.lexendDeca(
-                                  fontSize: size.iScreen(2.3),
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.grey
-                                ));
-                          
-                        },),
-                        
-                      ),
-                
-                    
-                      Container(
-                        width: size.iScreen(100),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // TextField(
-                            //   decoration: InputDecoration(
-                            //     hintText: 'RUC/CI CONDUCTOR', // Texto de sugerencia dentro del campo
-                            //     // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                            //   ),
-                            //    textAlign: TextAlign.center,
-                            // ),
-                            TextFormField(
-                              inputFormatters: [
-                                UpperCaseText(),
-                              ],
-                              decoration: InputDecoration(
-                                label:  const Text( 'Nombre Conductor'),
-                                // Texto de sugerencia dentro del campo
-                                // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                                helperStyle: TextStyle(color: Colors.grey.shade50),
-                              ),
-                              style: TextStyle(
-                                fontSize:
-                                    size.iScreen(2.3), // Ajusta el tamaño de la letra
-                                // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                              ),
-                              textAlign: TextAlign.left,
-                            onChanged: (text) {
-                          ctrl.setNombreConductor(text);
-                        },
-                        validator: (text) {
-                          if (text!.trim().isNotEmpty) {
-                            return null;
-                          } else {
-                            return 'Ingrese nombre de Conductor';
-                          }
-                        },
-
-
-
-                            ),
-                          ],
-                        ),
-                      ),
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                
-                      //       Container(
-                      //         width: size.wScreen(100),
-                      //         child:
-                      //        Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: <Widget>[
-                      //     RadioButtonWithLabel(value: 1, label: 'Pasaporte'),
-                      //     RadioButtonWithLabel(value: 2, label: 'Calibración'),
-                      //     RadioButtonWithLabel(value: 3, label: 'Venta Cupo'),
-                      //     RadioButtonWithLabel(value: 4, label: 'Prepago'),
-                      //   ],
-                      // ),
-                
-                      //       ),
-                
-                      // ContainerRow(),
-                
-                //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      // //*****************************************/
-                      // Row(
-                      //   children: [
-                      //     SizedBox(
-                      //       // width: size.wScreen(100.0),
-                
+                                    color: value.getFormaDePago.isEmpty
+                                        ? Colors.grey
+                                        : Colors.black)),
+                          );
+                       },),
+                      // Consumer<ComprobantesController>(
+                      //   builder: (_, valueForma, __) {
+                      //     return Container(
+                      //       // color: Colors.red,
+                      //       width: size.wScreen(50.0),
+            
                       //       // color: Colors.blue,
-                      //       child: Text('FORMA DE PAGO: ',
+                      //       child: Text(
+                      //           valueForma.getFormaDePago.isEmpty
+                      //               ? ' --- --- --- --- --- --- --- ---'
+                      //               : ' ${valueForma.getFormaDePago}',
                       //           style: GoogleFonts.lexendDeca(
                       //               fontSize: size.iScreen(2.0),
                       //               fontWeight: FontWeight.normal,
-                      //               color: Colors.grey)),
-                      //     ),
-                      //     Text('EFECTIVO',
-                      //         style: GoogleFonts.lexendDeca(
-                      //             fontSize: size.iScreen(2.3),
-                      //             fontWeight: FontWeight.bold,
-                      //             color: Colors.green)),
-                      //   ],
-                      // ),
-                       //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.5),
-                      ),
-                      //*****************************************/
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: size.wScreen(16.0),
-                
-                            // color: Colors.blue,
-                            child: Text('FORMA DE PAGO :',
-                                style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(2.0),
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey)),
-                          ),
-                          Consumer<ComprobantesController>(builder: (_, value, __) { 
-                             return Container(
-                                // color: Colors.red,
-                                width: size.wScreen(70.0),
-                
-                                // color: Colors.blue,
-                                child: Text(
-                                    value.getFormaDePago.isEmpty
-                                        ? ' --- --- --- --- --- --- --- ---'
-                                        : ' ${value.getFormaDePago}',
-                                    style: GoogleFonts.lexendDeca(
-                                        fontSize: size.iScreen(2.3),
-                                        fontWeight: FontWeight.normal,
-                                        color: value.getFormaDePago.isEmpty
-                                            ? Colors.grey
-                                            : Colors.black)),
-                              );
-                           },),
-                          // Consumer<ComprobantesController>(
-                          //   builder: (_, valueForma, __) {
-                          //     return Container(
-                          //       // color: Colors.red,
-                          //       width: size.wScreen(50.0),
-                
-                          //       // color: Colors.blue,
-                          //       child: Text(
-                          //           valueForma.getFormaDePago.isEmpty
-                          //               ? ' --- --- --- --- --- --- --- ---'
-                          //               : ' ${valueForma.getFormaDePago}',
-                          //           style: GoogleFonts.lexendDeca(
-                          //               fontSize: size.iScreen(2.0),
-                          //               fontWeight: FontWeight.normal,
-                          //               color: valueForma.getFormaDePago.isEmpty
-                          //                   ? Colors.grey
-                          //                   : Colors.black)),
-                          //     );
-                          //   },
-                          // ),
-                          Spacer(),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: GestureDetector(
-                              onTap: () {
-                                // context
-                                //     .read<MascotasController>()
-                                //     .buscaAllMascotas('');
-                
-                                // // _buscarMascota(context, size);
-                                modalFormaPago(context, size, ctrl);
-                
-                                // //*******************************************/
-                              },
-                              child: Consumer<ThemeProvider>(
-                                builder: (_, valueTheme, __) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    color: valueTheme.appTheme.primaryColor,
-                                    width: size.iScreen(4.5),
-                                    padding: EdgeInsets.only(
-                                      top: size.iScreen(0.5),
-                                      bottom: size.iScreen(0.5),
-                                      left: size.iScreen(0.5),
-                                      right: size.iScreen(0.5),
-                                    ),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: size.iScreen(2.0),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      // //*****************************************/
-                      //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      //*****************************************/
-                      // Container(
-                      //   width: size.wScreen(100.0),
-                      //   child: ContainerCombustible()),
-                      //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      // //*****************************************/
-                
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.5),
-                      ),
-                      //*****************************************/
-                      Row(
-                        children: [
-                          SizedBox(
-                            // width: size.wScreen(100.0),
-                
-                            // color: Colors.blue,
-                            child: Text('TARIFAS POR PASADA ',
-                                style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(2.0),
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey)),
-                          ),
-                          Spacer(),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: GestureDetector(
-                              onTap: () {
-                                ctrl.buscaAllProductos();
-                
-                                // // _buscarMascota(context, size);
-                
-                 Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BuscarProductosVarios()));
-                
-                                // modalTarifas(context, size, ctrl);
-                
-                                // //*******************************************/
-                              },
-                              child: Consumer<ThemeProvider>(
-                                builder: (_, valueTheme, __) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    color: valueTheme.appTheme.primaryColor,
-                                    width: size.iScreen(4.5),
-                                    padding: EdgeInsets.only(
-                                      top: size.iScreen(0.5),
-                                      bottom: size.iScreen(0.5),
-                                      left: size.iScreen(0.5),
-                                      right: size.iScreen(0.5),
-                                    ),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: size.iScreen(2.0),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                
-                          //  Spacer(),
-                        ],
-                      ),
-                      // //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      // //*****************************************/
-                
-                      // Consumer<ComprobantesController>(
-                      //   builder: (_, valueTipo, __) {
-                      //     return Container(
-                      //       // color: Colors.red,
-                      //       width: size.wScreen(100.0),
-                
-                      //       // color: Colors.blue,
-                      //       child: Text(
-                      //           valueTipo.tipoTarifa.isEmpty
-                      //               ? ''
-                      //               : ' ${valueTipo.tipoTarifa['tipo']} - \$${valueTipo.tipoTarifa['valor']}',
-                      //           style: GoogleFonts.lexendDeca(
-                      //               fontSize: size.iScreen(2.5),
-                      //               fontWeight: FontWeight.normal,
-                      //               color: valueTipo.tipoTarifa.isEmpty
+                      //               color: valueForma.getFormaDePago.isEmpty
                       //                   ? Colors.grey
                       //                   : Colors.black)),
                       //     );
                       //   },
                       // ),
-                
-                              Consumer<ComprobantesController>(builder: (_, value, __) { 
-                      return  
-                      value.getRespuestaCalculoItem.isNotEmpty
-                     ? Wrap(
-                      children: value.getRespuestaCalculoItem['venProductos']
-                          .map<Widget>(
-                            (e) => 
-                           e['descripcion'].isEmpty?Container(): Card(
-                                   child: ListTile(
-                                     visualDensity: VisualDensity.compact,
-                                     title: Text(
-                                       '${e['descripcion']}',
+                      Spacer(),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: GestureDetector(
+                          onTap: () {
+                            // context
+                            //     .read<MascotasController>()
+                            //     .buscaAllMascotas('');
+            
+                            // // _buscarMascota(context, size);
+                            modalFormaPago(context, size, ctrl);
+            
+                            // //*******************************************/
+                          },
+                          child: Consumer<ThemeProvider>(
+                            builder: (_, valueTheme, __) {
+                              return Container(
+                                alignment: Alignment.center,
+                                color: valueTheme.appTheme.primaryColor,
+                                width: size.iScreen(4.5),
+                                padding: EdgeInsets.only(
+                                  top: size.iScreen(0.5),
+                                  bottom: size.iScreen(0.5),
+                                  left: size.iScreen(0.5),
+                                  right: size.iScreen(0.5),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: size.iScreen(2.0),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //*****************************************/
+                  //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  //*****************************************/
+                  // Container(
+                  //   width: size.wScreen(100.0),
+                  //   child: ContainerCombustible()),
+                  //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //*****************************************/
+            
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.5),
+                  ),
+                  //*****************************************/
+                  Row(
+                    children: [
+                      SizedBox(
+                        // width: size.wScreen(100.0),
+            
+                        // color: Colors.blue,
+                        child: Text('TARIFAS POR PASADA ',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(2.0),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey)),
+                      ),
+                      Spacer(),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: GestureDetector(
+                          onTap: () {
+                            ctrl.buscaAllProductos();
+            
+                            // // _buscarMascota(context, size);
+            
+             Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const BuscarProductosVarios()));
+            
+                            // modalTarifas(context, size, ctrl);
+            
+                            // //*******************************************/
+                          },
+                          child: Consumer<ThemeProvider>(
+                            builder: (_, valueTheme, __) {
+                              return Container(
+                                alignment: Alignment.center,
+                                color: valueTheme.appTheme.primaryColor,
+                                width: size.iScreen(4.5),
+                                padding: EdgeInsets.only(
+                                  top: size.iScreen(0.5),
+                                  bottom: size.iScreen(0.5),
+                                  left: size.iScreen(0.5),
+                                  right: size.iScreen(0.5),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: size.iScreen(2.0),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+            
+                      //  Spacer(),
+                    ],
+                  ),
+                  // //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //*****************************************/
+            
+                  // Consumer<ComprobantesController>(
+                  //   builder: (_, valueTipo, __) {
+                  //     return Container(
+                  //       // color: Colors.red,
+                  //       width: size.wScreen(100.0),
+            
+                  //       // color: Colors.blue,
+                  //       child: Text(
+                  //           valueTipo.tipoTarifa.isEmpty
+                  //               ? ''
+                  //               : ' ${valueTipo.tipoTarifa['tipo']} - \$${valueTipo.tipoTarifa['valor']}',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               fontSize: size.iScreen(2.5),
+                  //               fontWeight: FontWeight.normal,
+                  //               color: valueTipo.tipoTarifa.isEmpty
+                  //                   ? Colors.grey
+                  //                   : Colors.black)),
+                  //     );
+                  //   },
+                  // ),
+            
+                          Consumer<ComprobantesController>(builder: (_, value, __) { 
+                  return  
+                  value.getRespuestaCalculoItem.isNotEmpty
+                 ? Wrap(
+                  children: value.getRespuestaCalculoItem['venProductos']
+                      .map<Widget>(
+                        (e) => 
+                       e['descripcion'].isEmpty?Container(): Card(
+                               child: ListTile(
+                                 visualDensity: VisualDensity.compact,
+                                 title: Text(
+                                   '${e['descripcion']}',
+                                   style: GoogleFonts.lexendDeca(
+                                       fontSize: size.iScreen(1.8),
+                                       // color: Colors.black54,
+                                       fontWeight: FontWeight.normal),
+                                 ),
+                                 subtitle: 
+                                 Row(
+                                   children: [
+                                     Text(
+                                      'Valor Unitario: ',
                                        style: GoogleFonts.lexendDeca(
-                                           fontSize: size.iScreen(1.8),
+                                           fontSize: size.iScreen(1.5),
                                            // color: Colors.black54,
                                            fontWeight: FontWeight.normal),
                                      ),
-                                     subtitle: 
-                                     Row(
-                                       children: [
-                                         Text(
-                                          'Valor Unitario: ',
-                                           style: GoogleFonts.lexendDeca(
-                                               fontSize: size.iScreen(1.5),
-                                               // color: Colors.black54,
-                                               fontWeight: FontWeight.normal),
-                                         ),
-                                          Text(
-                                          ' \$ ${e['valorUnitario']}',
-                                           style: GoogleFonts.lexendDeca(
-                                               fontSize: size.iScreen(2.3),
-                                               color: Colors.black,
-                                               fontWeight: FontWeight.bold),
-                                         ),
-                                       ],
+                                      Text(
+                                      ' \$ ${e['valorUnitario']}',
+                                       style: GoogleFonts.lexendDeca(
+                                           fontSize: size.iScreen(2.3),
+                                           color: Colors.black,
+                                           fontWeight: FontWeight.bold),
                                      ),
-                                     trailing: Column(
-                                       children: [
-                                         Text(
-                                          'Cantidad',
-                                           style: GoogleFonts.lexendDeca(
-                                               fontSize: size.iScreen(1.5),
-                                               // color: Colors.black54,
-                                               fontWeight: FontWeight.normal),
-                                         ),
-                                         Text(
-                                          '${e['cantidad']}',
-                                           style: GoogleFonts.lexendDeca(
-                                               fontSize: size.iScreen(2.3),
-                                               color:ctrlTheme.appTheme.primaryColor,
-                                               fontWeight: FontWeight.normal),
-                                         ),
-                                       ],
-                                     ),
-                                     // provider.getListaDeProductos.isNotEmpty
-                                     // ?Wrap(children: producto['invprecios'].map<Widget>((e) =>  Text(
-                                     //   '${e}',
-                                     //   style: GoogleFonts.lexendDeca(
-                                     //       fontSize: size.iScreen(1.7),
-                                     //       // color: Colors.black54,
-                                     //       fontWeight: FontWeight.normal),
-                                     // )).toList(),
-                                     // ):Text(
-                                     //   '--- --- ---',
-                                     //   style: GoogleFonts.lexendDeca(
-                                     //       fontSize: size.iScreen(1.8),
-                                     //       // color: Colors.black54,
-                                     //       fontWeight: FontWeight.normal),
-                                     // ),
-                                     onTap: () {
-                                       value.deleteItem(e);
-                
-                
-                                      
-                                      
-                                      
-                                      
-                                     },
-                                   ),
+                                   ],
                                  ),
-                          )
-                          .toList(),
-                    ):Container();
+                                 trailing: Column(
+                                   children: [
+                                     Text(
+                                      'Cantidad',
+                                       style: GoogleFonts.lexendDeca(
+                                           fontSize: size.iScreen(1.5),
+                                           // color: Colors.black54,
+                                           fontWeight: FontWeight.normal),
+                                     ),
+                                     Text(
+                                      '${e['cantidad']}',
+                                       style: GoogleFonts.lexendDeca(
+                                           fontSize: size.iScreen(2.3),
+                                           color:ctrlTheme.appTheme.primaryColor,
+                                           fontWeight: FontWeight.normal),
+                                     ),
+                                   ],
+                                 ),
+                                 // provider.getListaDeProductos.isNotEmpty
+                                 // ?Wrap(children: producto['invprecios'].map<Widget>((e) =>  Text(
+                                 //   '${e}',
+                                 //   style: GoogleFonts.lexendDeca(
+                                 //       fontSize: size.iScreen(1.7),
+                                 //       // color: Colors.black54,
+                                 //       fontWeight: FontWeight.normal),
+                                 // )).toList(),
+                                 // ):Text(
+                                 //   '--- --- ---',
+                                 //   style: GoogleFonts.lexendDeca(
+                                 //       fontSize: size.iScreen(1.8),
+                                 //       // color: Colors.black54,
+                                 //       fontWeight: FontWeight.normal),
+                                 // ),
+                                 onTap: () {
+                                   value.deleteItem(e);
+            
+            
+                                  
+                                  
+                                  
+                                  
+                                 },
+                               ),
+                             ),
+                      )
+                      .toList(),
+                ):Container();
+                
+                 },),
+                 
+
+
+
+
+
+                  //*****************************************/
+            
+            //                 Consumer<ComprobantesController>(builder: (_, value, __) { 
+            //                   return  
                     
-                     },),
+            //                   value.tipoTarifa.isEmpty? Text(
+            //                                      '--- --- --- --- --- --- --- --- --- --- ',
+            //                                       style: GoogleFonts.lexendDeca(
+            //                                           fontSize: size.iScreen(3.0),
+            //                                           fontWeight: FontWeight.normal,
+            //                                           color:  value.tipoTarifa.isEmpty? Colors.grey:Colors.black
+            //                                               )):
+                    
+            //                   Container(
+            //                   // color: Colors.grey.shade200,
+            //                   padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
+            //                   child: Row(
+            //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //                     children: [
+            //                       Container(
+            //                         width: size.iScreen(10),
+            //                         child: Column(
+            //                           crossAxisAlignment: CrossAxisAlignment.start,
+            //                           children: [
+            //                             //       TextField(
+            //                             //          inputFormatters: [
+            //                             //                             UpperCaseText(),
+            //                             //                           ],
+            //                             //         decoration: InputDecoration(
+            //                             //           hintText: 'Valor', // Texto de sugerencia dentro del campo
+            //                             //           // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+            //                             //            helperStyle:TextStyle(color: Colors.grey.shade50),
+            //                             //         ),
+            //                             //         style: TextStyle(
+            //                             //   fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
+            //                             //   // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+            //                             // ),
+            //                             //         textAlign: TextAlign.center,
+            //                             //       ),
+            //                             //  TextField(
+            //                             //         inputFormatters: [
+            //                             //           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+            //                             //         ],
+            //                             //         keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
+            //                             //         decoration: InputDecoration(
+            //                             //           hintText: 'Valor', // Texto de sugerencia dentro del campo
+            //                             //           helperStyle: TextStyle(color: Colors.grey.shade50),
+            //                             //         ),
+            //                             //         style: TextStyle(
+            //                             //           fontSize: size.iScreen(2.2), // Ajusta el tamaño de la letra
+            //                             //         ),
+            //                             //         textAlign: TextAlign.center,
+            //                             //       ),
+            //                             Consumer<ComprobantesController>(
+            //                               builder: (_, valueTatifa, __) {
+            //                                 return Container(
+            //                                   // color: Colors.red,
+            //                                   width: size.wScreen(20.0),
+            
+            //                                   // color: Colors.blue,
+            //                                   child: Text(
+            //                                       valueTatifa.tipoTarifa.isEmpty
+            //                                           ? ' --- ---'
+            //                                           : ' \$${valueTatifa.tipoTarifa['valor']}',
+            //                                       style: GoogleFonts.lexendDeca(
+            //                                           fontSize: size.iScreen(3.0),
+            //                                           fontWeight: FontWeight.bold,
+            //                                           color: valueTatifa.tipoTarifa.isEmpty
+            //                                               ? Colors.grey
+            //                                               : Colors.red)),
+            //                                 );
+            //                               },
+            //                             ),
+            //                           ],
+            //                         ),
+            //                       ),
+            //                       Consumer<ComprobantesController>(
+            //                         builder: (_, values, __) {
+            //                           return values.tipoTarifa.isNotEmpty
+            //                               ? Container(
+            //                                   width: size.iScreen(20),
+            //                                   child: Column(
+            //                                     crossAxisAlignment:
+            //                                         CrossAxisAlignment.start,
+            //                                     children: [
+            // // TextFormField(
+            
+            // //   // initialValue:values.getCantidad ,
+            // //   controller: _controller,
+            // //   inputFormatters: [
+            // //     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+            // //   ],
+            // //   keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
+            // //   decoration: InputDecoration(
+            // //     hintStyle:TextStyle(
+            // //       fontSize: size.iScreen(2.0)
+            // //     ),
+            // //     hintText: 'Cantidad', // Texto de sugerencia dentro del campo
+            // //     helperStyle: TextStyle(color: Colors.grey.shade50),
+            // //   ),
+            // //   style: TextStyle(
+            // //     fontSize: size.iScreen(3.5), // Ajusta el tamaño de la letra
+            // //   ),
+            // //   textAlign: TextAlign.center,
+            // //    onChanged: (text) {
+            // //     if (text=='') {
+            // //       text==0.00;
+            // //     }
+            // //     values.setCantidad(double.parse(text));
+            // //                       },
+            // // ),
+            //                                       TextFormField(
+            //                                         controller: _controller,
+            //                                         inputFormatters: [
+            //                                           FilteringTextInputFormatter.allow(RegExp(
+            //                                               r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
+            //                                         ],
+            //                                         keyboardType:
+            //                                             TextInputType.numberWithOptions(
+            //                                                 decimal:
+            //                                                     true), // Permite punto decimal en el teclado
+            //                                         decoration: InputDecoration(
+            //                                           hintStyle: TextStyle(
+            //                                             fontSize: size.iScreen(2.0),
+            //                                           ),
+            //                                           hintText:
+            //                                               'Cantidad', // Texto de sugerencia dentro del campo
+            //                                           helperStyle: TextStyle(
+            //                                               color: Colors.grey.shade50),
+            //                                         ),
+            //                                         style: TextStyle(
+            //                                           fontSize: size.iScreen(
+            //                                               3.5), // Ajusta el tamaño de la letra
+            //                                         ),
+            //                                         textAlign: TextAlign.center,
+            
+            //                                         // Validación y conversión
+            //                                         onChanged: (text) {
+            //                                           double value = 0.0;
+            //                                           if (text.isNotEmpty) {
+            //                                             try {
+            //                                               value = double.parse(text);
+            //                                             } catch (e) {
+            //                                               // Manejo del error si el parse falla
+            //                                               value = 0.0;
+            //                                             }
+            //                                           }
+            //                                           values.setCantidad(value);
+            //                                         },
+            
+            //                                         // Validación adicional al enviar el formulario (opcional)
+            //                                         validator: (text) {
+            //                                           if (text == null || text.isEmpty) {
+            //                                             return 'Por favor, ingrese una cantidad';
+            //                                           }
+            //                                           final value = double.tryParse(text);
+            //                                           if (value == null) {
+            //                                             return 'Ingrese un número válido';
+            //                                           }
+            //                                           return null; // Devuelve null si la validación es exitosa
+            //                                         },
+            //                                       ),
+            //                                     ],
+            //                                   ),
+            //                                 )
+            //                               : Container();
+            //                         },
+            //                       )
+            //                       // Container(
+            //                       //   width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
+            //                       //   height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
+            //                       //   decoration: BoxDecoration(
+            //                       //     color:ctrlTheme.appTheme.primaryColor, // Color de fondo del contenedor
+            //                       //     borderRadius: BorderRadius.circular(8), // Forma circular
+            //                       //   ),
+            //                       //   child: IconButton(
+            //                       //     icon: Icon(Icons.search, color: Colors.white), // Icono de lupa
+            //                       //     onPressed: () {
+            //                       //       // Acción al presionar el icono
+            //                       //     },
+            //                       //   ),
+            //                       // ),
+            //                     ],
+            //                   ),
+            //                 );
+                  
+            //                  },),
+            
+                 //***********************************************/
+                  // //***********************************************/
+                  // SizedBox(
+                  //   height: size.iScreen(1.0),
+                  // ),
+                  // //*****************************************/
+                  // //***********************************************/
+                  // Container(
+                  //   color:Colors.grey.shade200,
+                  //   width: size.wScreen(100),
+                  //   height: size.iScreen(0.5),
+                  // ),
+                  // //*****************************************/
+                   //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+            
                      
-
-
-
-
-
-                      //*****************************************/
-                
-                //                 Consumer<ComprobantesController>(builder: (_, value, __) { 
-                //                   return  
-                        
-                //                   value.tipoTarifa.isEmpty? Text(
-                //                                      '--- --- --- --- --- --- --- --- --- --- ',
-                //                                       style: GoogleFonts.lexendDeca(
-                //                                           fontSize: size.iScreen(3.0),
-                //                                           fontWeight: FontWeight.normal,
-                //                                           color:  value.tipoTarifa.isEmpty? Colors.grey:Colors.black
-                //                                               )):
-                        
-                //                   Container(
-                //                   // color: Colors.grey.shade200,
-                //                   padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
-                //                   child: Row(
-                //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //                     children: [
-                //                       Container(
-                //                         width: size.iScreen(10),
-                //                         child: Column(
-                //                           crossAxisAlignment: CrossAxisAlignment.start,
-                //                           children: [
-                //                             //       TextField(
-                //                             //          inputFormatters: [
-                //                             //                             UpperCaseText(),
-                //                             //                           ],
-                //                             //         decoration: InputDecoration(
-                //                             //           hintText: 'Valor', // Texto de sugerencia dentro del campo
-                //                             //           // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                //                             //            helperStyle:TextStyle(color: Colors.grey.shade50),
-                //                             //         ),
-                //                             //         style: TextStyle(
-                //                             //   fontSize: size.iScreen(2.0), // Ajusta el tamaño de la letra
-                //                             //   // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                //                             // ),
-                //                             //         textAlign: TextAlign.center,
-                //                             //       ),
-                //                             //  TextField(
-                //                             //         inputFormatters: [
-                //                             //           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
-                //                             //         ],
-                //                             //         keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
-                //                             //         decoration: InputDecoration(
-                //                             //           hintText: 'Valor', // Texto de sugerencia dentro del campo
-                //                             //           helperStyle: TextStyle(color: Colors.grey.shade50),
-                //                             //         ),
-                //                             //         style: TextStyle(
-                //                             //           fontSize: size.iScreen(2.2), // Ajusta el tamaño de la letra
-                //                             //         ),
-                //                             //         textAlign: TextAlign.center,
-                //                             //       ),
-                //                             Consumer<ComprobantesController>(
-                //                               builder: (_, valueTatifa, __) {
-                //                                 return Container(
-                //                                   // color: Colors.red,
-                //                                   width: size.wScreen(20.0),
-                
-                //                                   // color: Colors.blue,
-                //                                   child: Text(
-                //                                       valueTatifa.tipoTarifa.isEmpty
-                //                                           ? ' --- ---'
-                //                                           : ' \$${valueTatifa.tipoTarifa['valor']}',
-                //                                       style: GoogleFonts.lexendDeca(
-                //                                           fontSize: size.iScreen(3.0),
-                //                                           fontWeight: FontWeight.bold,
-                //                                           color: valueTatifa.tipoTarifa.isEmpty
-                //                                               ? Colors.grey
-                //                                               : Colors.red)),
-                //                                 );
-                //                               },
-                //                             ),
-                //                           ],
-                //                         ),
-                //                       ),
-                //                       Consumer<ComprobantesController>(
-                //                         builder: (_, values, __) {
-                //                           return values.tipoTarifa.isNotEmpty
-                //                               ? Container(
-                //                                   width: size.iScreen(20),
-                //                                   child: Column(
-                //                                     crossAxisAlignment:
-                //                                         CrossAxisAlignment.start,
-                //                                     children: [
-                // // TextFormField(
-                
-                // //   // initialValue:values.getCantidad ,
-                // //   controller: _controller,
-                // //   inputFormatters: [
-                // //     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
-                // //   ],
-                // //   keyboardType: TextInputType.numberWithOptions(decimal: true), // Permite punto decimal en el teclado
-                // //   decoration: InputDecoration(
-                // //     hintStyle:TextStyle(
-                // //       fontSize: size.iScreen(2.0)
-                // //     ),
-                // //     hintText: 'Cantidad', // Texto de sugerencia dentro del campo
-                // //     helperStyle: TextStyle(color: Colors.grey.shade50),
-                // //   ),
-                // //   style: TextStyle(
-                // //     fontSize: size.iScreen(3.5), // Ajusta el tamaño de la letra
-                // //   ),
-                // //   textAlign: TextAlign.center,
-                // //    onChanged: (text) {
-                // //     if (text=='') {
-                // //       text==0.00;
-                // //     }
-                // //     values.setCantidad(double.parse(text));
-                // //                       },
-                // // ),
-                //                                       TextFormField(
-                //                                         controller: _controller,
-                //                                         inputFormatters: [
-                //                                           FilteringTextInputFormatter.allow(RegExp(
-                //                                               r'^\d*\.?\d*$')), // Permite números y un solo punto decimal
-                //                                         ],
-                //                                         keyboardType:
-                //                                             TextInputType.numberWithOptions(
-                //                                                 decimal:
-                //                                                     true), // Permite punto decimal en el teclado
-                //                                         decoration: InputDecoration(
-                //                                           hintStyle: TextStyle(
-                //                                             fontSize: size.iScreen(2.0),
-                //                                           ),
-                //                                           hintText:
-                //                                               'Cantidad', // Texto de sugerencia dentro del campo
-                //                                           helperStyle: TextStyle(
-                //                                               color: Colors.grey.shade50),
-                //                                         ),
-                //                                         style: TextStyle(
-                //                                           fontSize: size.iScreen(
-                //                                               3.5), // Ajusta el tamaño de la letra
-                //                                         ),
-                //                                         textAlign: TextAlign.center,
-                
-                //                                         // Validación y conversión
-                //                                         onChanged: (text) {
-                //                                           double value = 0.0;
-                //                                           if (text.isNotEmpty) {
-                //                                             try {
-                //                                               value = double.parse(text);
-                //                                             } catch (e) {
-                //                                               // Manejo del error si el parse falla
-                //                                               value = 0.0;
-                //                                             }
-                //                                           }
-                //                                           values.setCantidad(value);
-                //                                         },
-                
-                //                                         // Validación adicional al enviar el formulario (opcional)
-                //                                         validator: (text) {
-                //                                           if (text == null || text.isEmpty) {
-                //                                             return 'Por favor, ingrese una cantidad';
-                //                                           }
-                //                                           final value = double.tryParse(text);
-                //                                           if (value == null) {
-                //                                             return 'Ingrese un número válido';
-                //                                           }
-                //                                           return null; // Devuelve null si la validación es exitosa
-                //                                         },
-                //                                       ),
-                //                                     ],
-                //                                   ),
-                //                                 )
-                //                               : Container();
-                //                         },
-                //                       )
-                //                       // Container(
-                //                       //   width: size.iScreen(4.0), // Ajusta el ancho del contenedor según sea necesario
-                //                       //   height: size.iScreen(4.0), // Ajusta la altura del contenedor según sea necesario
-                //                       //   decoration: BoxDecoration(
-                //                       //     color:ctrlTheme.appTheme.primaryColor, // Color de fondo del contenedor
-                //                       //     borderRadius: BorderRadius.circular(8), // Forma circular
-                //                       //   ),
-                //                       //   child: IconButton(
-                //                       //     icon: Icon(Icons.search, color: Colors.white), // Icono de lupa
-                //                       //     onPressed: () {
-                //                       //       // Acción al presionar el icono
-                //                       //     },
-                //                       //   ),
-                //                       // ),
-                //                     ],
-                //                   ),
-                //                 );
-                      
-                //                  },),
-                
-                     //***********************************************/
-                      // //***********************************************/
-                      // SizedBox(
-                      //   height: size.iScreen(1.0),
-                      // ),
-                      // //*****************************************/
-                      // //***********************************************/
-                      // Container(
-                      //   color:Colors.grey.shade200,
-                      //   width: size.wScreen(100),
-                      //   height: size.iScreen(0.5),
-                      // ),
-                      // //*****************************************/
-                       //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                
+            
+                  Container(
+                    width: size.wScreen(100),
+                    margin: EdgeInsets.only(right: size.iScreen(1.0)),
+                  
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                          
-                
-                      Container(
-                        width: size.wScreen(100),
-                        margin: EdgeInsets.only(right: size.iScreen(1.0)),
-                      
-                        child: Row(
+         
+           
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.end,
+                         
                           children: [
-                             
-             
-               
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                             
                               children: [
-                                Column(
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          width: size.iScreen(10.0),
-                
-                                          // color: Colors.blue,
-                                          child: Text('SubTotal: ',
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: size.iScreen(2.0),
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.grey), textAlign: TextAlign.right,),
-                                        ),
-                                        Consumer<ComprobantesController>(
-                                      builder: (_, valueSubTotal, __) {
-                                        return Text(valueSubTotal.getRespuestaCalculoItem['venSubTotal']==null?' 0.00':' \$ ${valueSubTotal.getRespuestaCalculoItem['venSubTotal']}',
-                                            style: GoogleFonts.lexendDeca(
-                                                fontSize: size.iScreen(2.0),
-                                                fontWeight: FontWeight.bold,
-                                                
-                                                ));
-                                      },
+                                    Container(
+                                      width: size.iScreen(10.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('SubTotal: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey), textAlign: TextAlign.right,),
                                     ),
-                                      ],
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueSubTotal, __) {
+                                    return Text(valueSubTotal.getRespuestaCalculoItem['venSubTotal']==null?' 0.00':' \$ ${valueSubTotal.getRespuestaCalculoItem['venSubTotal']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.bold,
+                                            
+                                            ));
+                                  },
+                                ),
+                                  ],
+                                ),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                   Container(
+                                      width: size.iScreen(9.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('Iva: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey), textAlign: TextAlign.right,),
                                     ),
-                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                       Container(
-                                          width: size.iScreen(9.0),
-                
-                                          // color: Colors.blue,
-                                          child: Text('Iva: ',
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: size.iScreen(2.0),
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.grey), textAlign: TextAlign.right,),
-                                        ),
-                                        Consumer<ComprobantesController>(
-                                      builder: (_, valueIvaTotal, __) {
-                                        return Text(valueIvaTotal.getRespuestaCalculoItem['venTotalIva']==null?'  0.00':' \$ ${valueIvaTotal.getRespuestaCalculoItem['venTotalIva']}',
-                                            style: GoogleFonts.lexendDeca(
-                                                fontSize: size.iScreen(2.0),
-                                                fontWeight: FontWeight.bold,
-                                                ));
-                                      },
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueIvaTotal, __) {
+                                    return Text(valueIvaTotal.getRespuestaCalculoItem['venTotalIva']==null?'  0.00':' \$ ${valueIvaTotal.getRespuestaCalculoItem['venTotalIva']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.bold,
+                                            ));
+                                  },
+                                ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                  width: size.iScreen(11.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('Total: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.5),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey),
+                                              textAlign: TextAlign.right,),
                                     ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                      width: size.iScreen(11.0),
-                
-                                          // color: Colors.blue,
-                                          child: Text('Total: ',
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: size.iScreen(2.5),
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Colors.grey),
-                                                  textAlign: TextAlign.right,),
-                                        ),
-                                        Consumer<ComprobantesController>(
-                                      builder: (_, valueTotal, __) {
-                                        return Text(valueTotal.getRespuestaCalculoItem['venTotal']==null?' 0.00':' \$ ${valueTotal.getRespuestaCalculoItem['venTotal']}',
-                                            style: GoogleFonts.lexendDeca(
-                                                fontSize: size.iScreen(2.5),
-                                                fontWeight: FontWeight.bold,
-                                               ));
-                                      },
-                                    ),
-                                      ],
-                                    ),
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueTotal, __) {
+                                    return Text(valueTotal.getRespuestaCalculoItem['venTotal']==null?' 0.00':' \$ ${valueTotal.getRespuestaCalculoItem['venTotal']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.5),
+                                            fontWeight: FontWeight.bold,
+                                           ));
+                                  },
+                                ),
                                   ],
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                    
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(3.0),
-                      ),
-                      //*****************************************/
-
-
-                       //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                     
-    //*****************************************/
-                
-                      //***********************************************/
-                      SizedBox(
-                        height: size.iScreen(1.0),
-                      ),
-                      //*****************************************/
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(3.0),
+                  ),
+                  //*****************************************/
+
+
+                   //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                 
+    //*****************************************/
+            
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+                ],
               ),
             ),
-            Positioned(
-              bottom: 0.0,
-              child: 
-              
-               Consumer<SocketService>(
-            builder: (_,value, __) {
-             return 
-             value.latestResponse!.isNotEmpty
-            ? Container(
-                width: size.wScreen(100.0),
-              
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-                ),
-                child: Column(
-        mainAxisSize: MainAxisSize.min, // Ajusta el tamaño del contenedor según su contenido
-        children: [
-
-          SizedBox(height:size.iScreen(1.5)), 
-          Text(
-            '¿Desea imprimir factura?',
-            style: GoogleFonts.lexendDeca(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: size.iScreen(2.0)
-                                ),
-            textAlign: TextAlign.center,
           ),
-          SizedBox(height:size.iScreen(1.5)), // Espacio entre el texto y los botones
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    
-                  ),
-                  onPressed: (){
-
-                      // print('esta es la informacion para imprimir: ${value.latestResponse}');
-
-                      _printTicket(value.latestResponse);
-
-                  },
-                  child: Text('Imprimir', style: GoogleFonts.lexendDeca(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: size.iScreen(1.8)
-                                ),),
-                ),
-                SizedBox(width: 20), // Espacio entre los botones
-                OutlinedButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                       final _ctrl =context.read<ComprobantesController>();
-                       if (_ctrl.getTipoDeTransaccion=='F') {
-                          //================FACTURAS F ==================//
-                     final _controllerFacturas =
-                                context.read<FacturasController>();
-
-                            _controllerFacturas
-                                .onSearchTextFacturaPaginacion("");
-
-                            _controllerFacturas
-                                .setBtnSearchFacturaPaginacion(false);
-                            _controllerFacturas
-                                .setErrorFacturasPaginacion(null);
-
-                            _controllerFacturas
-                                .setError401FacturasPaginacion(false);
-
-                            _controllerFacturas.resetFormFacturas();
-                            _controllerFacturas.setPage(0);
-                            _controllerFacturas.setIsNext(false);
-                            _controllerFacturas
-                                .setInfoBusquedaFacturasPaginacion([]);
-                            _controllerFacturas.buscaAllFacturasPaginacion(
-                                '',false,0);
-                       }
-                    if (_ctrl.getTipoDeTransaccion=='N') {
-                    //================PREFACTURAS N ==================//
-                     final _controllerPreFacturas =
-                                context.read<PreFacturasController>();
-
-                            _controllerPreFacturas
-                                .onSearchTextPreFacturaPaginacion("");
-
-                            _controllerPreFacturas
-                                .setBtnSearchPreFacturaPaginacion(false);
-                            _controllerPreFacturas
-                                .setErrorPreFacturasPaginacion(null);
-
-                            _controllerPreFacturas
-                                .setError401PreFacturasPaginacion(false);
-
-                            _controllerPreFacturas.resetFormPreFacturas();
-                            _controllerPreFacturas.setPage(0);
-                            _controllerPreFacturas.setIsNext(false);
-                            _controllerPreFacturas
-                                .setInfoBusquedaPreFacturasPaginacion([]);
-                            _controllerPreFacturas
-                                .buscaAllPreFacturasPaginacion('', true,0);
-                    }
-                      if (_ctrl.getTipoDeTransaccion=='P') {
-                        //================PROFORMAS P ==================//
-                final _controllerProformas =
-                                context.read<ProformasController>();
-
-                            _controllerProformas
-                                .onSearchTextProformasPaginacion("");
-
-                            _controllerProformas
-                                .setBtnSearchProformasPaginacion(false);
-                            _controllerProformas
-                                .setErrorProformasPaginacion(null);
-
-                            _controllerProformas
-                                .setError401ProformasPaginacion(false);
-
-                            _controllerProformas.resetFormProformas();
-                            _controllerProformas.setPage(0);
-                            _controllerProformas.setIsNext(false);
-                            _controllerProformas
-                                .setInfoBusquedaProformasPaginacion([]);
-                            _controllerProformas.buscaAllProformasPaginacion(
-                                '', true,0);
-
-                         //==================================//
-                      }
-                  },
-                  child: Text('No', style: GoogleFonts.lexendDeca(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: size.iScreen(1.8)
-                                ),),
-                ),
-            ],
-          ),
-        ],
-      ),
-              ):Container();
-          
-             
-            },
-      ))
-              
-          
-          ],
         ),
       ),
     );
@@ -1698,6 +1988,145 @@ ctrlPropi.setDocumento('');
     );
   }
 
+
+
+  Future<bool?> _agregaCorreo(BuildContext context,
+      ComprobantesController controller, Responsive size) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+            title: Container(child: const Text("AGREGAR CORREO")),
+            content: Card(
+              color: Colors.transparent,
+              elevation: 0.0,
+              child: Form(
+                key: controller.correoFormKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: size.iScreen(100.0),
+                      child: Container(
+                        // width: size.wScreen(45.0),
+                        child:
+                            // IntlPhoneField(
+                            //   controller: controllerTextCountry,
+                            //   decoration: const InputDecoration(
+
+                            //       // labelText: 'Phone Number',
+                            //       // border: OutlineInputBorder(
+                            //       //   // borderSide: BorderSide(),
+                            //       // ),
+                            //       ),
+                            //   onChanged: (phone) {
+                            //     print(phone.completeNumber);
+                            //     controller.seItemAddCelulars(phone.completeNumber);
+                            //   },
+                            //   onCountryChanged: (country) {
+                            //     controller.seItemCodeCelular(country.dialCode);
+                            //   },
+                            // ),
+                            //===============================================//
+                            SizedBox(
+                          width: size.iScreen(40.0),
+                          child: TextFormField(
+                            controller: _textAddCorreo,
+
+                            keyboardType: TextInputType.emailAddress,
+                            textCapitalization: TextCapitalization.none,
+
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              final validador = validateEmail(value);
+                              if (validador == null) {
+                                controller.setIsCorreo(true);
+                              }
+                              return validateEmail(value);
+                            },
+                            decoration: const InputDecoration(
+                                hintText: '  Ingrese un Correo'
+                                // suffixIcon: Icon(Icons.beenhere_outlined)
+                                ),
+                            inputFormatters: [
+                              LowerCaseText(),
+                            ],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+
+                                // fontSize: size.iScreen(3.5),
+                                // fontWeight: FontWeight.bold,
+                                // letterSpacing: 2.0,
+                                ),
+                            onChanged: (text) {
+                              controller.seItemAddCorreos(text);
+                              // final _estado=
+                              // valueCantidad.validaStock(text);
+                              // if(_estado==true){
+                              // print('@VERDADERO@ $_estado');
+
+                              // }else{
+                              // print('@FALSE@ $_estado');
+
+                              // }
+                            },
+                            // validator: (text) {
+                            //   if (text!.trim().isNotEmpty) {
+                            //     return null;
+                            //   } else {
+                            //     return 'Cantidad inválida';
+                            //   }
+                            // },
+                          ),
+                        ),
+                        //===============================================//
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          final isValidS = controller.validateFormCorreo();
+                          if (!isValidS) return;
+                          if (isValidS) {
+                            _textAddCorreo.text = '';
+                            controller.agregaListaCorreos();
+                            Navigator.pop(context);
+                          }
+                          //  print(countries.firstWhere((element) => element['code'] == phone.countryISOCode)['max_length']);
+                        },
+                        child: 
+                    Consumer<ThemeProvider>(builder: (_, valueTheme, __) { 
+                          return    Container(
+                          decoration: BoxDecoration(
+                              color: valueTheme.appTheme.primaryColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          // color: primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.iScreen(0.5),
+                              horizontal: size.iScreen(0.5)),
+                          child: Text('Agregar',
+                              style: GoogleFonts.lexendDeca(
+                                  // fontSize: size.iScreen(2.0),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white)),
+                        );
+
+                       },)
+                        
+                        
+                     
+                    )
+                  ],
+                ),
+              ),
+            )
+
+            //  },)
+
+            );
+      },
+    );
+  }
 
 
 // void showProcessingModal(BuildContext context, Responsive size) {
@@ -2034,6 +2463,9 @@ Future<bool?> _agregaPlaca(BuildContext context,
       } else if (controller.getRespuestaCalculoItem.isEmpty) {
         NotificatiosnService.showSnackBarDanger(
             'Debe agregar producto');
+      } else if (controller.getlistaAddCorreos!.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar correo');
       }
       else{
            final ctrl = context.read<ComprobantesController>();
@@ -2570,7 +3002,6 @@ class ContainerCombustible extends StatelessWidget {
       ),
     );
   }
-
 
 
 

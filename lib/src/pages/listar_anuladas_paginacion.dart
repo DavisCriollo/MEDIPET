@@ -124,38 +124,41 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                                           controller: _textSearchController,
                                           autofocus: true,
                                           onChanged: (text) {
-                                            providerSearchAnuladas
-                                                .onSearchTextAnuladaPaginacion(
-                                                    text);
 
-                                            if (providerSearchAnuladas
-                                                .nameSearchAnuladaPaginacion
-                                                .isEmpty) {
-                                              //                 providerSearchAnuladas
-                                              //     .setErrorMascotasPaginacion(null);
+                                                 providerSearchAnuladas.search(text);
 
-                                              // providerSearchAnuladas
-                                              //     .setError401MascotasPaginacion(
-                                              //         false);
-                                              providerSearchAnuladas.setPage(0);
-                                              providerSearchAnuladas
-                                                  .setCantidad(25);
-                                              // providerSearchAnuladas.setIsNext(false);
-                                              providerSearchAnuladas
-                                                  .buscaAllAnuladasPaginacion(
-                                                      '', true,providerSearchAnuladas.getTabIndex);
+                                            // providerSearchAnuladas
+                                            //     .onSearchTextAnuladaPaginacion(
+                                            //         text);
 
-                                              //   providerSearchAnuladas
-                                              //       .setBtnSearchPropietarioPaginacion(
-                                              //           !providerSearchAnuladas
-                                              //               .btnSearchPropietarioPaginacion);
-                                              //   _textSearchController.text = "";
-                                              //   providerSearchAnuladas
-                                              //       .buscaAllPropietariosPaginacion(
-                                              //           '', false);
-                                            }
+                                            // if (providerSearchAnuladas
+                                            //     .nameSearchAnuladaPaginacion
+                                            //     .isEmpty) {
+                                            //   //                 providerSearchAnuladas
+                                            //   //     .setErrorMascotasPaginacion(null);
 
-                                            // setState(() {});
+                                            //   // providerSearchAnuladas
+                                            //   //     .setError401MascotasPaginacion(
+                                            //   //         false);
+                                            //   providerSearchAnuladas.setPage(0);
+                                            //   providerSearchAnuladas
+                                            //       .setCantidad(25);
+                                            //   // providerSearchAnuladas.setIsNext(false);
+                                            //   providerSearchAnuladas
+                                            //       .buscaAllAnuladasPaginacion(
+                                            //           '', true,providerSearchAnuladas.getTabIndex);
+
+                                            //   //   providerSearchAnuladas
+                                            //   //       .setBtnSearchPropietarioPaginacion(
+                                            //   //           !providerSearchAnuladas
+                                            //   //               .btnSearchPropietarioPaginacion);
+                                            //   //   _textSearchController.text = "";
+                                            //   //   providerSearchAnuladas
+                                            //   //       .buscaAllPropietariosPaginacion(
+                                            //   //           '', false);
+                                            // }
+
+                                            // // setState(() {});
                                           },
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
@@ -381,49 +384,41 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
     right: size.iScreen(0.0),
     left: size.iScreen(0.0),
   ),
-                child: Consumer<AnuladasController>(
-                  builder: (_, providersAnulada, __) {
-                    if (providersAnulada.getErrorAnuladasPaginacion == null &&
-                        providersAnulada.getError401AnuladasPaginacion == false) {
-                      return Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Cargando Datos...',
-                              style: GoogleFonts.lexendDeca(
-                                  fontSize: MediaQuery.of(context).size.height * 0.015,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                            const CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    } else if (providersAnulada.getErrorAnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getErrorAnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getError401AnuladasPaginacion == true) {
-                      return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getError401AnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    }
+                child: 
+                Consumer<AnuladasController>(
+                        builder: (_, provider, __) {
+                         
+                         if (provider.allItemsFilters.isEmpty) {
+                            return const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                            // Text("sin datos");
+                          }
 
-                    return RefreshIndicator(
+                          return 
+                          
+                          (provider.allItemsFilters.isEmpty)
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ))
+                                        : (provider.allItemsFilters.length > 0)
+                                            ?
+                                             RefreshIndicator(
                       onRefresh: () => onRefresh(),
                       child: ListView.builder(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
-                        itemCount: providersAnulada.getListaAnuladasPaginacion.length + 1,
+                        itemCount: provider.allItemsFilters.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          if (index < providersAnulada.getListaAnuladasPaginacion.length) {
+                          if (index < provider.allItemsFilters.length) {
                             var _color;
-                            final anulada = providersAnulada.getListaAnuladasPaginacion[index];
+                            final anulada = provider.allItemsFilters[index];
 
                             if (anulada['venEstado'] == 'AUTORIZADO') {
                               _color = Colors.green;
@@ -594,7 +589,7 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                           } else {
                             return Container(
                               margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-                              child: providersAnulada.getListaAnuladasPaginacion.isEmpty
+                              child: provider.getListaAnuladasPaginacion.isEmpty
                                   ? Center(
                                       child: Text(
                                         'No hay más datos para mostrar',
@@ -611,9 +606,827 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                           }
                         },
                       ),
-                    );
-                  },
-                ),
+                    )
+                          //  RefreshIndicator(
+                          //    onRefresh: () => onRefresh(),
+                          //   child: ListView.builder(
+                          //     controller: _scrollController,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     itemCount: provider
+                          //             .allItemsFilters.length +
+                          //         1,
+                          //     itemBuilder: (BuildContext context, int index) {
+                          //       if (index <
+                          //           provider
+                          //               .allItemsFilters.length) {
+                          //         var _color;
+                          //         final _prefacturas = provider
+                          //             .allItemsFilters[index];
+                          
+                          //         if (_prefacturas['venEstado'] == 'AUTORIZADO') {
+                          //           _color = Colors.green;
+                          //         } else if (_prefacturas['venEstado'] ==
+                          //             'SIN AUTORIZAR') {
+                          //           _color = Colors.orange;
+                          //         }
+                          //         if (_prefacturas['venEstado'] == 'ANULADA') {
+                          //           _color = Colors.red;
+                          //         }
+                          
+                          //         return Slidable(
+                          //           startActionPane: ActionPane(
+                          //             // A motion is a widget used to control how the pane animates.
+                          //             motion: const ScrollMotion(),
+                          
+                          //             children: [
+                          //               SlidableAction(
+                          //                     backgroundColor: Colors.grey,
+                          //                 foregroundColor: Colors.white,
+                          //                 icon: Icons.list_alt_outlined,
+                          //                 label: 'Más acciones',
+                          //                 onPressed: (context) {
+                          //                   showCupertinoModalPopup(
+                          //                     context: context,
+                          //                     builder: (BuildContext context) =>
+                          //                         CupertinoActionSheet(
+                          //                             title: Text(
+                          //                               'Acciones',
+                          //                               style: GoogleFonts
+                          //                                   .lexendDeca(
+                          //                                       fontSize: size
+                          //                                           .iScreen(2.0),
+                          //                                       color:
+                          //                                           primaryColor,
+                          //                                       fontWeight:
+                          //                                           FontWeight
+                          //                                               .normal),
+                          //                             ),
+                          //                             // message: const Text('Your options are '),
+                          //                             actions: <Widget>[
+                          //                               CupertinoActionSheetAction(
+                          //                                 child: Row(
+                          //                                   mainAxisAlignment:
+                          //                                       MainAxisAlignment
+                          //                                           .center,
+                          //                                   children: [
+                          //                                     Container(
+                          //                                       margin: EdgeInsets.only(
+                          //                                           right: size
+                          //                                               .iScreen(
+                          //                                                   2.0)),
+                          //                                       child: Text(
+                          //                                         'Ver PDF',
+                          //                                         style: GoogleFonts.lexendDeca(
+                          //                                             fontSize: size
+                          //                                                 .iScreen(
+                          //                                                     1.8),
+                          //                                             color: Colors
+                          //                                                 .black87,
+                          //                                             fontWeight:
+                          //                                                 FontWeight
+                          //                                                     .normal),
+                          //                                       ),
+                          //                                     ),
+                          //                                     const Icon(
+                          //                                       FontAwesomeIcons
+                          //                                           .filePdf,
+                          //                                       color: Colors.red,
+                          //                                     )
+                          //                                   ],
+                          //                                 ),
+                          //                                 onPressed: () {
+                          //                                   Navigator.pop(
+                          //                                       context);
+                          
+                          //                                   Navigator.push(
+                          //                                     context,
+                          //                                     MaterialPageRoute(
+                          //                                         builder: (context) =>
+                          //                                             ViewsPDFs(
+                          //                                                 infoPdf:
+                          //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                 labelPdf:
+                          //                                                     'infoFactura.pdf')),
+                          //                                   );
+                          //                                 },
+                          //                               ),
+                          //                             ],
+                          //                             cancelButton:
+                          //                                 CupertinoActionSheetAction(
+                          //                               child: Text('Cancel',
+                          //                                   style: GoogleFonts
+                          //                                       .lexendDeca(
+                          //                                           fontSize: size
+                          //                                               .iScreen(
+                          //                                                   2.0),
+                          //                                           color: Colors
+                          //                                               .red,
+                          //                                           fontWeight:
+                          //                                               FontWeight
+                          //                                                   .normal)),
+                          //                               isDefaultAction: true,
+                          //                               onPressed: () {
+                          //                                 Navigator.pop(
+                          //                                     context, 'Cancel');
+                          //                               },
+                          //                             )),
+                          //                   );
+                          //                 },
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           child: Card(
+                          //             elevation: 5,
+                          //             child: Container(
+                          //               margin: EdgeInsets.only(
+                          //                   bottom: size.iScreen(0.0)),
+                          //               color: index % 2 == 0
+                          //                   ? Colors.grey.shade50
+                          //                   : Colors.grey.shade200,
+                          //               child: ListTile(
+                          //                 dense: true,
+                          //                 visualDensity:
+                          //                     VisualDensity.comfortable,
+                                      
+                          //                  leading: CircleAvatar(
+                          //                   child: Text(
+                          //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                          //                     style: Theme.of(context)
+                          //                         .textTheme
+                          //                         .subtitle1,
+                          //                   ),
+                          //                   backgroundColor: Colors.grey[300],
+                          //                 ),
+                          //                 title: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     SizedBox(
+                          //                       width: size.wScreen(40.0),
+                          //                       child: Text(
+                          //                         '${_prefacturas['venNomCliente']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             // fontSize: size.iScreen(2.45),
+                          //                             // color: Colors.white,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                     Text(
+                          //                       '${_prefacturas['venEstado']}',
+                          //                       // 'Estado: ',
+                          //                       style: GoogleFonts.lexendDeca(
+                          //                           fontSize: size.iScreen(1.5),
+                          //                           color: _color,
+                          //                           fontWeight: FontWeight.bold),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 subtitle: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     Column(
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.start,
+                          //                       children: [
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             '${_prefacturas['venNumFactura']}',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     fontSize: size
+                          //                                         .iScreen(1.5),
+                          //                                     color:
+                          //                                         Colors.black54,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                             overflow:
+                          //                                 TextOverflow.ellipsis,
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             _prefacturas['venFecReg'] !=
+                          //                                     ''
+                          //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                          //                                 : '--- --- ---',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     // fontSize: size.iScreen(2.45),
+                          //                                     color: Colors.grey,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                     Container(
+                          //                       // color: Colors.green,
+                          //                       // width: size.wScreen(100.0),
+                          //                       child: Text(
+                          //                         '\$${_prefacturas['venTotal']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(2.0),
+                          //                             color: Colors.black87,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 // trailing: Icon(Icons.more_vert),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       } else {
+                          //         return Consumer<PreFacturasController>(
+                          //           builder: (_, valueNext, __) {
+                          //             return valueNext.getpage == null
+                          //                 ? Container(
+                          //                     margin: EdgeInsets.symmetric(
+                          //                         vertical: size.iScreen(2.0)),
+                          //                     child: Center(
+                          //                       child: Text(
+                          //                         'No existen más datos',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(1.8),
+                          //                             // color: primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                       ),
+                          //                     ))
+                          //                 // : Container();
+                          
+                          //                 : provider.allItemsFilters.length > 25
+                          //                     ? Container(
+                          //                         margin: EdgeInsets.symmetric(
+                          //                             vertical:
+                          //                                 size.iScreen(2.0)),
+                          //                         child: const Center(
+                          //                             child:
+                          //                                 CircularProgressIndicator()))
+                          //                     : Container();
+                          //           },
+                          //         );
+                          //       }
+                          //     },
+                          //   ),
+                          // )
+                          
+                          : const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+
+
+                          
+                          // ListView.builder(
+                          //   itemCount: provider.allItemsFilters.length,
+                          //   itemBuilder: (BuildContext context, int index) {
+                          //     final producto =
+                          //         provider.allItemsFilters[index];
+                          //     return 
+                          //    RefreshIndicator(
+                          //    onRefresh: () => onRefresh(),
+                          //   child: ListView.builder(
+                          //     controller: _scrollController,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     itemCount: provider
+                          //             .allItemsFilters.length +
+                          //         1,
+                          //     itemBuilder: (BuildContext context, int index) {
+                          //       if (index <
+                          //           provider
+                          //               .allItemsFilters.length) {
+                          //         var _color;
+                          //         final _prefacturas = provider
+                          //             .allItemsFilters[index];
+                          
+                          //         if (_prefacturas['venEstado'] == 'AUTORIZADO') {
+                          //           _color = Colors.green;
+                          //         } else if (_prefacturas['venEstado'] ==
+                          //             'SIN AUTORIZAR') {
+                          //           _color = Colors.orange;
+                          //         }
+                          //         if (_prefacturas['venEstado'] == 'ANULADA') {
+                          //           _color = Colors.red;
+                          //         }
+                          
+                          //         return Slidable(
+                          //           startActionPane: ActionPane(
+                          //             // A motion is a widget used to control how the pane animates.
+                          //             motion: const ScrollMotion(),
+                          
+                          //             children: [
+                          //               SlidableAction(
+                          //                     backgroundColor: Colors.grey,
+                          //                 foregroundColor: Colors.white,
+                          //                 icon: Icons.list_alt_outlined,
+                          //                 label: 'Más acciones',
+                          //                 onPressed: (context) {
+                          //                   showCupertinoModalPopup(
+                          //                     context: context,
+                          //                     builder: (BuildContext context) =>
+                          //                         CupertinoActionSheet(
+                          //                             title: Text(
+                          //                               'Acciones',
+                          //                               style: GoogleFonts
+                          //                                   .lexendDeca(
+                          //                                       fontSize: size
+                          //                                           .iScreen(2.0),
+                          //                                       color:
+                          //                                           primaryColor,
+                          //                                       fontWeight:
+                          //                                           FontWeight
+                          //                                               .normal),
+                          //                             ),
+                          //                             // message: const Text('Your options are '),
+                          //                             actions: <Widget>[
+                          //                               CupertinoActionSheetAction(
+                          //                                 child: Row(
+                          //                                   mainAxisAlignment:
+                          //                                       MainAxisAlignment
+                          //                                           .center,
+                          //                                   children: [
+                          //                                     Container(
+                          //                                       margin: EdgeInsets.only(
+                          //                                           right: size
+                          //                                               .iScreen(
+                          //                                                   2.0)),
+                          //                                       child: Text(
+                          //                                         'Ver PDF',
+                          //                                         style: GoogleFonts.lexendDeca(
+                          //                                             fontSize: size
+                          //                                                 .iScreen(
+                          //                                                     1.8),
+                          //                                             color: Colors
+                          //                                                 .black87,
+                          //                                             fontWeight:
+                          //                                                 FontWeight
+                          //                                                     .normal),
+                          //                                       ),
+                          //                                     ),
+                          //                                     const Icon(
+                          //                                       FontAwesomeIcons
+                          //                                           .filePdf,
+                          //                                       color: Colors.red,
+                          //                                     )
+                          //                                   ],
+                          //                                 ),
+                          //                                 onPressed: () {
+                          //                                   Navigator.pop(
+                          //                                       context);
+                          
+                          //                                   Navigator.push(
+                          //                                     context,
+                          //                                     MaterialPageRoute(
+                          //                                         builder: (context) =>
+                          //                                             ViewsPDFs(
+                          //                                                 infoPdf:
+                          //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                 labelPdf:
+                          //                                                     'infoFactura.pdf')),
+                          //                                   );
+                          //                                 },
+                          //                               ),
+                          //                             ],
+                          //                             cancelButton:
+                          //                                 CupertinoActionSheetAction(
+                          //                               child: Text('Cancel',
+                          //                                   style: GoogleFonts
+                          //                                       .lexendDeca(
+                          //                                           fontSize: size
+                          //                                               .iScreen(
+                          //                                                   2.0),
+                          //                                           color: Colors
+                          //                                               .red,
+                          //                                           fontWeight:
+                          //                                               FontWeight
+                          //                                                   .normal)),
+                          //                               isDefaultAction: true,
+                          //                               onPressed: () {
+                          //                                 Navigator.pop(
+                          //                                     context, 'Cancel');
+                          //                               },
+                          //                             )),
+                          //                   );
+                          //                 },
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           child: Card(
+                          //             elevation: 5,
+                          //             child: Container(
+                          //               margin: EdgeInsets.only(
+                          //                   bottom: size.iScreen(0.0)),
+                          //               color: index % 2 == 0
+                          //                   ? Colors.grey.shade50
+                          //                   : Colors.grey.shade200,
+                          //               child: ListTile(
+                          //                 dense: true,
+                          //                 visualDensity:
+                          //                     VisualDensity.comfortable,
+                                      
+                          //                  leading: CircleAvatar(
+                          //                   child: Text(
+                          //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                          //                     style: Theme.of(context)
+                          //                         .textTheme
+                          //                         .subtitle1,
+                          //                   ),
+                          //                   backgroundColor: Colors.grey[300],
+                          //                 ),
+                          //                 title: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     SizedBox(
+                          //                       width: size.wScreen(40.0),
+                          //                       child: Text(
+                          //                         '${_prefacturas['venNomCliente']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             // fontSize: size.iScreen(2.45),
+                          //                             // color: Colors.white,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                     Text(
+                          //                       '${_prefacturas['venEstado']}',
+                          //                       // 'Estado: ',
+                          //                       style: GoogleFonts.lexendDeca(
+                          //                           fontSize: size.iScreen(1.5),
+                          //                           color: _color,
+                          //                           fontWeight: FontWeight.bold),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 subtitle: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     Column(
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.start,
+                          //                       children: [
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             '${_prefacturas['venNumFactura']}',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     fontSize: size
+                          //                                         .iScreen(1.5),
+                          //                                     color:
+                          //                                         Colors.black54,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                             overflow:
+                          //                                 TextOverflow.ellipsis,
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             _prefacturas['venFecReg'] !=
+                          //                                     ''
+                          //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                          //                                 : '--- --- ---',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     // fontSize: size.iScreen(2.45),
+                          //                                     color: Colors.grey,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                     Container(
+                          //                       // color: Colors.green,
+                          //                       // width: size.wScreen(100.0),
+                          //                       child: Text(
+                          //                         '\$${_prefacturas['venTotal']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(2.0),
+                          //                             color: Colors.black87,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 // trailing: Icon(Icons.more_vert),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       } else {
+                          //         return Consumer<PreFacturasController>(
+                          //           builder: (_, valueNext, __) {
+                          //             return valueNext.getpage == null
+                          //                 ? Container(
+                          //                     margin: EdgeInsets.symmetric(
+                          //                         vertical: size.iScreen(2.0)),
+                          //                     child: Center(
+                          //                       child: Text(
+                          //                         'No existen más datos',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(1.8),
+                          //                             // color: primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                       ),
+                          //                     ))
+                          //                 // : Container();
+                          
+                          //                 : provider.allItemsFilters.length > 25
+                          //                     ? Container(
+                          //                         margin: EdgeInsets.symmetric(
+                          //                             vertical:
+                          //                                 size.iScreen(2.0)),
+                          //                         child: const Center(
+                          //                             child:
+                          //                                 CircularProgressIndicator()))
+                          //                     : Container();
+                          //           },
+                          //         );
+                          //       }
+                          //     },
+                          //   ),
+                          // );
+
+
+
+
+
+                              
+                          //   },
+                          // ) : const NoData(
+                          //     label: 'No existen datos para mostar',
+                          //   );
+                        },
+                      ),
+                     
+
+                
+                // Consumer<AnuladasController>(
+                //   builder: (_, providersAnulada, __) {
+                //     if (providersAnulada.getErrorAnuladasPaginacion == null &&
+                //         providersAnulada.getError401AnuladasPaginacion == false) {
+                //       return Center(
+                //         child: Column(
+                //           mainAxisSize: MainAxisSize.min,
+                //           children: [
+                //             Text(
+                //               'Cargando Datos...',
+                //               style: GoogleFonts.lexendDeca(
+                //                   fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                   color: Colors.black87,
+                //                   fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                //             const CircularProgressIndicator(),
+                //           ],
+                //         ),
+                //       );
+                //     } else if (providersAnulada.getErrorAnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getErrorAnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getError401AnuladasPaginacion == true) {
+                //       return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getError401AnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     }
+
+                //     return
+                //
+                //
+                // RefreshIndicator(
+                //       onRefresh: () => onRefresh(),
+                //       child: ListView.builder(
+                //         controller: _scrollController,
+                //         physics: const BouncingScrollPhysics(),
+                //         itemCount: providersAnulada.getListaAnuladasPaginacion.length + 1,
+                //         itemBuilder: (BuildContext context, int index) {
+                //           if (index < providersAnulada.getListaAnuladasPaginacion.length) {
+                //             var _color;
+                //             final anulada = providersAnulada.getListaAnuladasPaginacion[index];
+
+                //             if (anulada['venEstado'] == 'AUTORIZADO') {
+                //               _color = Colors.green;
+                //             } else if (anulada['venEstado'] == 'SIN AUTORIZAR') {
+                //               _color = Colors.orange;
+                //             }
+                //             if (anulada['venEstado'] == 'ANULADA') {
+                //               _color = Colors.red;
+                //             }
+
+                //             return Slidable(
+                //               startActionPane: ActionPane(
+                //                 motion: const ScrollMotion(),
+                //                 children: [
+                //                   SlidableAction(
+                //                     backgroundColor: Colors.grey,
+                //                     foregroundColor: Colors.white,
+                //                     icon: Icons.list_alt_outlined,
+                //                     label: 'Más acciones',
+                //                     onPressed: (context) {
+                //                       showCupertinoModalPopup(
+                //                         context: context,
+                //                         builder: (BuildContext context) => CupertinoActionSheet(
+                //                           title: Text(
+                //                             'Acciones',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                 color: Colors.blue,
+                //                                 fontWeight: FontWeight.normal),
+                //                           ),
+                //                           actions: <Widget>[
+                //                             CupertinoActionSheetAction(
+                //                               child: Row(
+                //                                 mainAxisAlignment: MainAxisAlignment.center,
+                //                                 children: [
+                //                                   Container(
+                //                                     margin: EdgeInsets.only(
+                //                                         right: MediaQuery.of(context).size.width * 0.02),
+                //                                     child: Text(
+                //                                       'Ver PDF',
+                //                                       style: GoogleFonts.lexendDeca(
+                //                                           fontSize: MediaQuery.of(context).size.height * 0.018,
+                //                                           color: Colors.black87,
+                //                                           fontWeight: FontWeight.normal),
+                //                                     ),
+                //                                   ),
+                //                                   const Icon(
+                //                                     Icons.picture_as_pdf,
+                //                                     color: Colors.red,
+                //                                   )
+                //                                 ],
+                //                               ),
+                //                               onPressed: () {
+                //                                 Navigator.pop(context);
+                //                                 Navigator.push(
+                //                                   context,
+                //                                   MaterialPageRoute(
+                //                                     builder: (context) => ViewsPDFs(
+                //                                       infoPdf: 'https://example.com/pdf',
+                //                                       labelPdf: 'infoFactura.pdf',
+                //                                     ),
+                //                                   ),
+                //                                 );
+                //                               },
+                //                             ),
+                //                           ],
+                //                           cancelButton: CupertinoActionSheetAction(
+                //                             child: Text('Cancel',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                     color: Colors.red,
+                //                                     fontWeight: FontWeight.normal)),
+                //                             isDefaultAction: true,
+                //                             onPressed: () {
+                //                               Navigator.pop(context, 'Cancel');
+                //                             },
+                //                           ),
+                //                         ),
+                //                       );
+                //                     },
+                //                   ),
+                //                 ],
+                //               ),
+                //               child: Card(
+                //                 elevation: 5,
+                //                 child: Container(
+                //                   margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.0),
+                //                   color: index % 2 == 0
+                //                       ? Colors.grey.shade50
+                //                       : Colors.grey.shade200,
+                //                   child: ListTile(
+                //                     dense: true,
+                //                     visualDensity: VisualDensity.comfortable,
+                //                     leading: CircleAvatar(
+                //                       child: Text(
+                //                         '${anulada['venNomCliente'].substring(0, 1)}',
+                //                         style: Theme.of(context).textTheme.subtitle1,
+                //                       ),
+                //                       backgroundColor: Colors.grey[300],
+                //                     ),
+                //                     title: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         SizedBox(
+                //                           width: MediaQuery.of(context).size.width * 0.45,
+                //                           child: Text(
+                //                             '${anulada['venNomCliente']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontWeight: FontWeight.normal),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                         Text(
+                //                           '${anulada['venEstado']}',
+                //                           style: GoogleFonts.lexendDeca(
+                //                               fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                               color: _color,
+                //                               fontWeight: FontWeight.bold),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     subtitle: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         Column(
+                //                           mainAxisAlignment: MainAxisAlignment.start,
+                //                           children: [
+                //                             Container(
+                //                               width: MediaQuery.of(context).size.width * 0.5,
+                //                               child: Text(
+                //                                 '${anulada['venNumFactura']}',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                                     color: Colors.black54,
+                //                                     fontWeight: FontWeight.normal),
+                //                                 overflow: TextOverflow.ellipsis,
+                //                               ),
+                //                             ),
+                //                             Container(
+                //                               width: MediaQuery.of(context).size.width * 0.5,
+                //                               child: Text(
+                //                                 anulada['venFecReg'] != ''
+                //                                     ? '${anulada['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                //                                     : '--- --- ---',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     color: Colors.grey,
+                //                                     fontWeight: FontWeight.normal),
+                //                               ),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         Container(
+                //                           child: Text(
+                //                             '\$${anulada['venTotal']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                 color: Colors.black87,
+                //                                 fontWeight: FontWeight.normal),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             );
+                //           } else {
+                //             return Container(
+                //               margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                //               child: providersAnulada.getListaAnuladasPaginacion.isEmpty
+                //                   ? Center(
+                //                       child: Text(
+                //                         'No hay más datos para mostrar',
+                //                         style: GoogleFonts.lexendDeca(
+                //                             fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                             color: Colors.black54,
+                //                             fontWeight: FontWeight.bold),
+                //                       ),
+                //                     )
+                //                   : Center(
+                //                       child: CircularProgressIndicator(),
+                //                     ),
+                //             );
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   },
+                // ),
+             
+             
+             
+             
               ),
               
               
@@ -627,49 +1440,41 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
     right: size.iScreen(0.0),
     left: size.iScreen(0.0),
   ),
-                child: Consumer<AnuladasController>(
-                  builder: (_, providersAnulada, __) {
-                    if (providersAnulada.getErrorAnuladasPaginacion == null &&
-                        providersAnulada.getError401AnuladasPaginacion == false) {
-                      return Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Cargando Datos...',
-                              style: GoogleFonts.lexendDeca(
-                                  fontSize: MediaQuery.of(context).size.height * 0.015,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                            const CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    } else if (providersAnulada.getErrorAnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getErrorAnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getError401AnuladasPaginacion == true) {
-                      return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
-                    } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
-                        providersAnulada.getError401AnuladasPaginacion == false) {
-                      return const NoData(label: 'No existen datos para mostrar');
-                    }
+                child: 
+                  Consumer<AnuladasController>(
+                        builder: (_, provider, __) {
+                         
+                         if (provider.allItemsFilters.isEmpty) {
+                            return const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+                            // Text("sin datos");
+                          }
 
-                    return RefreshIndicator(
+                          return 
+                          
+                          (provider.allItemsFilters.isEmpty)
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ))
+                                        : (provider.allItemsFilters.length > 0)
+                                            ?
+                                             RefreshIndicator(
                       onRefresh: () => onRefresh(),
                       child: ListView.builder(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
-                        itemCount: providersAnulada.getListaAnuladasPaginacion.length + 1,
+                        itemCount: provider.allItemsFilters.length + 1,
                         itemBuilder: (BuildContext context, int index) {
-                          if (index < providersAnulada.getListaAnuladasPaginacion.length) {
+                          if (index < provider.allItemsFilters.length) {
                             var _color;
-                            final anulada = providersAnulada.getListaAnuladasPaginacion[index];
+                            final anulada = provider.allItemsFilters[index];
 
                             if (anulada['venEstado'] == 'AUTORIZADO') {
                               _color = Colors.green;
@@ -840,7 +1645,7 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                           } else {
                             return Container(
                               margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-                              child: providersAnulada.getListaAnuladasPaginacion.isEmpty
+                              child: provider.getListaAnuladasPaginacion.isEmpty
                                   ? Center(
                                       child: Text(
                                         'No hay más datos para mostrar',
@@ -857,9 +1662,822 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                           }
                         },
                       ),
-                    );
-                  },
-                ),
+                    )
+                          //  RefreshIndicator(
+                          //    onRefresh: () => onRefresh(),
+                          //   child: ListView.builder(
+                          //     controller: _scrollController,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     itemCount: provider
+                          //             .allItemsFilters.length +
+                          //         1,
+                          //     itemBuilder: (BuildContext context, int index) {
+                          //       if (index <
+                          //           provider
+                          //               .allItemsFilters.length) {
+                          //         var _color;
+                          //         final _prefacturas = provider
+                          //             .allItemsFilters[index];
+                          
+                          //         if (_prefacturas['venEstado'] == 'AUTORIZADO') {
+                          //           _color = Colors.green;
+                          //         } else if (_prefacturas['venEstado'] ==
+                          //             'SIN AUTORIZAR') {
+                          //           _color = Colors.orange;
+                          //         }
+                          //         if (_prefacturas['venEstado'] == 'ANULADA') {
+                          //           _color = Colors.red;
+                          //         }
+                          
+                          //         return Slidable(
+                          //           startActionPane: ActionPane(
+                          //             // A motion is a widget used to control how the pane animates.
+                          //             motion: const ScrollMotion(),
+                          
+                          //             children: [
+                          //               SlidableAction(
+                          //                     backgroundColor: Colors.grey,
+                          //                 foregroundColor: Colors.white,
+                          //                 icon: Icons.list_alt_outlined,
+                          //                 label: 'Más acciones',
+                          //                 onPressed: (context) {
+                          //                   showCupertinoModalPopup(
+                          //                     context: context,
+                          //                     builder: (BuildContext context) =>
+                          //                         CupertinoActionSheet(
+                          //                             title: Text(
+                          //                               'Acciones',
+                          //                               style: GoogleFonts
+                          //                                   .lexendDeca(
+                          //                                       fontSize: size
+                          //                                           .iScreen(2.0),
+                          //                                       color:
+                          //                                           primaryColor,
+                          //                                       fontWeight:
+                          //                                           FontWeight
+                          //                                               .normal),
+                          //                             ),
+                          //                             // message: const Text('Your options are '),
+                          //                             actions: <Widget>[
+                          //                               CupertinoActionSheetAction(
+                          //                                 child: Row(
+                          //                                   mainAxisAlignment:
+                          //                                       MainAxisAlignment
+                          //                                           .center,
+                          //                                   children: [
+                          //                                     Container(
+                          //                                       margin: EdgeInsets.only(
+                          //                                           right: size
+                          //                                               .iScreen(
+                          //                                                   2.0)),
+                          //                                       child: Text(
+                          //                                         'Ver PDF',
+                          //                                         style: GoogleFonts.lexendDeca(
+                          //                                             fontSize: size
+                          //                                                 .iScreen(
+                          //                                                     1.8),
+                          //                                             color: Colors
+                          //                                                 .black87,
+                          //                                             fontWeight:
+                          //                                                 FontWeight
+                          //                                                     .normal),
+                          //                                       ),
+                          //                                     ),
+                          //                                     const Icon(
+                          //                                       FontAwesomeIcons
+                          //                                           .filePdf,
+                          //                                       color: Colors.red,
+                          //                                     )
+                          //                                   ],
+                          //                                 ),
+                          //                                 onPressed: () {
+                          //                                   Navigator.pop(
+                          //                                       context);
+                          
+                          //                                   Navigator.push(
+                          //                                     context,
+                          //                                     MaterialPageRoute(
+                          //                                         builder: (context) =>
+                          //                                             ViewsPDFs(
+                          //                                                 infoPdf:
+                          //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                 labelPdf:
+                          //                                                     'infoFactura.pdf')),
+                          //                                   );
+                          //                                 },
+                          //                               ),
+                          //                             ],
+                          //                             cancelButton:
+                          //                                 CupertinoActionSheetAction(
+                          //                               child: Text('Cancel',
+                          //                                   style: GoogleFonts
+                          //                                       .lexendDeca(
+                          //                                           fontSize: size
+                          //                                               .iScreen(
+                          //                                                   2.0),
+                          //                                           color: Colors
+                          //                                               .red,
+                          //                                           fontWeight:
+                          //                                               FontWeight
+                          //                                                   .normal)),
+                          //                               isDefaultAction: true,
+                          //                               onPressed: () {
+                          //                                 Navigator.pop(
+                          //                                     context, 'Cancel');
+                          //                               },
+                          //                             )),
+                          //                   );
+                          //                 },
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           child: Card(
+                          //             elevation: 5,
+                          //             child: Container(
+                          //               margin: EdgeInsets.only(
+                          //                   bottom: size.iScreen(0.0)),
+                          //               color: index % 2 == 0
+                          //                   ? Colors.grey.shade50
+                          //                   : Colors.grey.shade200,
+                          //               child: ListTile(
+                          //                 dense: true,
+                          //                 visualDensity:
+                          //                     VisualDensity.comfortable,
+                                      
+                          //                  leading: CircleAvatar(
+                          //                   child: Text(
+                          //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                          //                     style: Theme.of(context)
+                          //                         .textTheme
+                          //                         .subtitle1,
+                          //                   ),
+                          //                   backgroundColor: Colors.grey[300],
+                          //                 ),
+                          //                 title: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     SizedBox(
+                          //                       width: size.wScreen(40.0),
+                          //                       child: Text(
+                          //                         '${_prefacturas['venNomCliente']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             // fontSize: size.iScreen(2.45),
+                          //                             // color: Colors.white,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                     Text(
+                          //                       '${_prefacturas['venEstado']}',
+                          //                       // 'Estado: ',
+                          //                       style: GoogleFonts.lexendDeca(
+                          //                           fontSize: size.iScreen(1.5),
+                          //                           color: _color,
+                          //                           fontWeight: FontWeight.bold),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 subtitle: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     Column(
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.start,
+                          //                       children: [
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             '${_prefacturas['venNumFactura']}',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     fontSize: size
+                          //                                         .iScreen(1.5),
+                          //                                     color:
+                          //                                         Colors.black54,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                             overflow:
+                          //                                 TextOverflow.ellipsis,
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             _prefacturas['venFecReg'] !=
+                          //                                     ''
+                          //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                          //                                 : '--- --- ---',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     // fontSize: size.iScreen(2.45),
+                          //                                     color: Colors.grey,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                     Container(
+                          //                       // color: Colors.green,
+                          //                       // width: size.wScreen(100.0),
+                          //                       child: Text(
+                          //                         '\$${_prefacturas['venTotal']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(2.0),
+                          //                             color: Colors.black87,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 // trailing: Icon(Icons.more_vert),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       } else {
+                          //         return Consumer<PreFacturasController>(
+                          //           builder: (_, valueNext, __) {
+                          //             return valueNext.getpage == null
+                          //                 ? Container(
+                          //                     margin: EdgeInsets.symmetric(
+                          //                         vertical: size.iScreen(2.0)),
+                          //                     child: Center(
+                          //                       child: Text(
+                          //                         'No existen más datos',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(1.8),
+                          //                             // color: primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                       ),
+                          //                     ))
+                          //                 // : Container();
+                          
+                          //                 : provider.allItemsFilters.length > 25
+                          //                     ? Container(
+                          //                         margin: EdgeInsets.symmetric(
+                          //                             vertical:
+                          //                                 size.iScreen(2.0)),
+                          //                         child: const Center(
+                          //                             child:
+                          //                                 CircularProgressIndicator()))
+                          //                     : Container();
+                          //           },
+                          //         );
+                          //       }
+                          //     },
+                          //   ),
+                          // )
+                          
+                          : const NoData(
+                              label: 'No existen datos para mostar',
+                            );
+
+
+                          
+                          // ListView.builder(
+                          //   itemCount: provider.allItemsFilters.length,
+                          //   itemBuilder: (BuildContext context, int index) {
+                          //     final producto =
+                          //         provider.allItemsFilters[index];
+                          //     return 
+                          //    RefreshIndicator(
+                          //    onRefresh: () => onRefresh(),
+                          //   child: ListView.builder(
+                          //     controller: _scrollController,
+                          //     physics: const BouncingScrollPhysics(),
+                          //     itemCount: provider
+                          //             .allItemsFilters.length +
+                          //         1,
+                          //     itemBuilder: (BuildContext context, int index) {
+                          //       if (index <
+                          //           provider
+                          //               .allItemsFilters.length) {
+                          //         var _color;
+                          //         final _prefacturas = provider
+                          //             .allItemsFilters[index];
+                          
+                          //         if (_prefacturas['venEstado'] == 'AUTORIZADO') {
+                          //           _color = Colors.green;
+                          //         } else if (_prefacturas['venEstado'] ==
+                          //             'SIN AUTORIZAR') {
+                          //           _color = Colors.orange;
+                          //         }
+                          //         if (_prefacturas['venEstado'] == 'ANULADA') {
+                          //           _color = Colors.red;
+                          //         }
+                          
+                          //         return Slidable(
+                          //           startActionPane: ActionPane(
+                          //             // A motion is a widget used to control how the pane animates.
+                          //             motion: const ScrollMotion(),
+                          
+                          //             children: [
+                          //               SlidableAction(
+                          //                     backgroundColor: Colors.grey,
+                          //                 foregroundColor: Colors.white,
+                          //                 icon: Icons.list_alt_outlined,
+                          //                 label: 'Más acciones',
+                          //                 onPressed: (context) {
+                          //                   showCupertinoModalPopup(
+                          //                     context: context,
+                          //                     builder: (BuildContext context) =>
+                          //                         CupertinoActionSheet(
+                          //                             title: Text(
+                          //                               'Acciones',
+                          //                               style: GoogleFonts
+                          //                                   .lexendDeca(
+                          //                                       fontSize: size
+                          //                                           .iScreen(2.0),
+                          //                                       color:
+                          //                                           primaryColor,
+                          //                                       fontWeight:
+                          //                                           FontWeight
+                          //                                               .normal),
+                          //                             ),
+                          //                             // message: const Text('Your options are '),
+                          //                             actions: <Widget>[
+                          //                               CupertinoActionSheetAction(
+                          //                                 child: Row(
+                          //                                   mainAxisAlignment:
+                          //                                       MainAxisAlignment
+                          //                                           .center,
+                          //                                   children: [
+                          //                                     Container(
+                          //                                       margin: EdgeInsets.only(
+                          //                                           right: size
+                          //                                               .iScreen(
+                          //                                                   2.0)),
+                          //                                       child: Text(
+                          //                                         'Ver PDF',
+                          //                                         style: GoogleFonts.lexendDeca(
+                          //                                             fontSize: size
+                          //                                                 .iScreen(
+                          //                                                     1.8),
+                          //                                             color: Colors
+                          //                                                 .black87,
+                          //                                             fontWeight:
+                          //                                                 FontWeight
+                          //                                                     .normal),
+                          //                                       ),
+                          //                                     ),
+                          //                                     const Icon(
+                          //                                       FontAwesomeIcons
+                          //                                           .filePdf,
+                          //                                       color: Colors.red,
+                          //                                     )
+                          //                                   ],
+                          //                                 ),
+                          //                                 onPressed: () {
+                          //                                   Navigator.pop(
+                          //                                       context);
+                          
+                          //                                   Navigator.push(
+                          //                                     context,
+                          //                                     MaterialPageRoute(
+                          //                                         builder: (context) =>
+                          //                                             ViewsPDFs(
+                          //                                                 infoPdf:
+                          //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                          //                                                 labelPdf:
+                          //                                                     'infoFactura.pdf')),
+                          //                                   );
+                          //                                 },
+                          //                               ),
+                          //                             ],
+                          //                             cancelButton:
+                          //                                 CupertinoActionSheetAction(
+                          //                               child: Text('Cancel',
+                          //                                   style: GoogleFonts
+                          //                                       .lexendDeca(
+                          //                                           fontSize: size
+                          //                                               .iScreen(
+                          //                                                   2.0),
+                          //                                           color: Colors
+                          //                                               .red,
+                          //                                           fontWeight:
+                          //                                               FontWeight
+                          //                                                   .normal)),
+                          //                               isDefaultAction: true,
+                          //                               onPressed: () {
+                          //                                 Navigator.pop(
+                          //                                     context, 'Cancel');
+                          //                               },
+                          //                             )),
+                          //                   );
+                          //                 },
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           child: Card(
+                          //             elevation: 5,
+                          //             child: Container(
+                          //               margin: EdgeInsets.only(
+                          //                   bottom: size.iScreen(0.0)),
+                          //               color: index % 2 == 0
+                          //                   ? Colors.grey.shade50
+                          //                   : Colors.grey.shade200,
+                          //               child: ListTile(
+                          //                 dense: true,
+                          //                 visualDensity:
+                          //                     VisualDensity.comfortable,
+                                      
+                          //                  leading: CircleAvatar(
+                          //                   child: Text(
+                          //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                          //                     style: Theme.of(context)
+                          //                         .textTheme
+                          //                         .subtitle1,
+                          //                   ),
+                          //                   backgroundColor: Colors.grey[300],
+                          //                 ),
+                          //                 title: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     SizedBox(
+                          //                       width: size.wScreen(40.0),
+                          //                       child: Text(
+                          //                         '${_prefacturas['venNomCliente']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             // fontSize: size.iScreen(2.45),
+                          //                             // color: Colors.white,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                     Text(
+                          //                       '${_prefacturas['venEstado']}',
+                          //                       // 'Estado: ',
+                          //                       style: GoogleFonts.lexendDeca(
+                          //                           fontSize: size.iScreen(1.5),
+                          //                           color: _color,
+                          //                           fontWeight: FontWeight.bold),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 subtitle: Row(
+                          //                   mainAxisAlignment:
+                          //                       MainAxisAlignment.spaceBetween,
+                          //                   children: [
+                          //                     Column(
+                          //                       mainAxisAlignment:
+                          //                           MainAxisAlignment.start,
+                          //                       children: [
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             '${_prefacturas['venNumFactura']}',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     fontSize: size
+                          //                                         .iScreen(1.5),
+                          //                                     color:
+                          //                                         Colors.black54,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                             overflow:
+                          //                                 TextOverflow.ellipsis,
+                          //                           ),
+                          //                         ),
+                          //                         Container(
+                          //                           // color: Colors.green,
+                          //                           width: size.wScreen(50.0),
+                          //                           child: Text(
+                          //                             _prefacturas['venFecReg'] !=
+                          //                                     ''
+                          //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                          //                                 : '--- --- ---',
+                          //                             style:
+                          //                                 GoogleFonts.lexendDeca(
+                          //                                     // fontSize: size.iScreen(2.45),
+                          //                                     color: Colors.grey,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .normal),
+                          //                           ),
+                          //                         ),
+                          //                       ],
+                          //                     ),
+                          //                     Container(
+                          //                       // color: Colors.green,
+                          //                       // width: size.wScreen(100.0),
+                          //                       child: Text(
+                          //                         '\$${_prefacturas['venTotal']}',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(2.0),
+                          //                             color: Colors.black87,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                         overflow: TextOverflow.ellipsis,
+                          //                       ),
+                          //                     ),
+                          //                   ],
+                          //                 ),
+                          //                 // trailing: Icon(Icons.more_vert),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       } else {
+                          //         return Consumer<PreFacturasController>(
+                          //           builder: (_, valueNext, __) {
+                          //             return valueNext.getpage == null
+                          //                 ? Container(
+                          //                     margin: EdgeInsets.symmetric(
+                          //                         vertical: size.iScreen(2.0)),
+                          //                     child: Center(
+                          //                       child: Text(
+                          //                         'No existen más datos',
+                          //                         style: GoogleFonts.lexendDeca(
+                          //                             fontSize: size.iScreen(1.8),
+                          //                             // color: primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.normal),
+                          //                       ),
+                          //                     ))
+                          //                 // : Container();
+                          
+                          //                 : provider.allItemsFilters.length > 25
+                          //                     ? Container(
+                          //                         margin: EdgeInsets.symmetric(
+                          //                             vertical:
+                          //                                 size.iScreen(2.0)),
+                          //                         child: const Center(
+                          //                             child:
+                          //                                 CircularProgressIndicator()))
+                          //                     : Container();
+                          //           },
+                          //         );
+                          //       }
+                          //     },
+                          //   ),
+                          // );
+
+
+
+
+
+                              
+                          //   },
+                          // ) : const NoData(
+                          //     label: 'No existen datos para mostar',
+                          //   );
+                        },
+                      ),
+                
+                
+                // Consumer<AnuladasController>(
+                //   builder: (_, providersAnulada, __) {
+                //     if (providersAnulada.getErrorAnuladasPaginacion == null &&
+                //         providersAnulada.getError401AnuladasPaginacion == false) {
+                //       return Center(
+                //         child: Column(
+                //           mainAxisSize: MainAxisSize.min,
+                //           children: [
+                //             Text(
+                //               'Cargando Datos...',
+                //               style: GoogleFonts.lexendDeca(
+                //                   fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                   color: Colors.black87,
+                //                   fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                //             const CircularProgressIndicator(),
+                //           ],
+                //         ),
+                //       );
+                //     } else if (providersAnulada.getErrorAnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getErrorAnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getError401AnuladasPaginacion == true) {
+                //       return const NoData(label: 'Su sesión ha expirado, vuelva a iniciar sesión');
+                //     } else if (providersAnulada.getListaAnuladasPaginacion.isEmpty &&
+                //         providersAnulada.getError401AnuladasPaginacion == false) {
+                //       return const NoData(label: 'No existen datos para mostrar');
+                //     }
+
+                //     return RefreshIndicator(
+                //       onRefresh: () => onRefresh(),
+                //       child: ListView.builder(
+                //         controller: _scrollController,
+                //         physics: const BouncingScrollPhysics(),
+                //         itemCount: providersAnulada.getListaAnuladasPaginacion.length + 1,
+                //         itemBuilder: (BuildContext context, int index) {
+                //           if (index < providersAnulada.getListaAnuladasPaginacion.length) {
+                //             var _color;
+                //             final anulada = providersAnulada.getListaAnuladasPaginacion[index];
+
+                //             if (anulada['venEstado'] == 'AUTORIZADO') {
+                //               _color = Colors.green;
+                //             } else if (anulada['venEstado'] == 'SIN AUTORIZAR') {
+                //               _color = Colors.orange;
+                //             }
+                //             if (anulada['venEstado'] == 'ANULADA') {
+                //               _color = Colors.red;
+                //             }
+
+                //             return Slidable(
+                //               startActionPane: ActionPane(
+                //                 motion: const ScrollMotion(),
+                //                 children: [
+                //                   SlidableAction(
+                //                     backgroundColor: Colors.grey,
+                //                     foregroundColor: Colors.white,
+                //                     icon: Icons.list_alt_outlined,
+                //                     label: 'Más acciones',
+                //                     onPressed: (context) {
+                //                       showCupertinoModalPopup(
+                //                         context: context,
+                //                         builder: (BuildContext context) => CupertinoActionSheet(
+                //                           title: Text(
+                //                             'Acciones',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                 color: Colors.blue,
+                //                                 fontWeight: FontWeight.normal),
+                //                           ),
+                //                           actions: <Widget>[
+                //                             CupertinoActionSheetAction(
+                //                               child: Row(
+                //                                 mainAxisAlignment: MainAxisAlignment.center,
+                //                                 children: [
+                //                                   Container(
+                //                                     margin: EdgeInsets.only(
+                //                                         right: MediaQuery.of(context).size.width * 0.02),
+                //                                     child: Text(
+                //                                       'Ver PDF',
+                //                                       style: GoogleFonts.lexendDeca(
+                //                                           fontSize: MediaQuery.of(context).size.height * 0.018,
+                //                                           color: Colors.black87,
+                //                                           fontWeight: FontWeight.normal),
+                //                                     ),
+                //                                   ),
+                //                                   const Icon(
+                //                                     Icons.picture_as_pdf,
+                //                                     color: Colors.red,
+                //                                   )
+                //                                 ],
+                //                               ),
+                //                               onPressed: () {
+                //                                 Navigator.pop(context);
+                //                                 Navigator.push(
+                //                                   context,
+                //                                   MaterialPageRoute(
+                //                                     builder: (context) => ViewsPDFs(
+                //                                       infoPdf: 'https://example.com/pdf',
+                //                                       labelPdf: 'infoFactura.pdf',
+                //                                     ),
+                //                                   ),
+                //                                 );
+                //                               },
+                //                             ),
+                //                           ],
+                //                           cancelButton: CupertinoActionSheetAction(
+                //                             child: Text('Cancel',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                     color: Colors.red,
+                //                                     fontWeight: FontWeight.normal)),
+                //                             isDefaultAction: true,
+                //                             onPressed: () {
+                //                               Navigator.pop(context, 'Cancel');
+                //                             },
+                //                           ),
+                //                         ),
+                //                       );
+                //                     },
+                //                   ),
+                //                 ],
+                //               ),
+                //               child: Card(
+                //                 elevation: 5,
+                //                 child: Container(
+                //                   margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.0),
+                //                   color: index % 2 == 0
+                //                       ? Colors.grey.shade50
+                //                       : Colors.grey.shade200,
+                //                   child: ListTile(
+                //                     dense: true,
+                //                     visualDensity: VisualDensity.comfortable,
+                //                     leading: CircleAvatar(
+                //                       child: Text(
+                //                         '${anulada['venNomCliente'].substring(0, 1)}',
+                //                         style: Theme.of(context).textTheme.subtitle1,
+                //                       ),
+                //                       backgroundColor: Colors.grey[300],
+                //                     ),
+                //                     title: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         SizedBox(
+                //                           width: MediaQuery.of(context).size.width * 0.45,
+                //                           child: Text(
+                //                             '${anulada['venNomCliente']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontWeight: FontWeight.normal),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                         Text(
+                //                           '${anulada['venEstado']}',
+                //                           style: GoogleFonts.lexendDeca(
+                //                               fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                               color: _color,
+                //                               fontWeight: FontWeight.bold),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     subtitle: Row(
+                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         Column(
+                //                           mainAxisAlignment: MainAxisAlignment.start,
+                //                           children: [
+                //                             Container(
+                //                               width: MediaQuery.of(context).size.width * 0.5,
+                //                               child: Text(
+                //                                 '${anulada['venNumFactura']}',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                                     color: Colors.black54,
+                //                                     fontWeight: FontWeight.normal),
+                //                                 overflow: TextOverflow.ellipsis,
+                //                               ),
+                //                             ),
+                //                             Container(
+                //                               width: MediaQuery.of(context).size.width * 0.5,
+                //                               child: Text(
+                //                                 anulada['venFecReg'] != ''
+                //                                     ? '${anulada['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                //                                     : '--- --- ---',
+                //                                 style: GoogleFonts.lexendDeca(
+                //                                     color: Colors.grey,
+                //                                     fontWeight: FontWeight.normal),
+                //                               ),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         Container(
+                //                           child: Text(
+                //                             '\$${anulada['venTotal']}',
+                //                             style: GoogleFonts.lexendDeca(
+                //                                 fontSize: MediaQuery.of(context).size.height * 0.02,
+                //                                 color: Colors.black87,
+                //                                 fontWeight: FontWeight.normal),
+                //                             overflow: TextOverflow.ellipsis,
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             );
+                //           } else {
+                //             return Container(
+                //               margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                //               child: providersAnulada.getListaAnuladasPaginacion.isEmpty
+                //                   ? Center(
+                //                       child: Text(
+                //                         'No hay más datos para mostrar',
+                //                         style: GoogleFonts.lexendDeca(
+                //                             fontSize: MediaQuery.of(context).size.height * 0.015,
+                //                             color: Colors.black54,
+                //                             fontWeight: FontWeight.bold),
+                //                       ),
+                //                     )
+                //                   : Center(
+                //                       child: CircularProgressIndicator(),
+                //                     ),
+                //             );
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   },
+                // ),
+             
+             
+             
               ),
               
               

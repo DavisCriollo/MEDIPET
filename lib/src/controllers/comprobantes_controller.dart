@@ -37,6 +37,7 @@ class ComprobantesController extends ChangeNotifier {
   GlobalKey<FormState> comprobantesFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> placaFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> cantidadFormKey = GlobalKey<FormState>();
+    GlobalKey<FormState> correoFormKey = GlobalKey<FormState>();
 
   AuthResponse? usuarios;
   bool validateForm() {
@@ -55,6 +56,14 @@ class ComprobantesController extends ChangeNotifier {
   }
    bool validateFormCantidad() {
     if (cantidadFormKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+   bool validateFormCorreo() {
+    if (correoFormKey.currentState!.validate()) {
       return true;
     } else {
       return false;
@@ -81,7 +90,7 @@ class ComprobantesController extends ChangeNotifier {
     notifyListeners();
   }
 //================== FORMA DE PAGO  ==========================//
-  String _formaDePago = '';
+  String _formaDePago = 'EFECTIVO';
   String get getFormaDePago  => _formaDePago;
 
   void setFormaDePago(String _forma) {
@@ -439,7 +448,13 @@ if (_clienteComprobante.isNotEmpty) {
   
 }
 }
-
+if (_clienteComprobante.isNotEmpty) {
+   _listaAddCorreos=[];
+  for (var item in _clienteComprobante["perEmail"]) {
+   _listaAddCorreos!.add(item);
+  
+}
+}
 
 print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
   notifyListeners();
@@ -702,7 +717,7 @@ final _nuevaFactura =
   "venRucCliente": _clienteComprobante['perDocNumero'], // tomar del endpoint cliente
   "venTipoDocuCliente": _clienteComprobante['perDocTipo'], // tomar del endpoint cliente
   "venNomCliente": _clienteComprobante['perNombre'], // tomar del endpoint cliente
-  "venEmailCliente": _clienteComprobante['perEmail'], // tomar del endpoint cliente
+  "venEmailCliente":_listaAddCorreos ,//_clienteComprobante['perEmail'], // tomar del endpoint cliente
   "venTelfCliente": _clienteComprobante['perTelefono'], // tomar del endpoint cliente
   "venCeluCliente": _clienteComprobante['perCelular'], // tomar del endpoint cliente
   "venDirCliente":_clienteComprobante['perDireccion'], // tomar del endpoint cliente
@@ -840,15 +855,44 @@ _allItemsFilters.addAll(_list);
     notifyListeners();
   }
 
-// void _sortList() {
-//     _allItemsFilters.sort((a, b) {
-//       final nameA = a['invNombre']?.toLowerCase() ?? '';
-//       final nameB = b['invNombre']?.toLowerCase() ?? '';
-//       return nameA.compareTo(nameB);
-//     });
-//   }
+//========================== VALIDA INPUT CORREO  =======================//
+  bool? _isCorreo;
 
+  bool? get getIsCorreo => _isCorreo;
 
+  void setIsCorreo(bool? value) {
+    _isCorreo = value;
+    // notifyListeners();
+  }
+//========================== ITEM DE CORREOS  =======================//
+
+  String? _itemAddCorreos = '';
+  String? get getItemAddCorreos => _itemAddCorreos;
+
+  void seItemAddCorreos(String? valor) {
+    _itemAddCorreos = valor;
+
+    notifyListeners();
+  }
+//========================== LISTA DE CORREOS  =======================//
+
+  List? _listaAddCorreos = [];
+  List? get getlistaAddCorreos => _listaAddCorreos;
+
+  void agregaListaCorreos() {
+    _listaAddCorreos!.add(_itemAddCorreos);
+
+    notifyListeners();
+  }
+
+  void eliminaCorreo(String? _correo) {
+    _listaAddCorreos!.removeWhere((element) => element == _correo);
+
+    notifyListeners();
+  }
+  resetCorreos(){
+     _listaAddCorreos!.clear();
+  }
 
 
 }

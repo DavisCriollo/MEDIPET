@@ -114,48 +114,48 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
 
 
 
-              Consumer<ComprobantesController>(builder: (_, value, __) { 
-                return  
-                value.getRespuestaCalculoItem.isNotEmpty
-               ? Wrap(
-                children: value.getRespuestaCalculoItem['venProductos']
-                    .map<Widget>(
-                      (e) => 
-                     e['descripcion'].isEmpty?Container(): GestureDetector(
-                        onTap: () {
-                            value.deleteItem(e);
+              // Consumer<ComprobantesController>(builder: (_, value, __) { 
+              //   return  
+              //   value.getRespuestaCalculoItem.isNotEmpty
+              //  ? Wrap(
+              //   children: value.getRespuestaCalculoItem['venProductos']
+              //       .map<Widget>(
+              //         (e) => 
+              //        e['descripcion'].isEmpty?Container(): GestureDetector(
+              //           onTap: () {
+              //               value.deleteItem(e);
   
-                        },
+              //           },
                            
-                        child: Container(
-                          margin: EdgeInsets.all(size.iScreen(0.6)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              padding: EdgeInsets.all(size.iScreen(0.2)),
-                              decoration:  BoxDecoration(
-                                color: ctrlTheme.appTheme.primaryColor,
-                              ),
-                              width: size.iScreen(13.0),
-                              child: Text(
-                                '${e['descripcion']}.',
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.lexendDeca(
-                                    fontSize: size.iScreen(1.8),
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ):Container();
+              //           child: Container(
+              //             margin: EdgeInsets.all(size.iScreen(0.6)),
+              //             child: ClipRRect(
+              //               borderRadius: BorderRadius.circular(8.0),
+              //               child: Container(
+              //                 padding: EdgeInsets.all(size.iScreen(0.2)),
+              //                 decoration:  BoxDecoration(
+              //                   color: ctrlTheme.appTheme.primaryColor,
+              //                 ),
+              //                 width: size.iScreen(13.0),
+              //                 child: Text(
+              //                   '${e['descripcion']}.',
+              //                   textAlign: TextAlign.center,
+              //                   overflow: TextOverflow.ellipsis,
+              //                   style: GoogleFonts.lexendDeca(
+              //                       fontSize: size.iScreen(1.8),
+              //                       color: Colors.white,
+              //                       fontWeight: FontWeight.normal),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       )
+              //       .toList(),
+              // ):Container();
               
-               },),
-             //
+              //  },),
+            
 
               Expanded(
                   child: SizedBox(
@@ -248,6 +248,7 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                                   onTap: () {
                                     // provider.setListaDeProductosFactura(producto);
                                     _agregaCantidad(context,provider,size,producto);
+                                  
                                     
                                     // print('EL ITEM ES : ${provider.getListaDeProductos[index]}');
 
@@ -274,6 +275,9 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                         },
                       )
                       ))
+           
+           
+           
             ],
           ),
         ),
@@ -536,12 +540,13 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
 
                     SizedBox(height: size.iScreen(2.0)),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async{
                         final isValidS = controller.validateFormCantidad();
                         if (!isValidS) return;
-                        if (isValidS) {
+                        if (isValidS)  {
 
-                          controller.enviaProductoCalculo(_item,1);
+                        await  controller.enviaProductoCalculo(_item,1);
+                          Navigator.pop(context);
                           Navigator.pop(context);
                               // print('EL ITEM ES : $_item}');
                         }
