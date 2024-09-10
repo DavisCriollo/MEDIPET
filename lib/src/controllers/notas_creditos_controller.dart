@@ -448,6 +448,49 @@ _allItemsFilters.addAll(_list);
 print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
 print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
 
+//====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
+
+if (_tabIndex==0) {
+  _valorTotalFacturasHoy = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _allItemsFilters) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasHoy');
+  
+} else {
+_valorTotalFacturasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _allItemsFilters) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+}
+//===================================================//
+
 
   notifyListeners();
  }
